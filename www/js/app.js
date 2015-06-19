@@ -66,15 +66,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 					}
 				}
 			})
-				.state('app.single', {
-					url: "/newsfeed/:newsfeedId",
-					views: {
-						'menuContent': {
-							templateUrl: "templates/newsfeed_single.html",
-							controller: 'NewsfeedSingleCtrl'
-						}
+			.state('app.single', {
+				url: "/newsfeed/:newsfeedId",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/newsfeed_single.html",
+						controller: 'NewsfeedSingleCtrl'
 					}
-				})
+				}
+			})
 
 			.state('app.progress', {
 				url: "/progress",
