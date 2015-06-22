@@ -30,6 +30,13 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 				controller: 'LoginCtrl'
 			})
 
+			.state('login', {
+				url: "/login",
+				abstract: true,
+				templateUrl: "templates/login.html",
+				controller: 'LoginCtrl'
+			})
+
 			.state('app.home', {
 				url: "/home",
 				views: {
@@ -66,7 +73,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 					}
 				}
 			})
-			.state('app.single', {
+
+			.state('app.newsfeed_single', {
 				url: "/newsfeed/:newsfeedId",
 				views: {
 					'menuContent': {
@@ -92,7 +100,17 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 						templateUrl: "templates/settings.html"
 					}
 				}
+			})
+
+			.state('app.notifications', {
+				url: "/settings/notifications",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/notifications_accessibility.html"
+					}
+				}
 			});
+
 		// if none of the above states are matched, use this as the fallback
 		$urlRouterProvider.otherwise('app/home');
 	});
