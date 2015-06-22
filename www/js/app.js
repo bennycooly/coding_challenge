@@ -92,6 +92,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 						templateUrl: "templates/settings.html"
 					}
 				}
+			})
+
+			.state('app.edit_profile', {
+				url: "/edit_profile",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/edit_profile.html"
+					}
+				}
 			});
 		// if none of the above states are matched, use this as the fallback
 		$urlRouterProvider.otherwise('app/home');
