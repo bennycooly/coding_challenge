@@ -101,23 +101,24 @@ angular.module('myApp', ['ionic', 'myApp.controllers'])
 				}
 			})
 
-<<<<<<< HEAD
 			.state('app.notifications', {
 				url: "/settings/notifications",
 				views: {
 					'menuContent': {
 						templateUrl: "templates/settings/notifications_accessibility.html"
-=======
+					}
+				}
+			})
+
 			.state('app.edit_profile', {
 				url: "/edit_profile",
 				views: {
 					'menuContent': {
 						templateUrl: "templates/edit_profile.html"
->>>>>>> c64b68a86db7624ded0f22a9d6d302f7c996425a
 					}
 				}
 			});
 
 		// if none of the above states are matched, use this as the fallback
-		$urlRouterProvider.otherwise('/login');
+		$urlRouterProvider.otherwise('/login')
 	});
