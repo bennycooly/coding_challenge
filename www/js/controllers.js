@@ -1,15 +1,6 @@
 angular.module('myApp.controllers', [])
 
-	.controller('AppCtrl', function ($scope, $state, $timeout, $ionicLoading) {
-
-		$scope.login = function() {
-			console.log('logging in');
-			$ionicLoading.show({
-				template: '<p>Logging in...</p><ion-spinner></ion-spinner>',
-				duration: 2000
-			});
-			$state.go('app.home');
-		};
+	.controller('AppCtrl', function ($scope, $state, $ionicLoading) {
 
 		$scope.logout = function() {
 			console.log('logging out');
@@ -37,7 +28,8 @@ angular.module('myApp.controllers', [])
 
 		$scope.login = function() {
 			//check for valid characters
-			if ($scope.loginData.username==undefined || $scope.loginData.password==undefined){
+			if ($scope.loginData.username==undefined || $scope.loginData.password==undefined
+			|| $scope.loginData.username=="" || $scope.loginData.password==""){
 				alert ("Please enter a valid AT&T UID and/or password");
 			}
 			//log in to home page
@@ -47,9 +39,16 @@ angular.module('myApp.controllers', [])
 					template: '<p>Logging in...</p><ion-spinner></ion-spinner>',
 					duration: 2000
 				});
+				$scope.clear($scope);
 				$state.go('app.home');
 			}
 		};
+
+		//clear forms after login
+		$scope.clear = function($scope) {
+			$scope.loginData.username="";
+			$scope.loginData.password="";
+		}
 
 	})
 

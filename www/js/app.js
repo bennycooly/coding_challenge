@@ -121,6 +121,15 @@ angular.module('myApp', ['ionic', 'myApp.controllers', 'ngCookies'])
 						templateUrl: "templates/edit_profile.html"
 					}
 				}
+			})
+
+			.state('app.about', {
+				url: "/settings/about",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/About.html"
+					}
+				}
 			});
 
 
