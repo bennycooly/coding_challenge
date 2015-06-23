@@ -1,77 +1,44 @@
 <ion-view view-title="Calendar">
 	<ion-content>
-		<h1>Calendar</h1>
-		<TABLE BORDER=3 CELLSPACING=3 CELLPADDING=3>
-			<TR>
-				<TD COLSPAN="7" ALIGN=center><B>December 2001</B></TD>
-			</TR>
-			<TR>
-				<TD COLSPAN="7" ALIGN=center><I>Another year comes to an end</I></TD>
-			</TR>
-			<TR>
-				<TD ALIGN=center>Sun</TD>
-				<TD ALIGN=center>Mon</TD>
-				<TD ALIGN=center>Tue</TD>
-				<TD ALIGN=center>Wed</TD>
-				<TD ALIGN=center>Thu</TD>
-				<TD ALIGN=center>Fri</TD>
-				<TD ALIGN=center>Sat</TD>
-			</TR>
-			<TR>
-				<TD ALIGN=center></TD>
-				<TD ALIGN=center></TD>
-				<TD ALIGN=center></TD>
-				<TD ALIGN=center></TD>
-				<TD ALIGN=center></TD>
-				<TD ALIGN=center></TD>
-				<TD ALIGN=center>1</TD>
-			</TR>
-			<TR>
-				<TD ALIGN=center>2</TD>
-				<TD ALIGN=center>3</TD>
-				<TD ALIGN=center>4</TD>
-				<TD ALIGN=center>5</TD>
-				<TD ALIGN=center>6</TD>
-				<TD ALIGN=center>7</TD>
-				<TD ALIGN=center>8</TD>
-			</TR>
-			<TR>
-				<TD ALIGN=center>9</TD>
-				<TD ALIGN=center>10</TD>
-				<TD ALIGN=center>11</TD>
-				<TD ALIGN=center>12</TD>
-				<TD ALIGN=center>13</TD>
-				<TD ALIGN=center>14</TD>
-				<TD ALIGN=center>15</TD>
-			</TR>
-			<TR>
-				<TD ALIGN=center>16</TD>
-				<TD ALIGN=center>17</TD>
-				<TD ALIGN=center>18</TD>
-				<TD ALIGN=center>19</TD>
-				<TD ALIGN=center>20</TD>
-				<TD ALIGN=center>21</TD>
-				<TD ALIGN=center>22</TD>
-			</TR>
-			<TR>
-				<TD ALIGN=center>23</TD>
-				<TD ALIGN=center>24</TD>
-				<TD ALIGN=center>25</TD>
-				<TD ALIGN=center>26</TD>
-				<TD ALIGN=center>27</TD>
-				<TD ALIGN=center>28</TD>
-				<TD ALIGN=center>29</TD>
-			</TR>
-			<TR>
-				<TD ALIGN=center>30</TD>
-				<TD ALIGN=center>31</TD>
-				<TD ALIGN=center></TD>
-				<TD ALIGN=center></TD>
-				<TD ALIGN=center></TD>
-				<TD ALIGN=center></TD>
-				<TD ALIGN=center></TD>
+		<!DOCTYPE html>
+		<html>
+		<head>
+			<meta charset="utf-8" />
+			<title>Calendar Widget</title>
+			<link rel="stylesheet" href="calendar.css" />
+		</head>
+		<body>
+		<div id="cal">
+			<div class="header">
+				<span class="left button" id="prev"> &lang; </span>
+				<span class="left hook"></span>
+				<span class="month-year" id="label"> June 20&0 </span>
+				<span class="right hook"></span>
+				<span class="right button" id="next"> &rang; </span>
+			</div>
+			<table id="days">
+				<td>Sun</td>
+				<td>Mon</td>
+				<td>Tue</td>
+				<td>Wed</td>
+				<td>Thu</td>
+				<td>Fri</td>
+				<td>Sat</td>
+			</table>
+			<div id="cal-frame">
+				<table class="curr">
+					<tbody>
+					<tr><td class="nil"></td><td class="nil"></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+					<tr><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td class="today">11</td><td>12</td></tr>
+					<tr><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td></tr>
+					<tr><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr>
+					<tr><td>27</td><td>28</td><td>29</td><td>30</td><td class="nil"></td><td class="nil"></td><td class="nil"></td></tr>
+					</tbody>
+				</table>
 
-			</TR>
-		</TABLE>
+			</div>
+		</div>
+		</body>
+		</html>
 	</ion-content>
 </ion-view>
