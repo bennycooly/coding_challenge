@@ -30,7 +30,8 @@ angular.module('myApp', ['ionic', 'myApp.controllers', 'ngCookies'])
 			.state('app', {
 				url: "/app",
 				abstract: true,
-				templateUrl: "templates/menu.html"
+				templateUrl: "templates/menu.html",
+				controller: 'AppCtrl'
 			})
 
 			.state('login', {

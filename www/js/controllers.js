@@ -1,6 +1,28 @@
 angular.module('myApp.controllers', [])
 
-	.controller('LoginCtrl', function ($scope, $timeout, $location, $ionicModal, User, $cookieStore) {
+	.controller('AppCtrl', function ($scope, $state, $timeout, $ionicLoading) {
+
+		$scope.login = function() {
+			console.log('logging in');
+			$ionicLoading.show({
+				template: '<p>Logging in...</p><ion-spinner></ion-spinner>',
+				duration: 2000
+			});
+			$state.go('app.home');
+		};
+
+		$scope.logout = function() {
+			console.log('logging out');
+			$ionicLoading.show({
+				template: '<p>Logging out...</p><ion-spinner></ion-spinner>',
+				duration: 2000
+			});
+			$state.go('login');
+		};
+
+	})
+
+	.controller('LoginCtrl', function ($scope, $state, $ionicModal, User, $ionicLoading) {
 
 		// With the new view caching in Ionic, Controllers are only called
 		// when they are recreated or on app start, instead of every page change.
@@ -13,46 +35,22 @@ angular.module('myApp.controllers', [])
 		$scope.loginData = {};
 		$scope.user = User;
 
-		// Create the login modal that we will use later
-		$ionicModal.fromTemplateUrl('templates/login.html', {
-			scope: $scope,
-			animation: 'slide-in-up'
-		}).then(function(modal) {
-			$scope.modal = modal;
-		});
-
-		// Triggered in the login modal to close it
-		$scope.closeLogin = function() {
-			$scope.modal.hide();
-		};
-
-		// Open the login modal
 		$scope.login = function() {
-			$scope.modal.show();
+			//check for valid characters
+			if ($scope.loginData.username==undefined || $scope.loginData.password==undefined){
+				alert ("Please enter a valid AT&T UID and/or password");
+			}
+			//log in to home page
+			else {
+				console.log('logging in', $scope.loginData);
+				$ionicLoading.show({
+					template: '<p>Logging in...</p><ion-spinner></ion-spinner>',
+					duration: 2000
+				});
+				$state.go('app.home');
+			}
 		};
 
-		// Reopen the login modal and remove credentials
-		$scope.logout = function() {
-			$cookieStore.put('loggedin',false)
-			$scope.modal.show();
-		};
-
-		// Perform the login action when the user submits the login form
-		$scope.doLogin = function() {
-			console.log('Doing login', $scope.loginData);
-			// Simulate a login delay. Remove this and replace with your login
-			// code if using a login system
-
-
-			$timeout(function () {
-				$scope.closeLogin();
-			}, 1000);
-			$cookieStore.put('loggedin',true)
-		};
-
-		$scope.$on('modal.hidden', function() {
-			$location.path('app/home');
-		});
 	})
 
 	.controller('NewsfeedCtrl', function ($scope) {
