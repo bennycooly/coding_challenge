@@ -1,30 +1,30 @@
-<ion-view view-title="Edit Profile">
+<ion-view view-title="Edit Profile" ng-controller="ProfileCtrl">
     <ion-header-bar>
         <h1 class="title">Edit Profile</h1>
     </ion-header-bar>
     <ion-content>
-        <h2 style="margin-top:8px;text-align:center;">Alec Masterson</h2>
-        <form ng-submit="">
+        <h2 style="margin-top:8px;text-align:center;">info.name</h2>
+        <form ng-submit="saveProfileChanges()">
             <div class="list">
                 <label class="item item-input">
                     <span class="input-label">Password</span>
-                    <input type="password">
+                    <input type="password" ng-model="pass.first">
                 </label>
                 <label class="item item-input">
-                    <span class="input-label">Retype Password</span>
-                    <input type="password">
+                    <span class="input-label">Confirm Password</span>
+                    <input type="password" ng-model="pass.second">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Interests</span>
-                    <input type="text" value="Nothing, More Nothing, Even More Nothing">
+                    <input type="text" ng-model="info.interests[0]">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Email</span>
-                    <input type="text" value="am790d@att.com">
+                    <input type="text" ng-model="info.email">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Phone Number</span>
-                    <input type="text" value="512-992-9117">
+                    <input type="text" ng-model="info.phone">
                 </label>
                 <label class="item">
                     <button class="button button-block button-positive" type="submit">Save</button>

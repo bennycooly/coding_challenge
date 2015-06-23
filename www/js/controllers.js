@@ -1,6 +1,6 @@
 angular.module('myApp.controllers', [])
 
-	.controller('LoginCtrl', function ($scope, $timeout, $location, $ionicModal, $cookieStore) {
+	.controller('LoginCtrl', function ($scope, $timeout, $location, $ionicModal, User, $cookieStore) {
 
 		// With the new view caching in Ionic, Controllers are only called
 		// when they are recreated or on app start, instead of every page change.
@@ -11,6 +11,7 @@ angular.module('myApp.controllers', [])
 
 		// Form data for the login modal
 		$scope.loginData = {};
+		$scope.user = User;
 
 		// Create the login modal that we will use later
 		$ionicModal.fromTemplateUrl('templates/login.html', {
@@ -41,7 +42,9 @@ angular.module('myApp.controllers', [])
 			console.log('Doing login', $scope.loginData);
 			// Simulate a login delay. Remove this and replace with your login
 			// code if using a login system
-			$timeout(function() {
+
+
+			$timeout(function () {
 				$scope.closeLogin();
 			}, 1000);
 			$cookieStore.put('loggedin',true)
@@ -64,4 +67,24 @@ angular.module('myApp.controllers', [])
 	})
 
 	.controller('NewsfeedSingleCtrl', function ($scope, $stateParams) {
+	})
+
+	// This controller handles editting the user's profile
+	.controller('ProfileCtrl', function($scope, $http, User) {
+		$scope.pass = {first: "", second: "", update: false};
+		$scope.user = User;
+		$scope.info = {name: angular.copy(User.name), interests: angular.copy(User.interests), email: angular.copy(User.email), phone: angular.copy(User.phone)};
+
+		// Once you click the save button
+		$scope.saveProfileChanges = function() {
+			if ($scope.pass.first != "" && $scope.pass.first == $scope.pass.second) {
+				$scope.pass.update = true;
+				alert("New Password: "+$scope.pass.first+"\n");
+			}
+			alert("Interests: "+$scope.info.interests+"\nEmail: "+$scope.info.email+"\nPhone: "+$scope.info.phone);
+
+			// Upon successful http call, update $scope.user
+
+			$scope.pass = {first: "", second: "", update: false};
+		};
 	});

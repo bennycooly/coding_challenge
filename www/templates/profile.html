@@ -1,36 +1,34 @@
-<ion-view view-title="Profile">
+<ion-view view-title="Profile" ng-controller="ProfileCtrl">
 	<ion-header-bar>
 		<h1 class="title">Profile</h1>
 	</ion-header-bar>
 	<ion-content>
-		<h2 style="margin-top:8px;text-align:center;">Alec Masterson</h2>
+		<h2 style="margin-top:8px;text-align:center;">{{user.name}}</h2>
 		<ul class="list">
 			<li class="item">
 				<div class="row">
 					<div class="col"><b>ATTUID</b></div>
-					<div class="col">am790d</div>
+					<div class="col">{{user.id}}</div>
 				</div>
 			</li>
 			<li class="item">
 				<div class="row">
 					<div class="col"><b>Total Hours</b></div>
-					<div class="col">9001</div>
+					<div class="col">{{user.hours}}</div>
 				</div>
 			</li>
 			<li class="item">
 				<div class="row">
 					<div class="col"><b>Recent Events</b></div>
-					<div class="col">Nothing</div>
+					<div class="col">{{user.events}}</div>
 				</div>
 			</li>
 			<li class="item">
 				<div class="row">
 					<div class="col"><b>Interests</b></div>
 					<div class="col item-text-wrap">
-						<ul style="list-style-type:circle;">
-							<li>Nothing</li>
-							<li>More Nothing</li>
-							<li>This interest is only to show that text wraps successfully. Yay!</li>
+						<ul style="list-style-type:circle;" ng-repeat="interest in user.interests">
+							<li>{{interest}}</li>
 						</ul>
 					</div>
 				</div>
@@ -38,13 +36,13 @@
 			<li class="item">
 				<div class="row">
 					<div class="col"><b>Email</b></div>
-					<div class="col"><a href="mailto:am790d@att.com">am790d@att.com</a></div>
+					<div class="col"><a href="mailto:am790d@att.com">{{user.email}}</a></div>
 				</div>
 			</li>
 			<li class="item">
 				<div class="row">
 					<div class="col"><b>Phone Number</b></div>
-					<div class="col">512-992-9117</div>
+					<div class="col">{{user.phone}}</div>
 				</div>
 			</li>
 		</ul>

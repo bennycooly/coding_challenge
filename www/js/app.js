@@ -6,6 +6,10 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('myApp', ['ionic', 'myApp.controllers', 'ngCookies'])
 
+	.factory('User', function() {
+		return {name: "Alec Masterson", id: "am790d", pass: "1234", hours: "4", events: "Empty", interests: ["Empty"], email: "am790d@att.com", phone: "512-992-9117"};
+	})
+
 	.run(function ($ionicPlatform) {
 		$ionicPlatform.ready(function () {
 			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
