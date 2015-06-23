@@ -1,4 +1,4 @@
-angular.module('myApp', [])
+angular.module('myApp.services', [])
 
 	.service('LoginService', function($q) {
 		return {
