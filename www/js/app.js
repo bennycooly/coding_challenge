@@ -12,7 +12,17 @@ angular.module('myApp', ['ionic',
 		return {name: "Alec Masterson", id: "am790d", pass: "1234", hours: "4", events: "Empty", interests: ["Empty"], email: "am790d@att.com", phone: "512-992-9117"};
 	})
 
-	.run(function ($ionicPlatform) {
+	.run(function ($ionicPlatform, $state, $rootScope) {
+
+		/*var currentUser = Parse.User.current();
+		$rootScope.user = null;
+		$rootScope.isLoggedIn = false;
+		if (currentUser) {
+			$rootScope.user = currentUser;
+			$rootScope.isLoggedIn = true;
+			$state.go('app.home');
+		}*/
+
 		$ionicPlatform.ready(function () {
 			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 			// for form inputs)
@@ -23,6 +33,7 @@ angular.module('myApp', ['ionic',
 				// org.apache.cordova.statusbar required
 				StatusBar.styleDefault();
 			}
+			Parse.initialize("1HS2UnUaotlFPUBxgUCkaTzdIQOIhwxAvGMmBa4c", "mkOcJeWZU7Wo8LCTypT40pJRZuVrEKIYMIwW8NCl");
 		});
 	})
 

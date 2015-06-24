@@ -13,7 +13,7 @@ angular.module('myApp.controllers', [])
 
 	})
 
-	.controller('LoginCtrl', function ($scope, $state, $ionicPopup, User, $ionicLoading) {
+	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, User, $ionicLoading, $http) {
 
 		// With the new view caching in Ionic, Controllers are only called
 		// when they are recreated or on app start, instead of every page change.
@@ -43,7 +43,7 @@ angular.module('myApp.controllers', [])
 					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
 					duration: 2000
 				});
-				$scope.clear();
+				//$scope.checkCredentials(username,password);
 				$state.go('app.home');
 			}
 		};
@@ -61,6 +61,23 @@ angular.module('myApp.controllers', [])
 		$scope.clear = function() {
 			$scope.loginData.username="";
 			$scope.loginData.password="";
+		};
+
+		$scope.checkCredentials = function(username, password) {
+			console.log(username, password);
+			Parse.User.logIn((username).toLowerCase(), password, {
+				success: function(user) {
+					console.log('success!');
+					$rootScope.user = user;
+					$rootScope.isLoggedIn = true;
+					$state.go('app.home', {
+						clear: true
+					});
+				},
+				error: function() {
+					console.log('failure');
+				}
+			});
 		};
 
 	})
