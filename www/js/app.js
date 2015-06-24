@@ -136,6 +136,15 @@ angular.module('myApp', ['ionic',
 				}
 			})
 
+			.state('app.help_support', {
+				url: "/settings/help_support",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/help_support.html"
+					}
+				}
+			})
+
 			.state('app.about', {
 				url: "/settings/about",
 				views: {
@@ -144,6 +153,8 @@ angular.module('myApp', ['ionic',
 					}
 				}
 			});
+
+
 
 
 
