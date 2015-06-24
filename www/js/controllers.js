@@ -1,19 +1,22 @@
 angular.module('myApp.controllers', [])
 
-	.controller('AppCtrl', function ($scope, $state, $ionicLoading) {
+	.controller('AppCtrl', function ($scope, $state, $ionicLoading, $timeout) {
 
 		$scope.logout = function() {
 			console.log('logging out');
+			Parse.User.logOut();
 			$ionicLoading.show({
 				template: '<p>Logging out...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
-				duration: 2000
 			});
-			$state.go('login');
+			$timeout( function() {
+				$ionicLoading.hide();
+				$state.go('login');
+			}, 1000);
 		};
 
 	})
 
-	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, User, $ionicLoading, $http) {
+	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, User, $ionicLoading, $timeout) {
 
 		// With the new view caching in Ionic, Controllers are only called
 		// when they are recreated or on app start, instead of every page change.
@@ -41,10 +44,8 @@ angular.module('myApp.controllers', [])
 				console.log('logging in', $scope.loginData);
 				$ionicLoading.show({
 					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
-					duration: 2000
 				});
-				//$scope.checkCredentials(username,password);
-				$state.go('app.home');
+				$scope.checkCredentials(username,password);
 			}
 		};
 
@@ -63,21 +64,38 @@ angular.module('myApp.controllers', [])
 			$scope.loginData.password="";
 		};
 
+		//checks the credentials and logs you in/out
 		$scope.checkCredentials = function(username, password) {
-			console.log(username, password);
-			Parse.User.logIn((username).toLowerCase(), password, {
+			Parse.User.logIn(username, password, {
 				success: function(user) {
 					console.log('success!');
 					$rootScope.user = user;
 					$rootScope.isLoggedIn = true;
-					$state.go('app.home', {
-						clear: true
-					});
+					$timeout(function () {
+						$ionicLoading.hide();
+						$scope.clear();
+						$state.go('app.home', {
+							clear: true
+						});
+					}, 1000);
 				},
 				error: function() {
-					console.log('failure');
+					$ionicLoading.hide();
+					$ionicPopup.alert({
+						title: 'Incorrect ATT UID and/or password. Please try again.'
+					});
 				}
 			});
+		};
+
+		$scope.showLogin = function() {
+			$ionicLoading.show({
+				template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+			});
+		};
+
+		$scope.hideLogin = function() {
+			$ionicLoading.hide();
 		};
 
 	})
