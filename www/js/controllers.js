@@ -6,12 +6,11 @@ angular.module('myApp.controllers', [])
 			console.log('logging out');
 			Parse.User.logOut();
 			$ionicLoading.show({
-				template: '<p>Logging out...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
+				template: '<p>Logging out...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
 			});
 			$timeout( function() {
-				$ionicLoading.hide();
-				Parse.User.logOut();
 				$state.go('login', {}, {reload: true});
+				$ionicLoading.hide();
 			}, 1000);
 		};
 
@@ -29,7 +28,7 @@ angular.module('myApp.controllers', [])
 		// Form data for the login modal
 		$scope.loginData = {};
 		$scope.user = User;
-		
+
 
 		$scope.login = function() {
 			cordova.plugins.Keyboard.close();
@@ -73,13 +72,13 @@ angular.module('myApp.controllers', [])
 					console.log('success!');
 					$rootScope.user = user;
 					$rootScope.isLoggedIn = true;
-					$scope.hideLogin();
 					$scope.clear();
 					$state.go('app.home', {clear: true}, {refresh: true});
+					$scope.hideLogin();
 				},
 				error: function(user, error) {
-					$scope.hideLogin();
 					$scope.clear('password');
+					$scope.hideLogin();
 					$ionicPopup.alert({
 						title: 'Incorrect ATT UID and/or password. Please try again.'
 					});

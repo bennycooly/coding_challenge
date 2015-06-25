@@ -13,7 +13,7 @@ angular.module('myApp', ['ionic',
 		return {name: "Alec Masterson", id: "am790d", pass: "1234", hours: "4", events: "Empty", interests: ["Empty"], email: "am790d@att.com", phone: "512-992-9117"};
 	})
 
-	.run(function ($ionicPlatform, $state, $rootScope, $cordovaNetwork, $ionicLoading) {
+	.run(function ($ionicPlatform, $state, $rootScope, $cordovaNetwork, $ionicLoading, $timeout) {
 
 		$ionicPlatform.ready(function () {
 			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -32,7 +32,13 @@ angular.module('myApp', ['ionic',
 			$rootScope.sessionUser = Parse.User.current();
 			// if user is logged in, then go home. if not, then go to login page
 			if ($rootScope.sessionUser) {
-				$state.go('app.home', {}, {reload:true});
+				$ionicLoading.show({
+					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+				});
+				$timeout( function() {
+					$state.go('app.home', {}, {reload: true});
+					$ionicLoading.hide();
+				}, 1000);
 			}
 			else {
 				$state.go('login', {}, {reload:true});
