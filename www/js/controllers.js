@@ -10,7 +10,8 @@ angular.module('myApp.controllers', [])
 			});
 			$timeout( function() {
 				$ionicLoading.hide();
-				$state.go('login');
+				Parse.User.logOut();
+				$state.go('login', {}, {reload: true});
 			}, 1000);
 		};
 
@@ -28,9 +29,10 @@ angular.module('myApp.controllers', [])
 		// Form data for the login modal
 		$scope.loginData = {};
 		$scope.user = User;
-
+		
 
 		$scope.login = function() {
+			cordova.plugins.Keyboard.close();
 			var username = $scope.loginData.username;
 			var password = $scope.loginData.password;
 			//check for valid characters
@@ -43,7 +45,7 @@ angular.module('myApp.controllers', [])
 			else {
 				console.log('logging in', $scope.loginData);
 				$ionicLoading.show({
-					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
+					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
 				});
 				$scope.checkCredentials(username,password);
 			}
@@ -59,8 +61,8 @@ angular.module('myApp.controllers', [])
 		};
 
 		//clear forms after login
-		$scope.clear = function() {
-			$scope.loginData.username="";
+		$scope.clear = function(password) {
+			if (password!='password') {$scope.loginData.username="";}
 			$scope.loginData.password="";
 		};
 
@@ -71,16 +73,13 @@ angular.module('myApp.controllers', [])
 					console.log('success!');
 					$rootScope.user = user;
 					$rootScope.isLoggedIn = true;
-					$timeout(function () {
-						$ionicLoading.hide();
-						$scope.clear();
-						$state.go('app.home', {
-							clear: true
-						});
-					}, 1000);
+					$scope.hideLogin();
+					$scope.clear();
+					$state.go('app.home', {clear: true}, {refresh: true});
 				},
-				error: function() {
-					$ionicLoading.hide();
+				error: function(user, error) {
+					$scope.hideLogin();
+					$scope.clear('password');
 					$ionicPopup.alert({
 						title: 'Incorrect ATT UID and/or password. Please try again.'
 					});
@@ -98,6 +97,14 @@ angular.module('myApp.controllers', [])
 			$ionicLoading.hide();
 		};
 
+		$scope.zoom = function() {
+
+		};
+
+		$scope.closeKeyboard = function() {
+			var keyboard = cordova.plugins.Keyboard;
+			keyboard.close();
+		};
 	})
 
 	.controller('NewsfeedCtrl', function ($scope) {

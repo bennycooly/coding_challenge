@@ -6,38 +6,42 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('myApp', ['ionic',
 	'myApp.controllers',
+	'ngCordova',
 	'ngCookies'])
 
 	.factory('User', function() {
 		return {name: "Alec Masterson", id: "am790d", pass: "1234", hours: "4", events: "Empty", interests: ["Empty"], email: "am790d@att.com", phone: "512-992-9117"};
 	})
 
-	.run(function ($ionicPlatform, $state, $rootScope) {
-
-		/*var currentUser = Parse.User.current();
-		$rootScope.user = null;
-		$rootScope.isLoggedIn = false;
-		if (currentUser) {
-			$rootScope.user = currentUser;
-			$rootScope.isLoggedIn = true;
-			$state.go('app.home');
-		}*/
+	.run(function ($ionicPlatform, $state, $rootScope, $cordovaNetwork, $ionicLoading) {
 
 		$ionicPlatform.ready(function () {
 			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 			// for form inputs)
+			// display network stuff
+			$rootScope.$on('$cordovaNetwork:online', function(event, networkState) {alert('online!');});
+			$rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {alert('offline');});
 			if (window.cordova && window.cordova.plugins.Keyboard) {
-				cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+				cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
 			}
 			if (window.StatusBar) {
 				// org.apache.cordova.statusbar required
 				StatusBar.styleDefault();
 			}
 			Parse.initialize("1HS2UnUaotlFPUBxgUCkaTzdIQOIhwxAvGMmBa4c", "mkOcJeWZU7Wo8LCTypT40pJRZuVrEKIYMIwW8NCl");
+			$rootScope.sessionUser = Parse.User.current();
+			// if user is logged in, then go home. if not, then go to login page
+			if ($rootScope.sessionUser) {
+				$state.go('app.home', {}, {reload:true});
+			}
+			else {
+				$state.go('login', {}, {reload:true});
+			}
 		});
+
 	})
 
-	.config(function ($stateProvider, $urlRouterProvider) {
+	.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 		$stateProvider
 
 			.state('app', {
@@ -160,6 +164,8 @@ angular.module('myApp', ['ionic',
 
 
 		// if none of the above states are matched, use this as the fallback
-		$urlRouterProvider.otherwise('/login')
+		$urlRouterProvider.otherwise('/login');
+
+		$ionicConfigProvider.views.maxCache(0);
 	});
 
