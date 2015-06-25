@@ -139,4 +139,9 @@ angular.module('myApp.controllers', [])
 
 			$scope.pass = {first: "", second: "", update: false};
 		};
+	})
+
+	.controller('HomeCtrl', function($scope) {
+		var user = Parse.User.current();
+		$scope.firstName = user.get('firstName');
 	});
