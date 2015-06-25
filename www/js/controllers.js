@@ -31,7 +31,8 @@ angular.module('myApp.controllers', [])
 
 
 		$scope.login = function() {
-			cordova.plugins.Keyboard.close();
+			// UNCOMMENT this line when deploying to device. Hides the keyboard on submit
+			// cordova.plugins.Keyboard.close();
 			var username = $scope.loginData.username;
 			var password = $scope.loginData.password;
 			//check for valid characters
