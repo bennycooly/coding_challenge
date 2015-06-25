@@ -142,6 +142,5 @@ angular.module('myApp.controllers', [])
 	})
 
 	.controller('HomeCtrl', function($scope) {
-		var user = Parse.User.current();
-		$scope.firstName = user.get('firstName');
+		$scope.firstName = Parse.User.current().get('firstName');
 	});
