@@ -22,13 +22,5 @@
         },
         "is_top_level": true,
         "variables": {}
-    },
-    "com.cordova.plugin.softkeyboard": {
-        "source": {
-            "type": "registry",
-            "id": "com.cordova.plugin.softkeyboard"
-        },
-        "is_top_level": true,
-        "variables": {}
     }
 }
