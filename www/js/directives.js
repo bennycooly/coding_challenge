@@ -6,7 +6,10 @@ angular.module('myApp.directives', [])
 			link: function($scope, $element, attrs) {
 				$timeout (function() {
 					$element[0].focus();
-				}, 750);
+					/*if (ionic.Platform.isAndroid()) {
+						cordova.plugins.Keyboard.show();
+					}*/
+				}, 1000);
 			}
 		};
 	});

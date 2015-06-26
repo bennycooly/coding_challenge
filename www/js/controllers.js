@@ -37,9 +37,7 @@ angular.module('myApp.controllers', [])
 			var password = $scope.loginData.password;
 			//check for valid characters
 			if ($scope.checkEmpty(username, password)){
-				$ionicPopup.alert({
-					title: 'Please enter a valid AT&T UID and/or password'
-				});
+				$scope.showInvalid();
 			}
 			//log in to home page
 			else {
@@ -47,6 +45,9 @@ angular.module('myApp.controllers', [])
 				$ionicLoading.show({
 					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
 				});
+				$timeout( function () {
+					$scope.hideLogin();
+				}, 5000);
 				$scope.checkCredentials(username,password);
 			}
 		};
@@ -80,9 +81,7 @@ angular.module('myApp.controllers', [])
 				error: function(user, error) {
 					$scope.clear('password');
 					$scope.hideLogin();
-					$ionicPopup.alert({
-						title: 'Incorrect ATT UID and/or password. Please try again.'
-					});
+					$scope.showInvalid();
 				}
 			});
 		};
@@ -97,14 +96,19 @@ angular.module('myApp.controllers', [])
 			$ionicLoading.hide();
 		};
 
-		$scope.zoom = function() {
+		$scope.showInvalid = function() {
+			$ionicPopup.alert({
+				title: 'Please enter a valid AT&T UID and/or password'
+			});
+		}
 
-		};
+	})
 
-		$scope.closeKeyboard = function() {
-			var keyboard = cordova.plugins.Keyboard;
-			keyboard.close();
-		};
+	.controller('WelcomeCtrl', function($state, $timeout, $ionicLoading) {
+		$timeout( function() {
+			$state.go('login', {}, {reload: true});
+			$ionicLoading.hide();
+		}, 1000);
 	})
 
 	.controller('NewsfeedCtrl', function ($scope) {
