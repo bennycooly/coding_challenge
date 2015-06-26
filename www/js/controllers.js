@@ -42,9 +42,7 @@ angular.module('myApp.controllers', [])
 			//log in to home page
 			else {
 				console.log('logging in', $scope.loginData);
-				$ionicLoading.show({
-					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
-				});
+				$scope.showLogin();
 				$timeout( function () {
 					$scope.hideLogin();
 				}, 5000);

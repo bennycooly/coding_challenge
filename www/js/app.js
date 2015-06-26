@@ -29,11 +29,11 @@ angular.module('myApp', ['ionic',
 				StatusBar.styleDefault();
 			}
 			ionic.Platform.isFullScreen = true;
-			Parse.initialize("1HS2UnUaotlFPUBxgUCkaTzdIQOIhwxAvGMmBa4c", "mkOcJeWZU7Wo8LCTypT40pJRZuVrEKIYMIwW8NCl");
-			$rootScope.sessionUser = Parse.User.current();
 
 		});
 		// if user is logged in, then go home. if not, then go to login page
+		Parse.initialize("1HS2UnUaotlFPUBxgUCkaTzdIQOIhwxAvGMmBa4c", "mkOcJeWZU7Wo8LCTypT40pJRZuVrEKIYMIwW8NCl");
+		$rootScope.sessionUser = Parse.User.current();
 		if ($rootScope.sessionUser) {
 			$ionicLoading.show({
 				template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
