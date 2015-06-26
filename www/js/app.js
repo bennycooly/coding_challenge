@@ -6,6 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('myApp', ['ionic',
 	'myApp.controllers',
+	'myApp.directives',
 	'ngCordova',
 	'ngCookies'])
 
@@ -28,6 +29,7 @@ angular.module('myApp', ['ionic',
 				// org.apache.cordova.statusbar required
 				StatusBar.styleDefault();
 			}
+			ionic.Platform.isFullScreen = true;
 			Parse.initialize("1HS2UnUaotlFPUBxgUCkaTzdIQOIhwxAvGMmBa4c", "mkOcJeWZU7Wo8LCTypT40pJRZuVrEKIYMIwW8NCl");
 			$rootScope.sessionUser = Parse.User.current();
 			// if user is logged in, then go home. if not, then go to login page
