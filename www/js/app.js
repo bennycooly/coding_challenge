@@ -7,8 +7,11 @@
 angular.module('myApp', ['ionic',
 	'myApp.controllers',
 	'myApp.directives',
-	'ngCordova',
-	'ngCookies'])
+	'ngCordova'])
+
+	.factory('User', function() {
+		return {name: "Alec Masterson", id: "am790d", pass: "1234", hours: "4", events: "Empty", interests: ["Empty"], email: "am790d@att.com", phone: "512-992-9117"};
+	})
 
 	.run(function ($ionicPlatform, $state, $rootScope, $cordovaNetwork, $ionicLoading, $timeout) {
 
@@ -26,6 +29,7 @@ angular.module('myApp', ['ionic',
 				StatusBar.styleDefault();
 			}
 			ionic.Platform.isFullScreen = true;
+
 		});
 		// if user is logged in, then go home. if not, then go to login page
 		Parse.initialize("1HS2UnUaotlFPUBxgUCkaTzdIQOIhwxAvGMmBa4c", "mkOcJeWZU7Wo8LCTypT40pJRZuVrEKIYMIwW8NCl");
@@ -56,6 +60,12 @@ angular.module('myApp', ['ionic',
 				controller: 'AppCtrl'
 			})
 
+			.state('welcome', {
+				url: "/welcome",
+				templateUrl: "templates/welcome.html",
+				controller: 'WelcomeCtrl'
+
+			})
 			.state('login', {
 				url: "/login",
 				templateUrl: "templates/login.html",
