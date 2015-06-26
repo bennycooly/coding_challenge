@@ -35,6 +35,8 @@ angular.module('myApp', ['ionic',
 				$ionicLoading.show({
 					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
 				});
+				// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
+				Parse.User.current().fetch({});
 				$timeout( function() {
 					$state.go('app.home', {}, {reload: true});
 					$ionicLoading.hide();
@@ -67,7 +69,8 @@ angular.module('myApp', ['ionic',
 				url: "/home",
 				views: {
 					'menuContent': {
-						templateUrl: "templates/home.html"
+						templateUrl: "templates/home.html",
+						controller: 'HomeCtrl'
 					}
 				}
 			})
