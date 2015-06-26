@@ -8,26 +8,30 @@
 			<li class="item">
 				<div class="row">
 					<div class="col"><b>ATTUID</b></div>
-					<div class="col">{{user.id}}</div>
+					<div class="col">{{fullName}}</div>
 				</div>
 			</li>
 			<li class="item">
 				<div class="row">
 					<div class="col"><b>Total Hours</b></div>
-					<div class="col">{{user.hours}}</div>
+					<div class="col">{{hours}}</div>
 				</div>
 			</li>
 			<li class="item">
 				<div class="row">
 					<div class="col"><b>Recent Events</b></div>
-					<div class="col">{{user.events}}</div>
+					<div class="col item-text-wrap">
+						<ul style="list-style-type:circle;" ng-repeat="event in recent">
+							<li>{{event}}</li>
+						</ul>
+					</div>
 				</div>
 			</li>
 			<li class="item">
 				<div class="row">
 					<div class="col"><b>Interests</b></div>
 					<div class="col item-text-wrap">
-						<ul style="list-style-type:circle;" ng-repeat="interest in user.interests">
+						<ul style="list-style-type:circle;" ng-repeat="interest in interests">
 							<li>{{interest}}</li>
 						</ul>
 					</div>
@@ -36,13 +40,13 @@
 			<li class="item">
 				<div class="row">
 					<div class="col"><b>Email</b></div>
-					<div class="col"><a href="mailto:am790d@att.com">{{user.email}}</a></div>
+					<div class="col"><a href="mailto:{{email}}">{{email}}</a></div>
 				</div>
 			</li>
 			<li class="item">
 				<div class="row">
 					<div class="col"><b>Phone Number</b></div>
-					<div class="col">{{user.phone}}</div>
+					<div class="col">{{phone}}</div>
 				</div>
 			</li>
 		</ul>

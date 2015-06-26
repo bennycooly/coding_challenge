@@ -3,7 +3,7 @@
         <h1 class="title">Edit Profile</h1>
     </ion-header-bar>
     <ion-content>
-        <h2 style="margin-top:8px;text-align:center;">{{info.name}}</h2>
+        <h2 style="margin-top:8px;text-align:center;">{{fullName}}</h2>
         <form ng-submit="saveProfileChanges()">
             <div class="list">
                 <label class="item item-input">
@@ -16,7 +16,7 @@
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Interests</span>
-                    <input type="text" ng-model="info.interests[0]">
+                    <input type="text" ng-model="info.interests">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Email</span>
