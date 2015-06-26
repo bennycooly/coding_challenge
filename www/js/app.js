@@ -172,6 +172,41 @@ angular.module('myApp', ['ionic',
 						templateUrl: "templates/settings/About.html"
 					}
 				}
+			})
+
+			.state('app.faq1', {
+				url: "/settings/faqs/faq1",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/faqs/faq1.html"
+					}
+				}
+			})
+			.state('app.faq2', {
+				url: "/settings/faqs/faq2",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/faqs/faq2.html"
+					}
+				}
+			})
+			.state('app.faq3', {
+				url: "/settings/faqs/faq3",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/faqs/faq3.html"
+					}
+				}
+			})
+
+
+			.state('app.other', {
+				url: "/settings/faqs/other",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/faqs/other.html"
+					}
+				}
 			});
 
 
