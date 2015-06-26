@@ -7,11 +7,8 @@
 angular.module('myApp', ['ionic',
 	'myApp.controllers',
 	'myApp.directives',
-	'ngCordova'])
-
-	.factory('User', function() {
-		return {name: "Alec Masterson", id: "am790d", pass: "1234", hours: "4", events: "Empty", interests: ["Empty"], email: "am790d@att.com", phone: "512-992-9117"};
-	})
+	'ngCordova',
+	'ngCookies'])
 
 	.run(function ($ionicPlatform, $state, $rootScope, $cordovaNetwork, $ionicLoading, $timeout) {
 
@@ -31,23 +28,23 @@ angular.module('myApp', ['ionic',
 			ionic.Platform.isFullScreen = true;
 			Parse.initialize("1HS2UnUaotlFPUBxgUCkaTzdIQOIhwxAvGMmBa4c", "mkOcJeWZU7Wo8LCTypT40pJRZuVrEKIYMIwW8NCl");
 			$rootScope.sessionUser = Parse.User.current();
-
+			// if user is logged in, then go home. if not, then go to login page
+			if ($rootScope.sessionUser) {
+				$ionicLoading.show({
+					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+				});
+				// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
+				Parse.User.current().fetch({});
+				$timeout( function() {
+					$state.go('app.home', {}, {reload: true});
+					$ionicLoading.hide();
+				}, 1000);
+			}
+			else {
+				$state.go('login', {}, {reload:true});
+			}
 		});
-		// if user is logged in, then go home. if not, then go to login page
-		if ($rootScope.sessionUser) {
-			$ionicLoading.show({
-				template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
-			});
-			// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
-			Parse.User.current().fetch({});
-			$timeout( function() {
-				$state.go('app.home', {}, {reload: true});
-				$ionicLoading.hide();
-			}, 1000);
-		}
-		else {
-			$state.go('login', {}, {reload:true});
-		}
+
 	})
 
 	.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
@@ -60,12 +57,6 @@ angular.module('myApp', ['ionic',
 				controller: 'AppCtrl'
 			})
 
-			.state('welcome', {
-				url: "/welcome",
-				templateUrl: "templates/welcome.html",
-				controller: 'WelcomeCtrl'
-
-			})
 			.state('login', {
 				url: "/login",
 				templateUrl: "templates/login.html",

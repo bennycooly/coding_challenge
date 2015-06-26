@@ -16,7 +16,7 @@ angular.module('myApp.controllers', [])
 
 	})
 
-	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, User, $ionicLoading, $timeout) {
+	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, $ionicLoading, $timeout) {
 
 		// With the new view caching in Ionic, Controllers are only called
 		// when they are recreated or on app start, instead of every page change.
@@ -27,7 +27,6 @@ angular.module('myApp.controllers', [])
 
 		// Form data for the login modal
 		$scope.loginData = {};
-		$scope.user = User;
 
 
 		$scope.login = function() {
@@ -37,7 +36,9 @@ angular.module('myApp.controllers', [])
 			var password = $scope.loginData.password;
 			//check for valid characters
 			if ($scope.checkEmpty(username, password)){
-				$scope.showInvalid();
+				$ionicPopup.alert({
+					title: 'Please enter a valid AT&T UID and/or password'
+				});
 			}
 			//log in to home page
 			else {
@@ -45,9 +46,6 @@ angular.module('myApp.controllers', [])
 				$ionicLoading.show({
 					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
 				});
-				$timeout( function () {
-					$scope.hideLogin();
-				}, 5000);
 				$scope.checkCredentials(username,password);
 			}
 		};
@@ -81,7 +79,9 @@ angular.module('myApp.controllers', [])
 				error: function(user, error) {
 					$scope.clear('password');
 					$scope.hideLogin();
-					$scope.showInvalid();
+					$ionicPopup.alert({
+						title: 'Incorrect ATT UID and/or password. Please try again.'
+					});
 				}
 			});
 		};
@@ -96,19 +96,14 @@ angular.module('myApp.controllers', [])
 			$ionicLoading.hide();
 		};
 
-		$scope.showInvalid = function() {
-			$ionicPopup.alert({
-				title: 'Please enter a valid AT&T UID and/or password'
-			});
-		}
+		$scope.zoom = function() {
 
-	})
+		};
 
-	.controller('WelcomeCtrl', function($state, $timeout, $ionicLoading) {
-		$timeout( function() {
-			$state.go('login', {}, {reload: true});
-			$ionicLoading.hide();
-		}, 1000);
+		$scope.closeKeyboard = function() {
+			var keyboard = cordova.plugins.Keyboard;
+			keyboard.close();
+		};
 	})
 
 	.controller('NewsfeedCtrl', function ($scope) {
@@ -125,24 +120,34 @@ angular.module('myApp.controllers', [])
 	.controller('NewsfeedSingleCtrl', function ($scope, $stateParams) {
 	})
 
-	// This controller handles editting the user's profile
-	.controller('ProfileCtrl', function($scope, $http, User) {
-		$scope.pass = {first: "", second: "", update: false};
-		$scope.user = User;
-		$scope.info = {name: angular.copy(User.name), interests: angular.copy(User.interests), email: angular.copy(User.email), phone: angular.copy(User.phone)};
+	.controller('ProfileCtrl', function($scope) {
+		$scope.fullName = Parse.User.current().get('firstName')+" "+Parse.User.current().get('lastName');
+		$scope.email = Parse.User.current().get('email');
+		$scope.phone = Parse.User.current().get('phone');
+		$scope.interestsString = Parse.User.current().get('interests');
+		$scope.interests = $scope.interestsString.split(", ");
+		$scope.recentString = Parse.User.current().get('recent');
+		$scope.recent = $scope.recentString.split(", ");
+		$scope.hours = Parse.User.current().get('hours');
 
-		// Once you click the save button
+		$scope.pass = {first: "", second: "", update: false};
+		$scope.info = {interests: angular.copy($scope.interestsString), email: angular.copy($scope.email), phone: angular.copy($scope.phone)}
+
 		$scope.saveProfileChanges = function() {
 			if ($scope.pass.first != "" && $scope.pass.first == $scope.pass.second) {
 				$scope.pass.update = true;
-				alert("New Password: "+$scope.pass.first+"\n");
+				Parse.User.current().set("password", $scope.pass.first);
 			}
-			alert("Interests: "+$scope.info.interests+"\nEmail: "+$scope.info.email+"\nPhone: "+$scope.info.phone);
 
-			// Upon successful http call, update $scope.user
+			Parse.User.current().set("interests", $scope.info.interests);
+			Parse.User.current().set("email", $scope.info.email);
+			Parse.User.current().set("phone", $scope.info.phone);
+			Parse.User.current().save();
+			alert("saved");
 
 			$scope.pass = {first: "", second: "", update: false};
 		};
+
 	})
 
 	.controller('HomeCtrl', function($scope) {
