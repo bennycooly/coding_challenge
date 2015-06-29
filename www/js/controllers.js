@@ -152,8 +152,22 @@ angular.module('myApp.controllers', [])
 	})
 
 	.controller('EventCtrl', function($scope) {
-		$scope.info = {name: "", description: ""};
+		$scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: ""};
 		$scope.owner = Parse.User.current().get('username');
+
+		$scope.createEvent = function() {
+			var EventClass = Parse.Object.extend("Event");
+			var event = new EventClass();
+			event.set("owner", $scope.owner);
+			event.set("description", $scope.info.description);
+			event.set("location", $scope.info.location);
+			event.set("date", $scope.info.date);
+			event.set("startTime", $scope.info.startTime);
+			event.set("endTime", $scope.info.endTime);
+			event.save(null,{
+				success:function(person) { alert("Created!") }
+			});
+		};
 	})
 
 	.controller('HomeCtrl', function($scope) {
