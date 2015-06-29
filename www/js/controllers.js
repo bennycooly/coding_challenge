@@ -28,12 +28,12 @@ angular.module('myApp.controllers', [])
 		// Form data for the login modal
 		$scope.loginData = {};
 		$scope.user = User;
-
+		$scope.input = 'username';
 
 		$scope.login = function() {
 			// UNCOMMENT this line when deploying to device. Hides the keyboard on submit
-			// cordova.plugins.Keyboard.close();
-			var username = $scope.loginData.username.toLowerCase();
+			cordova.plugins.Keyboard.close();
+			var username = $scope.loginData.username;
 			var password = $scope.loginData.password;
 			//check for valid characters
 			if ($scope.checkEmpty(username, password)){
@@ -47,9 +47,9 @@ angular.module('myApp.controllers', [])
 				var networkErrorMessage = $timeout( function () {
 					$scope.hideLogin();
 					$scope.showInvalid('Please check your network connection and try again.');
-					$state.go($state.current, {}, {reload: true});
+					$state.go($state.current);
 				}, 10000);
-				$scope.checkCredentials(username, password, networkErrorMessage);
+				$scope.checkCredentials(username.toLowerCase(), password, networkErrorMessage);
 			}
 		};
 
@@ -81,10 +81,10 @@ angular.module('myApp.controllers', [])
 					$scope.hideLogin();
 				},
 				error: function(user, error) {
+					$timeout.cancel(networkErrorMessage);
 					$scope.clear('password');
 					$scope.hideLogin();
 					$scope.showInvalid('Incorrect AT&T UID and/or password. Please check your credentials and try again.');
-					$timeout.cancel(networkErrorMessage);
 				}
 			});
 		};
@@ -100,9 +100,14 @@ angular.module('myApp.controllers', [])
 		};
 
 		$scope.showInvalid = function(message) {
-			$ionicPopup.alert({
+			var alert = $ionicPopup.alert({
 				title: message
 			});
+			$scope.input = '';
+			alert.then(function(res) {
+				$scope.input = 'password';
+				console.log('yes!');
+			})
 		}
 
 	})
