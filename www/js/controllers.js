@@ -33,20 +33,23 @@ angular.module('myApp.controllers', [])
 		$scope.login = function() {
 			// UNCOMMENT this line when deploying to device. Hides the keyboard on submit
 			// cordova.plugins.Keyboard.close();
-			var username = $scope.loginData.username;
+			var username = $scope.loginData.username.toLowerCase();
 			var password = $scope.loginData.password;
 			//check for valid characters
 			if ($scope.checkEmpty(username, password)){
-				$scope.showInvalid();
+				$scope.showInvalid('Please enter a valid AT&T UID and/or password.');
 			}
 			//log in to home page
 			else {
 				console.log('logging in', $scope.loginData);
 				$scope.showLogin();
-				$timeout( function () {
+				//timeout after 10 seconds if server is not responding
+				var networkErrorMessage = $timeout( function () {
 					$scope.hideLogin();
-				}, 5000);
-				$scope.checkCredentials(username,password);
+					$scope.showInvalid('Please check your network connection and try again.');
+					$state.go($state.current, {}, {reload: true});
+				}, 10000);
+				$scope.checkCredentials(username, password, networkErrorMessage);
 			}
 		};
 
@@ -66,9 +69,10 @@ angular.module('myApp.controllers', [])
 		};
 
 		//checks the credentials and logs you in/out
-		$scope.checkCredentials = function(username, password) {
+		$scope.checkCredentials = function(username, password, networkErrorMessage) {
 			Parse.User.logIn(username, password, {
 				success: function(user) {
+					$timeout.cancel(networkErrorMessage);
 					console.log('success!');
 					$rootScope.user = user;
 					$rootScope.isLoggedIn = true;
@@ -79,7 +83,8 @@ angular.module('myApp.controllers', [])
 				error: function(user, error) {
 					$scope.clear('password');
 					$scope.hideLogin();
-					$scope.showInvalid();
+					$scope.showInvalid('Incorrect AT&T UID and/or password. Please check your credentials and try again.');
+					$timeout.cancel(networkErrorMessage);
 				}
 			});
 		};
@@ -94,9 +99,9 @@ angular.module('myApp.controllers', [])
 			$ionicLoading.hide();
 		};
 
-		$scope.showInvalid = function() {
+		$scope.showInvalid = function(message) {
 			$ionicPopup.alert({
-				title: 'Please enter a valid AT&T UID and/or password'
+				title: message
 			});
 		}
 

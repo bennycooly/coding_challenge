@@ -29,25 +29,25 @@ angular.module('myApp', ['ionic',
 				StatusBar.styleDefault();
 			}
 			ionic.Platform.isFullScreen = true;
-
+			// if user is logged in, then go home. if not, then go to login page
+			Parse.initialize("1HS2UnUaotlFPUBxgUCkaTzdIQOIhwxAvGMmBa4c", "mkOcJeWZU7Wo8LCTypT40pJRZuVrEKIYMIwW8NCl");
+			$rootScope.sessionUser = Parse.User.current();
+			if ($rootScope.sessionUser) {
+				$ionicLoading.show({
+					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+				});
+				// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
+				Parse.User.current().fetch({});
+				$timeout( function() {
+					$state.go('app.home', {}, {reload: true});
+					$ionicLoading.hide();
+				}, 1000);
+			}
+			else {
+				$state.go('login', {}, {reload:true});
+			}
 		});
-		// if user is logged in, then go home. if not, then go to login page
-		Parse.initialize("1HS2UnUaotlFPUBxgUCkaTzdIQOIhwxAvGMmBa4c", "mkOcJeWZU7Wo8LCTypT40pJRZuVrEKIYMIwW8NCl");
-		$rootScope.sessionUser = Parse.User.current();
-		if ($rootScope.sessionUser) {
-			$ionicLoading.show({
-				template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
-			});
-			// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
-			Parse.User.current().fetch({});
-			$timeout( function() {
-				$state.go('app.home', {}, {reload: true});
-				$ionicLoading.hide();
-			}, 1000);
-		}
-		else {
-			$state.go('login', {}, {reload:true});
-		}
+
 	})
 
 	.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
