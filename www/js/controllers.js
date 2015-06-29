@@ -25,14 +25,18 @@ angular.module('myApp.controllers', [])
 		//$scope.$on('$ionicView.enter', function(e) {
 		//});
 
+
 		// Form data for the login modal
 		$scope.loginData = {};
 		$scope.user = User;
+
+
+		//focus on username input when login page loads
 		$scope.input = 'username';
 
 		$scope.login = function() {
 			// UNCOMMENT this line when deploying to device. Hides the keyboard on submit
-			cordova.plugins.Keyboard.close();
+			// cordova.plugins.Keyboard.close();
 			var username = $scope.loginData.username;
 			var password = $scope.loginData.password;
 			//check for valid characters
