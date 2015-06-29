@@ -121,6 +121,7 @@ angular.module('myApp.controllers', [])
 	})
 
 	.controller('ProfileCtrl', function($scope) {
+		$scope.id = Parse.User.current().get('username');
 		$scope.fullName = Parse.User.current().get('firstName')+" "+Parse.User.current().get('lastName');
 		$scope.email = Parse.User.current().get('email');
 		$scope.phone = Parse.User.current().get('phone');
@@ -143,11 +144,16 @@ angular.module('myApp.controllers', [])
 			Parse.User.current().set("email", $scope.info.email);
 			Parse.User.current().set("phone", $scope.info.phone);
 			Parse.User.current().save();
-			alert("saved");
+			alert("Saved");
 
 			$scope.pass = {first: "", second: "", update: false};
 		};
 
+	})
+
+	.controller('EventCtrl', function($scope) {
+		$scope.info = {name: "", description: ""};
+		$scope.owner = Parse.User.current().get('username');
 	})
 
 	.controller('HomeCtrl', function($scope) {
