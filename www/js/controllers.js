@@ -25,32 +25,36 @@ angular.module('myApp.controllers', [])
 		//$scope.$on('$ionicView.enter', function(e) {
 		//});
 
+		$scope.init = function() {
+			// Form data for the login modal
+			$scope.loginData = {};
+			$scope.user = User;
 
-		// Form data for the login modal
-		$scope.loginData = {};
-		$scope.user = User;
+			// log in the user automatically if he's already logged on
+			var currentUser = Parse.User.current();
+			if (currentUser) {
+				$ionicLoading.show({
+					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+				});
+				$scope.loginData.username = currentUser.get('username');
+				$scope.loginData.password = 'password';
+				// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
+				Parse.User.current().fetch({});
+				$timeout( function() {
+					$state.go('app.home', {}, {reload: true});
+					$ionicLoading.hide();
+				}, 3000);
+			}
+			// focus on the username if you have to continue to login
+			else {
+				$scope.input = 'username';
+			}
 
-		//if user is already logged in, auto-fill the form
-		/*if (currentUser) {
-			$scope.loginData.username = currentUser.get('username');
-			$scope.loginData.password = 'password';
-			$ionicLoading.show({
-				template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
-			});
-			// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
-			Parse.User.current().fetch({});
-			$timeout( function() {
-				$state.go('app.home', {}, {reload: true});
-				$ionicLoading.hide();
-			}, 1000);
-		}*/
-		$rootScope.$on('autocomplete', function () {
-			$scope.loginData.username = $rootScope.sessionUser.get('username');
-			$scope.loginData.password = 'password';
-		});
+		};
+		$scope.init();
 
 		//focus on username input when login page loads
-		$scope.input = 'username';
+
 
 		$scope.login = function() {
 			// UNCOMMENT this line when deploying to device. Hides the keyboard on submit
