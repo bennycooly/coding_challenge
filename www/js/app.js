@@ -156,6 +156,15 @@ angular.module('myApp', ['ionic',
 				}
 			})
 
+			.state('app.create_event', {
+				url: '/create_event',
+				views: {
+					'menuContent': {
+						templateUrl: "templates/create_event.html"
+					}
+				}
+			})
+
 			.state('app.help_support', {
 				url: "/settings/help_support",
 				views: {

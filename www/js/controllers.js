@@ -138,22 +138,53 @@ angular.module('myApp.controllers', [])
 	})
 
 	// This controller handles editting the user's profile
-	.controller('ProfileCtrl', function($scope, $http, User) {
+	.controller('ProfileCtrl', function($scope) {
+		$scope.id = Parse.User.current().get('username');
+		$scope.fullName = Parse.User.current().get('firstName')+" "+Parse.User.current().get('lastName');
+		$scope.email = Parse.User.current().get('email');
+		$scope.phone = Parse.User.current().get('phone');
+		$scope.interestsString = Parse.User.current().get('interests');
+		$scope.interests = $scope.interestsString.split(", ");
+		$scope.recentString = Parse.User.current().get('recent');
+		$scope.recent = $scope.recentString.split(", ");
+		$scope.hours = Parse.User.current().get('hours');
+
 		$scope.pass = {first: "", second: "", update: false};
-		$scope.user = User;
-		$scope.info = {name: angular.copy(User.name), interests: angular.copy(User.interests), email: angular.copy(User.email), phone: angular.copy(User.phone)};
+		$scope.info = {interests: angular.copy($scope.interestsString), email: angular.copy($scope.email), phone: angular.copy($scope.phone)};
 
 		// Once you click the save button
 		$scope.saveProfileChanges = function() {
 			if ($scope.pass.first != "" && $scope.pass.first == $scope.pass.second) {
 				$scope.pass.update = true;
-				alert("New Password: "+$scope.pass.first+"\n");
+				Parse.User.current().set("password", $scope.pass.first);
 			}
-			alert("Interests: "+$scope.info.interests+"\nEmail: "+$scope.info.email+"\nPhone: "+$scope.info.phone);
 
-			// Upon successful http call, update $scope.user
+			Parse.User.current().set("interests", $scope.info.interests);
+			Parse.User.current().set("email", $scope.info.email);
+			Parse.User.current().set("phone", $scope.info.phone);
+			Parse.User.current().save();
+			alert("Saved");
 
 			$scope.pass = {first: "", second: "", update: false};
+		};
+	})
+
+	.controller('EventCtrl', function($scope) {
+		$scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: ""};
+		$scope.owner = Parse.User.current().get('username');
+
+		$scope.createEvent = function() {
+			var EventClass = Parse.Object.extend("Event");
+			var event = new EventClass();
+			event.set("owner", $scope.owner);
+			event.set("description", $scope.info.description);
+			event.set("location", $scope.info.location);
+			event.set("date", $scope.info.date);
+			event.set("startTime", $scope.info.startTime);
+			event.set("endTime", $scope.info.endTime);
+			event.save(null,{
+				success:function(person) { alert("Created!") }
+			});
 		};
 	})
 
