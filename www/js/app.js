@@ -199,6 +199,60 @@ angular.module('myApp', ['ionic',
 				}
 			})
 
+			.state('app.faq4', {
+				url: "/settings/faqs/faq4",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/faqs/faq4.html"
+					}
+				}
+			})
+
+			.state('app.faq5', {
+				url: "/settings/faqs/faq5",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/faqs/faq5.html"
+					}
+				}
+			})
+
+			.state('app.faq6', {
+				url: "/settings/faqs/faq6",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/faqs/faq6.html"
+					}
+				}
+			})
+
+			.state('app.faq7', {
+				url: "/settings/faqs/faq7",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/faqs/faq7.html"
+					}
+				}
+			})
+
+			.state('app.faq8', {
+				url: "/settings/faqs/faq8",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/faqs/faq8.html"
+					}
+				}
+			})
+
+			.state('app.faq9', {
+				url: "/settings/faqs/faq9",
+				views: {
+					'menuContent': {
+						templateUrl: "templates/settings/faqs/faq9.html"
+					}
+				}
+			})
+
 
 			.state('app.other', {
 				url: "/settings/faqs/other",
