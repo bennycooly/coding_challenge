@@ -19,8 +19,8 @@ angular.module('myApp', ['ionic',
 			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 			// for form inputs)
 			// display network stuff
-			$rootScope.$on('$cordovaNetwork:online', function(event, networkState) {alert('online!');});
-			$rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {alert('offline');});
+			/*$rootScope.$on('$cordovaNetwork:online', function(event, networkState) {alert('online!');});
+			$rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {alert('offline');});*/
 			if (window.cordova && window.cordova.plugins.Keyboard) {
 				cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
 			}

@@ -17,7 +17,7 @@ angular.module('myApp.directives', [])
 							if (ionic.Platform.isAndroid()) {
 								cordova.plugins.Keyboard.show();
 							}
-						});
+						}, 750);
 					}
 					else if (input == 'password') {
 						$timeout(function() {
@@ -27,7 +27,7 @@ angular.module('myApp.directives', [])
 							if (ionic.Platform.isAndroid()) {
 								cordova.plugins.Keyboard.show();
 							}
-						});
+						}, 750);
 					}
 				});
 			}
