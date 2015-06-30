@@ -30,6 +30,24 @@ angular.module('myApp.controllers', [])
 		$scope.loginData = {};
 		$scope.user = User;
 
+		//if user is already logged in, auto-fill the form
+		/*if (currentUser) {
+			$scope.loginData.username = currentUser.get('username');
+			$scope.loginData.password = 'password';
+			$ionicLoading.show({
+				template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+			});
+			// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
+			Parse.User.current().fetch({});
+			$timeout( function() {
+				$state.go('app.home', {}, {reload: true});
+				$ionicLoading.hide();
+			}, 1000);
+		}*/
+		$rootScope.$on('autocomplete', function () {
+			$scope.loginData.username = $rootScope.sessionUser.get('username');
+			$scope.loginData.password = 'password';
+		});
 
 		//focus on username input when login page loads
 		$scope.input = 'username';
@@ -190,4 +208,5 @@ angular.module('myApp.controllers', [])
 
 	.controller('HomeCtrl', function($scope) {
 		$scope.firstName = Parse.User.current().get('firstName');
+
 	});
