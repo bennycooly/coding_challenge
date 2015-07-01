@@ -16,6 +16,16 @@ angular.module('myApp.controllers', [])
 
 	})
 
+	.controller('WelcomeCtrl', function($state, $timeout, $ionicLoading) {
+		var currentUser = Parse.User.current();
+		if (currentUser) {
+			$state.go('login-static');
+		}
+		else {
+			$state.go('login');
+		}
+	})
+
 	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, User, $ionicLoading, $timeout) {
 
 		// With the new view caching in Ionic, Controllers are only called
@@ -136,13 +146,6 @@ angular.module('myApp.controllers', [])
 			})
 		}
 
-	})
-
-	.controller('WelcomeCtrl', function($state, $timeout, $ionicLoading) {
-		$timeout( function() {
-			$state.go('login', {}, {reload: true});
-			$ionicLoading.hide();
-		}, 1000);
 	})
 
 	.controller('NewsfeedCtrl', function ($scope) {

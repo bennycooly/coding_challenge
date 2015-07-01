@@ -33,7 +33,7 @@ angular.module('myApp', ['ionic',
 				$timeout (function () {
 					navigator.splashscreen.hide();
 					console.log('hiding splash screen');
-				}, 500);
+				}, 1000);
 			}
 			// if user is logged in, then go home. if not, then go to login page
 
@@ -60,9 +60,15 @@ angular.module('myApp', ['ionic',
 				controller: 'WelcomeCtrl'
 
 			})
+
 			.state('login', {
 				url: "/login",
 				templateUrl: "templates/login.html",
+				controller: 'LoginCtrl'
+			})
+			.state('login-static', {
+				url: "/login-static",
+				templateUrl: "templates/login_static.html",
 				controller: 'LoginCtrl'
 			})
 
@@ -272,7 +278,7 @@ angular.module('myApp', ['ionic',
 
 
 		// if none of the above states are matched, use this as the fallback
-		$urlRouterProvider.otherwise('/login');
+		$urlRouterProvider.otherwise('/welcome');
 
 		$ionicConfigProvider.views.maxCache(0);
 	});

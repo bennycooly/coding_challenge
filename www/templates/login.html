@@ -1,18 +1,12 @@
 <ion-view view-title="Login" name="login-view" class="show-background">
-	<ion-header-bar class="bar-header">
-		<h1 class="title">CollaborAT&T</h1>
-	</ion-header-bar>
 
 	<ion-content class="item item-list transparent">
-		<!--<div class="row" style="padding-bottom:20px">
-			<img class="full-image" style="height:170px; width:170px;
-	margin-left:auto; margin-right:auto;" src="img/collaborATT.png">
-		</div>-->
 		<div id="login" class="animated fadeInDown">
-			<div class="card" style="max-height:100px; ">
-				<img class="item full-image" style="max-height:100%; max-width:100%;
-	margin-left:auto; margin-right:auto;" src="img/collaborATT.png">
+			<div class="img-responsive" style="margin-top:30px;">
+				<img class="item full-image" style="max-height:175px; width:auto; background-color: transparent; border: none;
+			margin-left:auto; margin-right:auto;" src="img/collaborATT.png">
 			</div>
+
 			<form ng-submit="login()">
 				<div class="list card list-group" focus-me="input">
 					<label class="item item-input">
@@ -24,16 +18,16 @@
 						<input type="password" placeholder="Password" ng-model="loginData.password">
 					</label>
 				</div>
-				<button class="button button-block button-positive login-button-delay animated fadeInUp" type="submit">Sign in</button>
+				<div class="login-button-delay animated fadeInUp">
+					<button class="button button-block button-positive" type="submit">Sign in</button>
+					<p style="font-size: 10px;">
+						Need to reset your password?
+						<a href="#">Click here!</a>
+					</p>
+				</div>
+
 			</form>
 		</div>
-
-
-		<p class="item item-list login-button-delay animated fadeInUp">
-			Need to reset your password?
-			<a href="#">Click here!</a>
-		</p>
-
 	</ion-content>
 
 </ion-view>
