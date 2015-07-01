@@ -10,7 +10,7 @@
     -webkit-animation-delay: 1s;
 }
 
-.login-button-delay {
+#login-button {
     animation-delay: 3s;
     -webkit-animation-delay: 3s;
 }

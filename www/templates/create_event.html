@@ -6,7 +6,7 @@
         <form ng-submit="createEvent()">
             <div class="list">
                 <label class="item item-input">
-                    <span class="input-label">Name</span>
+                    <span class="input-label">Event Title</span>
                     <input type="text" ng-model="info.name">
                 </label>
                 <label class="item item-input">
@@ -29,18 +29,29 @@
                     <span class="input-label">End Time</span>
                     <input type="text" ng-model="info.endTime">
                 </label>
+                <label class="item item-input">
+                    <span class="input-label">URL</span>
+                    <input type="text" ng-model="info.url">
+                </label>
+                <!--
                 <input id="datepicker" type="text" placeholder="Choose A Date">
                 <input id="timepicker" type="text" placeholder="Choose A Time">
-                <label class="item">
+                -->
+                <label class="item item-text-wrap">
+                    <p><strong>NOTE:</strong></p>
+                    <p>URL not required. Please include if there is a website for external registration.</p>
                     <button class="button button-block button-positive" type="submit">Create</button>
+                    <p ng-show="info.error" style="color:red;">Please fill out all the necessary information!</p>
                 </label>
             </div>
         </form>
         <script>
+            /**
             $(document).ready(function () {
                 $('#datepicker').pickadate();
                 $('#timepicker').pickatime();
             });
+            **/
         </script>
 
     </ion-content>
