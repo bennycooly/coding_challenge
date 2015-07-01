@@ -1,8 +1,18 @@
-.login-panel {
+.show-background {
     background: url(../resources/splash.png) no-repeat center center fixed;
     -webkit-background-size: 100%;
     -moz-background-size: 100%;
     background-size: cover;
+}
+
+#login {
+    animation-delay: 1s;
+    -webkit-animation-delay: 1s;
+}
+
+#login-button {
+    animation-delay: 3s;
+    -webkit-animation-delay: 3s;
 }
 
 .transparent {
@@ -10,6 +20,14 @@
     border: none;
     color: white;
     outline: none;
+}
+
+.bar-header {
+    border: 0px !important;
+    border-bottom-color: transparent !important;
+    border-bottom: none;
+    background-color: transparent;
+    background-size: 100% 0px;
 }
 
 #email {

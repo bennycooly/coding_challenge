@@ -29,6 +29,12 @@ angular.module('myApp', ['ionic',
 				StatusBar.styleDefault();
 			}
 			ionic.Platform.isFullScreen = true;
+			if (navigator.splashscreen) {
+				$timeout (function () {
+					navigator.splashscreen.hide();
+					console.log('hiding splash screen');
+				}, 500);
+			}
 			// if user is logged in, then go home. if not, then go to login page
 
 			// $state.go('login');

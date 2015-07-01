@@ -1,5 +1,5 @@
-<ion-view view-title="Login" name="login-view" class="login-panel">
-	<ion-header-bar class="transparent">
+<ion-view view-title="Login" name="login-view" class="show-background">
+	<ion-header-bar class="bar-header">
 		<h1 class="title">CollaborAT&T</h1>
 	</ion-header-bar>
 
@@ -8,19 +8,25 @@
 			<img class="full-image" style="height:170px; width:170px;
 	margin-left:auto; margin-right:auto;" src="img/collaborATT.png">
 		</div>-->
-		<form ng-submit="login()">
-			<div class="list card list-group" focus-me="input">
-				<label class="item item-input">
-					<i class="icon ion-person placeholder-icon"></i>
-					<input id="email" type="text" placeholder="Your AT&T UID" ng-model="loginData.username">
-				</label>
-				<label class="item item-input">
-					<i class="icon ion-locked placeholder-icon"></i>
-					<input type="password" placeholder="Password" ng-model="loginData.password">
-				</label>
+		<div id="login" class="animated fadeInDown">
+			<div class="card" style="">
+				<img class="item full-image" style="max-height:100%; max-width:100%;
+	margin-left:auto; margin-right:auto;" src="img/collaborATT.png">
 			</div>
-			<button class="button button-block button-positive" type="submit">Sign in</button>
-		</form>
+			<form ng-submit="login()">
+				<div class="list card list-group" focus-me="input">
+					<label class="item item-input">
+						<i class="icon ion-person placeholder-icon"></i>
+						<input id="email" type="text" placeholder="Your AT&T UID" ng-model="loginData.username">
+					</label>
+					<label class="item item-input">
+						<i class="icon ion-locked placeholder-icon"></i>
+						<input type="password" placeholder="Password" ng-model="loginData.password">
+					</label>
+				</div>
+			</form>
+		</div>
+		<button id="login-button" class="button button-block button-positive animated fadeInUp" type="submit">Sign in</button>
 
 		<p class="item item-list">
 			Need to reset your password?
