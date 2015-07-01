@@ -29,6 +29,8 @@
                     <span class="input-label">End Time</span>
                     <input type="text" ng-model="info.endTime">
                 </label>
+                <input id="datepicker" type="text" placeholder="Choose A Date">
+                <input id="timepicker" type="text" placeholder="Choose A Time">
                 <label class="item">
                     <button class="button button-block button-positive" type="submit">Create</button>
                 </label>
@@ -36,15 +38,8 @@
         </form>
         <script>
             $(document).ready(function () {
-                $('#datepicker').datepicker({
-                    format: 'mm/dd/yyyy',startDate: '01/01/2015',endDate: '12/31/2016'
-                }).on('changeDate', function(value) {
-                    var date = value.date;
-                    var year = date.getFullYear();
-                    var month = date.getMonth();
-                    var day = date.getDate();
-                    //alert(day+"/"+month+"/"+year);
-                });
+                $('#datepicker').pickadate();
+                $('#timepicker').pickatime();
             });
         </script>
 
