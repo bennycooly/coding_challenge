@@ -19,8 +19,8 @@ angular.module('myApp', ['ionic',
 			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 			// for form inputs)
 			// display network stuff
-			$rootScope.$on('$cordovaNetwork:online', function(event, networkState) {alert('online!');});
-			$rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {alert('offline');});
+			/*$rootScope.$on('$cordovaNetwork:online', function(event, networkState) {alert('online!');});
+			$rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {alert('offline');});*/
 			if (window.cordova && window.cordova.plugins.Keyboard) {
 				cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
 			}
@@ -30,24 +30,11 @@ angular.module('myApp', ['ionic',
 			}
 			ionic.Platform.isFullScreen = true;
 			// if user is logged in, then go home. if not, then go to login page
-			Parse.initialize("1HS2UnUaotlFPUBxgUCkaTzdIQOIhwxAvGMmBa4c", "mkOcJeWZU7Wo8LCTypT40pJRZuVrEKIYMIwW8NCl");
-			$rootScope.sessionUser = Parse.User.current();
-			if ($rootScope.sessionUser) {
-				$ionicLoading.show({
-					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
-				});
-				$rootScope.$broadcast('autocomplete', null);
-				// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
-				Parse.User.current().fetch({});
-				$timeout( function() {
-					$state.go('app.home', {}, {reload: true});
-					$ionicLoading.hide();
-				}, 1000);
-			}
-			else {
-				$state.go('login', {}, {reload:true});
-			}
+
+			// $state.go('login');
 		});
+
+		Parse.initialize("1HS2UnUaotlFPUBxgUCkaTzdIQOIhwxAvGMmBa4c", "mkOcJeWZU7Wo8LCTypT40pJRZuVrEKIYMIwW8NCl");
 
 	})
 

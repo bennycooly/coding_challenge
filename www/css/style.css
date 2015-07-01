@@ -1,0 +1,18 @@
+.login-panel {
+    background: url(../resources/splash.png) no-repeat center center fixed;
+    -webkit-background-size: 100%;
+    -moz-background-size: 100%;
+    background-size: cover;
+}
+
+.transparent {
+    background-color: transparent;
+    border: none;
+    color: white;
+    outline: none;
+}
+
+#email {
+    background-color: transparent;
+}
+
