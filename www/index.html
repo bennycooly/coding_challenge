@@ -6,7 +6,6 @@
     <title></title>
 
     <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="lib/date-picker/bootstrap-datepicker.min.css" rel="stylesheet">
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
@@ -17,13 +16,30 @@
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
 
+    <!-- jquery above all the rest -->
+    <script src="lib/date-picker/jquery-2.1.4.min.js"></script>
+
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
     <script src="lib/parse/parse-1.4.2.js"></script>
     <script src="lib/ng-cordova/dist/ng-cordova.js"></script>
-    <script src="lib/date-picker/jquery-2.1.4.min.js"></script>
-    <script src="lib/date-picker/bootstrap-datepicker.min.js"></script>
     <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- calendar -->
+    <link href="lib/calendar/calendar.min.css" rel="stylesheet">
+    <script src="lib/calendar/underscore-min.js"></script>
+    <script src="lib/calendar/calendar.min.js"></script>
+
+    <!-- Date picker -->
+
+    <script type='application/javascript' src="lib/date-picker/fastclick.js"></script>
+
+    <script src="lib/date-picker/picker.js"></script>
+    <script src="lib/date-picker/picker.date.js"></script>
+    <script src="lib/date-picker/picker.time.js"></script>
+    <link href="lib/date-picker/default.css" rel="stylesheet">
+    <link href="lib/date-picker/default.date.css" rel="stylesheet">
+    <link href="lib/date-picker/default.time.css" rel="stylesheet">
 
 
     <!-- cordova script (this will be a 404 during development) -->
@@ -39,5 +55,12 @@
   <body ng-app="myApp">
     <ion-nav-view></ion-nav-view>
   </body>
+
+  <script>
+    $(document).ready(function () {
+      FastClick.attach(document.body);
+    });
+
+  </script>
 
 </html>
