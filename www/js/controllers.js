@@ -195,10 +195,17 @@ angular.module('myApp.controllers', [])
 	})
 
 	.controller('EventCtrl', function($scope) {
-		$scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: ""};
+		$scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: "", url: "", error: false};
 		$scope.owner = Parse.User.current().get('username');
 
 		$scope.createEvent = function() {
+
+			if ($scope.info.name == "" || $scope.info.description == "" || $scope.info.location == "" || $scope.info.date == "" || $scope.info.startTime == "" || $scope.info.endTime == "") {
+				$scope.info.error = true;
+				return;
+			}
+			$scope.info.error = false;
+
 			var EventClass = Parse.Object.extend("Event");
 			var event = new EventClass();
 			event.set("owner", $scope.owner);
@@ -207,8 +214,9 @@ angular.module('myApp.controllers', [])
 			event.set("date", $scope.info.date);
 			event.set("startTime", $scope.info.startTime);
 			event.set("endTime", $scope.info.endTime);
+			event.set("url", $scope.info.url);
 			event.save(null,{
-				success:function(person) { alert("Created!") }
+				success:function(person) { alert("Created!"); }
 			});
 		};
 	})
