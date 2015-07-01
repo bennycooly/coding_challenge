@@ -13,11 +13,11 @@ angular.module('myApp.directives', [])
 						$timeout(function() {
 							console.log(" adding focus to element");
 							console.log(element.children()[0]);
-							// element.children()[0].focus();
+							element.children()[0].focus();
 							/*if (ionic.Platform.isAndroid()) {
 								cordova.plugins.Keyboard.show();
 							}*/
-						}, 1500);
+						}, 500);
 					}
 					else if (input == 'password') {
 						$timeout(function() {

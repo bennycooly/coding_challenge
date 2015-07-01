@@ -10,19 +10,18 @@ angular.module('myApp.controllers', [])
 			});
 			$timeout( function() {
 				$state.go('login', {}, {reload: true});
-				$ionicLoading.hide();
 			}, 1000);
 		};
 
 	})
 
-	.controller('WelcomeCtrl', function($state, $timeout, $ionicLoading) {
+	.controller('WelcomeCtrl', function($state) {
 		var currentUser = Parse.User.current();
 		if (currentUser) {
-			$state.go('login-static');
+			$state.go('login-static', {}, {reload: true});
 		}
 		else {
-			$state.go('login');
+			$state.go('login', {}, {reload: true});
 		}
 	})
 
@@ -43,21 +42,26 @@ angular.module('myApp.controllers', [])
 			// log in the user automatically if he's already logged on
 			var currentUser = Parse.User.current();
 			if (currentUser) {
-				$ionicLoading.show({
-					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
-				});
+				$timeout( function() {
+					$ionicLoading.show({
+						template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+					});
+				}, 1000);
+
 				$scope.loginData.username = currentUser.get('username');
 				$scope.loginData.password = 'password';
 				// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
 				Parse.User.current().fetch({});
 				$timeout( function() {
 					$state.go('app.home', {}, {reload: true});
-					$ionicLoading.hide();
-				}, 3000);
+				}, 2000);
 			}
-			// focus on the username if you have to continue to login
+			// continue to login page
 			else {
-				$scope.input = 'username';
+				// close logout load if applicable
+				$timeout( function() {
+					$ionicLoading.hide();
+				}, 1000);
 			}
 
 		};
@@ -85,6 +89,7 @@ angular.module('myApp.controllers', [])
 					$scope.showInvalid('Please check your network connection and try again.');
 					$state.go($state.current);
 				}, 10000);
+				//check credentials of login
 				$scope.checkCredentials(username.toLowerCase(), password, networkErrorMessage);
 			}
 		};
@@ -110,11 +115,11 @@ angular.module('myApp.controllers', [])
 				success: function(user) {
 					$timeout.cancel(networkErrorMessage);
 					console.log('success!');
-					$rootScope.user = user;
-					$rootScope.isLoggedIn = true;
+					/*$rootScope.user = user;
+					$rootScope.isLoggedIn = true;*/
 					$scope.clear();
 					$state.go('app.home', {clear: true}, {refresh: true});
-					$scope.hideLogin();
+					//$scope.hideLogin();
 				},
 				error: function(user, error) {
 					$timeout.cancel(networkErrorMessage);
@@ -221,7 +226,10 @@ angular.module('myApp.controllers', [])
 		};
 	})
 
-	.controller('HomeCtrl', function($scope) {
+	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout) {
 		$scope.firstName = Parse.User.current().get('firstName');
+		$timeout( function() {
+			$ionicLoading.hide();
+		}, 1000);
 
 	});
