@@ -18,7 +18,7 @@ angular.module('myApp.controllers', [])
 	.controller('WelcomeCtrl', function($state) {
 		var currentUser = Parse.User.current();
 		if (currentUser) {
-			$state.go('login-static', {}, {reload: true});
+			$state.go('login', {}, {reload: true});
 		}
 		else {
 			$state.go('login', {}, {reload: true});
@@ -43,18 +43,20 @@ angular.module('myApp.controllers', [])
 			var currentUser = Parse.User.current();
 			if (currentUser) {
 				$timeout( function() {
-					$ionicLoading.show({
-						template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
-					});
-				}, 1000);
-
-				$scope.loginData.username = currentUser.get('username');
-				$scope.loginData.password = 'password';
+					$scope.loginData.username = currentUser.get('username');
+					$scope.loginData.password = 'password';
+					$timeout( function() {
+						$ionicLoading.show({
+							template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+						});
+					}, 500);
+					Parse.User.current().fetch({});
+					$timeout( function() {
+						$state.go('app.home', {}, {reload: true});
+					}, 3000);
+				}, 2500);
 				// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
-				Parse.User.current().fetch({});
-				$timeout( function() {
-					$state.go('app.home', {}, {reload: true});
-				}, 2000);
+
 			}
 			// continue to login page
 			else {
@@ -62,6 +64,11 @@ angular.module('myApp.controllers', [])
 				$timeout( function() {
 					$ionicLoading.hide();
 				}, 1000);
+				// focus if needed...don't really need this though
+				/*$timeout( function() {
+					$scope.input = 'username';
+				}, 2900);*/
+				// now proceed to the login page
 			}
 
 		};
@@ -76,8 +83,12 @@ angular.module('myApp.controllers', [])
 			var username = $scope.loginData.username;
 			var password = $scope.loginData.password;
 			//check for valid characters
-			if ($scope.checkEmpty(username, password)){
-				$scope.showInvalid('Please enter a valid AT&T UID and/or password.');
+			var empty = $scope.checkEmpty(username, password);
+			if (empty == 'username'){
+				$scope.showInvalid('Please enter a valid AT&T UID and/or password.', 'username');
+			}
+			else if (empty == 'password'){
+				$scope.showInvalid('Please enter a valid AT&T UID and/or password.', 'password');
 			}
 			//log in to home page
 			else {
@@ -95,10 +106,11 @@ angular.module('myApp.controllers', [])
 		};
 
 		$scope.checkEmpty = function(username, password) {
-			if (username==undefined || password==undefined ||
-				username=="" || password=="") {
-				console.log(username, password);
-				return true;
+			if (username==undefined || username=="") {
+				return 'username';
+			}
+			else if (password==undefined || password=="") {
+				return 'password';
 			}
 			else {return false;}
 		};
@@ -125,7 +137,7 @@ angular.module('myApp.controllers', [])
 					$timeout.cancel(networkErrorMessage);
 					$scope.clear('password');
 					$scope.hideLogin();
-					$scope.showInvalid('Incorrect AT&T UID and/or password. Please check your credentials and try again.');
+					$scope.showInvalid('Incorrect AT&T UID and/or password. Please check your credentials and try again.', 'password');
 				}
 			});
 		};
@@ -140,14 +152,19 @@ angular.module('myApp.controllers', [])
 			$ionicLoading.hide();
 		};
 
-		$scope.showInvalid = function(message) {
+		$scope.showInvalid = function(message, focusKey) {
 			var alert = $ionicPopup.alert({
 				title: message
 			});
 			$scope.input = '';
 			alert.then(function(res) {
-				$scope.input = 'password';
-				console.log('yes!');
+				console.log(focusKey + ' is empty');
+				if (focusKey == 'username') {
+					$scope.input = 'username';
+				}
+				else if (focusKey == 'password') {
+					$scope.input = 'password';
+				}
 			})
 		}
 

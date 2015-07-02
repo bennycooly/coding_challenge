@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
   <name>CollaborAT&amp;T</name>
-  <description>&#xD;
-        Hello World sample application that responds to the deviceready event.&#xD;
+  <description>&#xD;&#xD;
+        Hello World sample application that responds to the deviceready event.&#xD;&#xD;
     </description>
-  <author email="support@phonegap.com" href="http://phonegap.com">&#xD;
-        PhoneGap Team&#xD;
+  <author email="support@phonegap.com" href="http://phonegap.com">&#xD;&#xD;
+        PhoneGap Team&#xD;&#xD;
     </author>
   <content src="index.html"/>
-  <preference name='phonegap-version' value='cli-5.1.1' />
+  <preference name="phonegap-version" value="cli-5.1.1"/>
   <preference name="permissions" value="none"/>
   <preference name="orientation" value="default"/>
   <preference name="target-device" value="universal"/>
@@ -21,11 +21,13 @@
   <preference name="exit-on-suspend" value="false"/>
   <preference name="disable-cursor" value="false"/>
   <preference name="android-minSdkVersion" value="10"/>
-  <preference name="android-targetSdkVersion" value="22" />
+  <preference name="android-targetSdkVersion" value="22"/>
   <preference name="android-installLocation" value="auto"/>
   <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="10000"/>
+  <preference name="SplashMaintainAspectRatio" value="true" />
+  <preference name="FadeSplashScreen" value="false"/>
   <gap:plugin name="org.apache.cordova.battery-status"/>
   <gap:plugin name="org.apache.cordova.camera"/>
   <gap:plugin name="org.apache.cordova.media-capture"/>

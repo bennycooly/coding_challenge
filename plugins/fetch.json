@@ -15,18 +15,18 @@
         "is_top_level": true,
         "variables": {}
     },
-    "org.apache.cordova.splashscreen": {
-        "source": {
-            "type": "registry",
-            "id": "org.apache.cordova.splashscreen"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "com.ionic.keyboard": {
         "source": {
             "type": "registry",
             "id": "com.ionic.keyboard"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-splashscreen": {
+        "source": {
+            "type": "local",
+            "path": "plugins\\cordova-plugin-splashscreen-master"
         },
         "is_top_level": true,
         "variables": {}

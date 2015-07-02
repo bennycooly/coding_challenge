@@ -1,5 +1,5 @@
 .show-background {
-    background: url(../resources/splash.png) no-repeat center center fixed;
+    background: url(../img/splash.png) no-repeat center center fixed;
     -webkit-background-size: 100%;
     -moz-background-size: 100%;
     background-size: cover;
