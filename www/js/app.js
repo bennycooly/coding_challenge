@@ -33,7 +33,7 @@ angular.module('myApp', ['ionic',
 				$timeout (function () {
 					navigator.splashscreen.hide();
 					console.log('hiding splash screen');
-				}, 1000);
+				}, 500);
 			}
 			// if user is logged in, then go home. if not, then go to login page
 
@@ -60,15 +60,9 @@ angular.module('myApp', ['ionic',
 				controller: 'WelcomeCtrl'
 
 			})
-
 			.state('login', {
 				url: "/login",
 				templateUrl: "templates/login.html",
-				controller: 'LoginCtrl'
-			})
-			.state('login-static', {
-				url: "/login-static",
-				templateUrl: "templates/login_static.html",
 				controller: 'LoginCtrl'
 			})
 
@@ -105,17 +99,17 @@ angular.module('myApp', ['ionic',
 				views: {
 					'menuContent': {
 						templateUrl: "templates/newsfeed.html",
-						controller: 'NewsfeedCtrl'
 					}
 				}
 			})
 
 			.state('app.newsfeed_single', {
-				url: "/newsfeed/:newsfeedId",
+				url: "/newsfeed/newsfeed_single",
+				params: {param:null},
 				views: {
 					'menuContent': {
 						templateUrl: "templates/newsfeed_single.html",
-						controller: 'NewsfeedSingleCtrl'
+						controller: 'NewsSingleCtrl'
 					}
 				}
 			})
@@ -161,6 +155,15 @@ angular.module('myApp', ['ionic',
 				views: {
 					'menuContent': {
 						templateUrl: "templates/create_event.html"
+					}
+				}
+			})
+
+			.state('app.event', {
+				url: '/event',
+				views: {
+					'menuContent': {
+						templateUrl: "templates/event.html"
 					}
 				}
 			})
@@ -278,7 +281,7 @@ angular.module('myApp', ['ionic',
 
 
 		// if none of the above states are matched, use this as the fallback
-		$urlRouterProvider.otherwise('/welcome');
+		$urlRouterProvider.otherwise('/login');
 
 		$ionicConfigProvider.views.maxCache(0);
 	});

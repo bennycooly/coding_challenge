@@ -1,0 +1,39 @@
+<ion-view view-title="Event" ng-controller="EventCtrl">
+    <ion-header-bar>
+        <h1 class="title">Event</h1>
+    </ion-header-bar>
+    <ion-content>
+        <h2 style="margin-top:8px;text-align:center;">{{name}}</h2>
+        <ul class="list">
+            <li class="item">
+                <div class="row">
+                    <div class="col"><b>Date</b></div>
+                    <div class="col">{{date}}</div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="row">
+                    <div class="col"><b>Time</b></div>
+                    <div class="col">{{startTime}} - {{endTime}}</div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="row">
+                    <div class="col"><b>Location</b></div>
+                    <div class="col">{{location}}</div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="row">
+                    <div class="col"><b>Description</b></div>
+                    <div class="col">{{description}}</div>
+                </div>
+            </li>
+            <li class="item">
+                <a href="" style="text-decoration:none;">
+                    <button class="button button-block button-positive">Temp</button>
+                </a>
+            </li>
+        </ul>
+    </ion-content>
+</ion-view>

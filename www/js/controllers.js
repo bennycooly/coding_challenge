@@ -10,19 +10,10 @@ angular.module('myApp.controllers', [])
 			});
 			$timeout( function() {
 				$state.go('login', {}, {reload: true});
+				$ionicLoading.hide();
 			}, 1000);
 		};
 
-	})
-
-	.controller('WelcomeCtrl', function($state) {
-		var currentUser = Parse.User.current();
-		if (currentUser) {
-			$state.go('login', {}, {reload: true});
-		}
-		else {
-			$state.go('login', {}, {reload: true});
-		}
 	})
 
 	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, User, $ionicLoading, $timeout) {
@@ -42,33 +33,21 @@ angular.module('myApp.controllers', [])
 			// log in the user automatically if he's already logged on
 			var currentUser = Parse.User.current();
 			if (currentUser) {
-				$timeout( function() {
-					$scope.loginData.username = currentUser.get('username');
-					$scope.loginData.password = 'password';
-					$timeout( function() {
-						$ionicLoading.show({
-							template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
-						});
-					}, 500);
-					Parse.User.current().fetch({});
-					$timeout( function() {
-						$state.go('app.home', {}, {reload: true});
-					}, 3000);
-				}, 2500);
+				$ionicLoading.show({
+					template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+				});
+				$scope.loginData.username = currentUser.get('username');
+				$scope.loginData.password = 'password';
 				// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
-
-			}
-			// continue to login page
-			else {
-				// close logout load if applicable
+				Parse.User.current().fetch({});
 				$timeout( function() {
+					$state.go('app.home', {}, {reload: true});
 					$ionicLoading.hide();
-				}, 1000);
-				// focus if needed...don't really need this though
-				/*$timeout( function() {
-					$scope.input = 'username';
-				}, 2900);*/
-				// now proceed to the login page
+				}, 3000);
+			}
+			// focus on the username if you have to continue to login
+			else {
+				$scope.input = 'username';
 			}
 
 		};
@@ -83,12 +62,8 @@ angular.module('myApp.controllers', [])
 			var username = $scope.loginData.username;
 			var password = $scope.loginData.password;
 			//check for valid characters
-			var empty = $scope.checkEmpty(username, password);
-			if (empty == 'username'){
-				$scope.showInvalid('Please enter a valid AT&T UID and/or password.', 'username');
-			}
-			else if (empty == 'password'){
-				$scope.showInvalid('Please enter a valid AT&T UID and/or password.', 'password');
+			if ($scope.checkEmpty(username, password)){
+				$scope.showInvalid('Please enter a valid AT&T UID and/or password.');
 			}
 			//log in to home page
 			else {
@@ -100,17 +75,15 @@ angular.module('myApp.controllers', [])
 					$scope.showInvalid('Please check your network connection and try again.');
 					$state.go($state.current);
 				}, 10000);
-				//check credentials of login
 				$scope.checkCredentials(username.toLowerCase(), password, networkErrorMessage);
 			}
 		};
 
 		$scope.checkEmpty = function(username, password) {
-			if (username==undefined || username=="") {
-				return 'username';
-			}
-			else if (password==undefined || password=="") {
-				return 'password';
+			if (username==undefined || password==undefined ||
+				username=="" || password=="") {
+				console.log(username, password);
+				return true;
 			}
 			else {return false;}
 		};
@@ -127,17 +100,17 @@ angular.module('myApp.controllers', [])
 				success: function(user) {
 					$timeout.cancel(networkErrorMessage);
 					console.log('success!');
-					/*$rootScope.user = user;
-					$rootScope.isLoggedIn = true;*/
+					$rootScope.user = user;
+					$rootScope.isLoggedIn = true;
 					$scope.clear();
 					$state.go('app.home', {clear: true}, {refresh: true});
-					//$scope.hideLogin();
+					$scope.hideLogin();
 				},
 				error: function(user, error) {
 					$timeout.cancel(networkErrorMessage);
 					$scope.clear('password');
 					$scope.hideLogin();
-					$scope.showInvalid('Incorrect AT&T UID and/or password. Please check your credentials and try again.', 'password');
+					$scope.showInvalid('Incorrect AT&T UID and/or password. Please check your credentials and try again.');
 				}
 			});
 		};
@@ -152,36 +125,24 @@ angular.module('myApp.controllers', [])
 			$ionicLoading.hide();
 		};
 
-		$scope.showInvalid = function(message, focusKey) {
+		$scope.showInvalid = function(message) {
 			var alert = $ionicPopup.alert({
 				title: message
 			});
 			$scope.input = '';
 			alert.then(function(res) {
-				console.log(focusKey + ' is empty');
-				if (focusKey == 'username') {
-					$scope.input = 'username';
-				}
-				else if (focusKey == 'password') {
-					$scope.input = 'password';
-				}
+				$scope.input = 'password';
+				console.log('yes!');
 			})
 		}
 
 	})
 
-	.controller('NewsfeedCtrl', function ($scope) {
-		$scope.newsfeed = [
-			{title: 'Newsfeed 1', id: 1},
-			{title: 'Newsfeed 2', id: 2},
-			{title: 'Newsfeed 3', id: 3},
-			{title: 'Newsfeed 4', id: 4},
-			{title: 'Newsfeed 5', id: 5},
-			{title: 'Newsfeed 6', id: 6}
-		];
-	})
-
-	.controller('NewsfeedSingleCtrl', function ($scope, $stateParams) {
+	.controller('WelcomeCtrl', function($state, $timeout, $ionicLoading) {
+		$timeout( function() {
+			$state.go('login', {}, {reload: true});
+			$ionicLoading.hide();
+		}, 1000);
 	})
 
 	// This controller handles editting the user's profile
@@ -216,9 +177,34 @@ angular.module('myApp.controllers', [])
 		};
 	})
 
-	.controller('EventCtrl', function($scope) {
-		$scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: "", url: "", error: false};
-		$scope.owner = Parse.User.current().get('username');
+	.controller('NewsCtrl', function($scope, $state) {
+
+		$scope.news = [];
+
+		var newsClass = Parse.Object.extend("News");
+		var query = new Parse.Query(newsClass);
+
+		query.find({
+			success: function(results) {
+				for (var i=0; i<results.length; i++) {
+					var newNews = {text: results[i].get("text"), owner: results[i].get("owner"), id: "1"};
+					$scope.news.push(newNews);
+				}
+			}
+		});
+
+		$scope.clicked = function() {
+			$state.go("app.newsfeed_single", {param:{id: "1"}});
+		};
+	})
+
+	.controller('NewsSingleCtrl', function ($scope, $stateParams) {
+		alert($stateParams.param.id);
+	})
+
+	.controller('CreateEventCtrl', function($scope) {
+		$scope.info = {owner: "", name: "", description: "", location: "", date: "", startTime: "", endTime: "", url: "", error: false};
+		$scope.creator = Parse.User.current().get('username');
 
 		$scope.createEvent = function() {
 
@@ -230,7 +216,7 @@ angular.module('myApp.controllers', [])
 
 			var EventClass = Parse.Object.extend("Event");
 			var event = new EventClass();
-			event.set("owner", $scope.owner);
+			event.set("owner", $scope.creator);
 			event.set("description", $scope.info.description);
 			event.set("location", $scope.info.location);
 			event.set("date", $scope.info.date);
@@ -238,15 +224,19 @@ angular.module('myApp.controllers', [])
 			event.set("endTime", $scope.info.endTime);
 			event.set("url", $scope.info.url);
 			event.save(null,{
-				success:function(person) { alert("Created!"); }
+				success:function(result) {
+					alert("Created!");
+					var NewsClass = Parse.Object.extend("News");
+					var news = new NewsClass();
+					news.set("text", "New Event: "+$scope.info.name);
+					news.set("owner", $scope.creator);
+					news.save(null, { success:function(result) { alert("Added to NewsFeed"); }});
+				}
 			});
 		};
 	})
 
-	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout) {
+	.controller('HomeCtrl', function($scope) {
 		$scope.firstName = Parse.User.current().get('firstName');
-		$timeout( function() {
-			$ionicLoading.hide();
-		}, 1000);
 
 	});

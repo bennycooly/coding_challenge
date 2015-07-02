@@ -14,20 +14,20 @@ angular.module('myApp.directives', [])
 							console.log(" adding focus to element");
 							console.log(element.children()[0]);
 							element.children()[0].focus();
-							/*if (ionic.Platform.isAndroid()) {
+							if (ionic.Platform.isAndroid()) {
 								cordova.plugins.Keyboard.show();
-							}*/
-						}, 500);
+							}
+						}, 750);
 					}
 					else if (input == 'password') {
 						$timeout(function() {
 							console.log(" adding focus to element");
 							console.log(element.children()[1]);
 							element.children()[1].focus();
-							/*if (ionic.Platform.isAndroid()) {
+							if (ionic.Platform.isAndroid()) {
 								cordova.plugins.Keyboard.show();
-							}*/
-						}, 500);
+							}
+						}, 750);
 					}
 				});
 			}

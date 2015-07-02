@@ -1,5 +1,5 @@
 .show-background {
-    background: url(../img/splash.png) no-repeat center center fixed;
+    background: url(../resources/splash.png) no-repeat center center fixed;
     -webkit-background-size: 100%;
     -moz-background-size: 100%;
     background-size: cover;
@@ -10,9 +10,9 @@
     -webkit-animation-delay: 1s;
 }
 
-.login-button-delay {
-    animation-delay: 2s;
-    -webkit-animation-delay: 2s;
+#login-button {
+    animation-delay: 3s;
+    -webkit-animation-delay: 3s;
 }
 
 .transparent {
