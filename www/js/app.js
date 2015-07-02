@@ -66,11 +66,6 @@ angular.module('myApp', ['ionic',
 				templateUrl: "templates/login.html",
 				controller: 'LoginCtrl'
 			})
-			.state('login-static', {
-				url: "/login-static",
-				templateUrl: "templates/login_static.html",
-				controller: 'LoginCtrl'
-			})
 
 			.state('app.home', {
 				url: "/home",
@@ -278,7 +273,7 @@ angular.module('myApp', ['ionic',
 
 
 		// if none of the above states are matched, use this as the fallback
-		$urlRouterProvider.otherwise('/welcome');
+		$urlRouterProvider.otherwise('/login');
 
 		$ionicConfigProvider.views.maxCache(0);
 	});

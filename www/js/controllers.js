@@ -16,13 +16,7 @@ angular.module('myApp.controllers', [])
 	})
 
 	.controller('WelcomeCtrl', function($state) {
-		var currentUser = Parse.User.current();
-		if (currentUser) {
-			$state.go('login', {}, {reload: true});
-		}
-		else {
-			$state.go('login', {}, {reload: true});
-		}
+		$state.go('login', {}, {reload: true});
 	})
 
 	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, User, $ionicLoading, $timeout) {
