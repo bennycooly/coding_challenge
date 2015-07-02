@@ -1,8 +1,8 @@
-<ion-view view-title="Newsfeed">
+<ion-view view-title="Newsfeed" ng-controller="NewsCtrl">
 	<ion-content>
 		<ion-list>
-			<ion-item ng-repeat="newsfeed_single in newsfeed" href="#/app/newsfeed/{{newsfeed.id}}">
-				{{newsfeed_single.title}}
+			<ion-item ng-repeat="newsItem in news" ng-click="clicked()">
+				{{newsItem.text}}</br><p>Created by {{newsItem.owner}}</p>
 			</ion-item>
 		</ion-list>
 	</ion-content>

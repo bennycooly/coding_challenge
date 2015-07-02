@@ -164,20 +164,6 @@ angular.module('myApp.controllers', [])
 
 	})
 
-	.controller('NewsfeedCtrl', function ($scope) {
-		$scope.newsfeed = [
-			{title: 'Newsfeed 1', id: 1},
-			{title: 'Newsfeed 2', id: 2},
-			{title: 'Newsfeed 3', id: 3},
-			{title: 'Newsfeed 4', id: 4},
-			{title: 'Newsfeed 5', id: 5},
-			{title: 'Newsfeed 6', id: 6}
-		];
-	})
-
-	.controller('NewsfeedSingleCtrl', function ($scope, $stateParams) {
-	})
-
 	// This controller handles editting the user's profile
 	.controller('ProfileCtrl', function($scope) {
 		$scope.id = Parse.User.current().get('username');
@@ -210,9 +196,34 @@ angular.module('myApp.controllers', [])
 		};
 	})
 
-	.controller('EventCtrl', function($scope) {
-		$scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: "", url: "", error: false};
-		$scope.owner = Parse.User.current().get('username');
+	.controller('NewsCtrl', function($scope, $state) {
+
+		$scope.news = [];
+
+		var newsClass = Parse.Object.extend("News");
+		var query = new Parse.Query(newsClass);
+
+		query.find({
+			success: function(results) {
+				for (var i=0; i<results.length; i++) {
+					var newNews = {text: results[i].get("text"), owner: results[i].get("owner"), id: "1"};
+					$scope.news.push(newNews);
+				}
+			}
+		});
+
+		$scope.clicked = function() {
+			$state.go("app.newsfeed_single", {param:{id: "1"}});
+		};
+	})
+
+	.controller('NewsSingleCtrl', function ($scope, $stateParams) {
+		alert($stateParams.param.id);
+	})
+
+	.controller('CreateEventCtrl', function($scope) {
+		$scope.info = {owner: "", name: "", description: "", location: "", date: "", startTime: "", endTime: "", url: "", error: false};
+		$scope.creator = Parse.User.current().get('username');
 
 		$scope.createEvent = function() {
 
@@ -224,7 +235,7 @@ angular.module('myApp.controllers', [])
 
 			var EventClass = Parse.Object.extend("Event");
 			var event = new EventClass();
-			event.set("owner", $scope.owner);
+			event.set("owner", $scope.creator);
 			event.set("description", $scope.info.description);
 			event.set("location", $scope.info.location);
 			event.set("date", $scope.info.date);
@@ -232,7 +243,14 @@ angular.module('myApp.controllers', [])
 			event.set("endTime", $scope.info.endTime);
 			event.set("url", $scope.info.url);
 			event.save(null,{
-				success:function(person) { alert("Created!"); }
+				success:function(result) {
+					alert("Created!");
+					var NewsClass = Parse.Object.extend("News");
+					var news = new NewsClass();
+					news.set("text", "New Event: "+$scope.info.name);
+					news.set("owner", $scope.creator);
+					news.save(null, { success:function(result) { alert("Added to NewsFeed"); }});
+				}
 			});
 		};
 	})

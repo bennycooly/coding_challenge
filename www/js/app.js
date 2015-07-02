@@ -60,7 +60,6 @@ angular.module('myApp', ['ionic',
 				controller: 'WelcomeCtrl'
 
 			})
-
 			.state('login', {
 				url: "/login",
 				templateUrl: "templates/login.html",
@@ -100,17 +99,17 @@ angular.module('myApp', ['ionic',
 				views: {
 					'menuContent': {
 						templateUrl: "templates/newsfeed.html",
-						controller: 'NewsfeedCtrl'
 					}
 				}
 			})
 
 			.state('app.newsfeed_single', {
-				url: "/newsfeed/:newsfeedId",
+				url: "/newsfeed/newsfeed_single",
+				params: {param:null},
 				views: {
 					'menuContent': {
 						templateUrl: "templates/newsfeed_single.html",
-						controller: 'NewsfeedSingleCtrl'
+						controller: 'NewsSingleCtrl'
 					}
 				}
 			})
@@ -156,6 +155,15 @@ angular.module('myApp', ['ionic',
 				views: {
 					'menuContent': {
 						templateUrl: "templates/create_event.html"
+					}
+				}
+			})
+
+			.state('app.event', {
+				url: '/event',
+				views: {
+					'menuContent': {
+						templateUrl: "templates/event.html"
 					}
 				}
 			})
