@@ -105,7 +105,6 @@ angular.module('myApp', ['ionic',
 
 			.state('app.newsfeed_single', {
 				url: "/newsfeed/newsfeed_single",
-				params: {param:null},
 				views: {
 					'menuContent': {
 						templateUrl: "templates/newsfeed_single.html",
@@ -160,10 +159,12 @@ angular.module('myApp', ['ionic',
 			})
 
 			.state('app.event', {
-				url: '/event',
+				url: '//newsfeed/event',
+				params: {param:null},
 				views: {
 					'menuContent': {
-						templateUrl: "templates/event.html"
+						templateUrl: "templates/event.html",
+						controller: 'EventCtrl'
 					}
 				}
 			})
