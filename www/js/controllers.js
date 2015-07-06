@@ -265,7 +265,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 
 		$scope.select = function(newsItem) {
-			// If the news type is event do the below
 			$state.go("app.event", {param:{id:newsItem.id}});
 		};
 	})
@@ -309,10 +308,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 				}
 			});
 		};
-	});
+	})
 
-<<<<<<< HEAD
-=======
 	.controller('EventCtrl', function($scope, $stateParams) {
 		var query = new Parse.Query("Event");
 		query.get($stateParams.param.id, {
@@ -330,8 +327,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout) {
 		$scope.firstName = Parse.User.current().get('firstName');
-		$timeout( function() {
+		$timeout(function () {
 			$ionicLoading.hide();
 		}, 1000);
->>>>>>> origin/Alec
 
+	});
