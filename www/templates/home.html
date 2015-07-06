@@ -1,26 +1,18 @@
 <ion-view view-title="Home">
 	<ion-content>
-		<ion-slide-box on-slide-changed="slideHasChanged($index)">
-			<ion-slide>
-				<div class="box blue"><h1>BLUE</h1>
-					<h1>Home</h1>
-					<h2>Welcome, <span ng-bind="firstName"></span>!</h2>
-					<label class="item item-input">
-						<span class="input-label">Date</span>
-						<input type="date">
-					</label>
-					<label class="item item-input">
-						<span class="input-label">Month</span>
-						<input type="month">
-					</label></div>
-			</ion-slide>
-			<ion-slide>
-				<div class="box yellow"><h1>YELLOW</h1></div>
-			</ion-slide>
-			<ion-slide>
-				<div class="box pink"><h1>PINK</h1></div>
-			</ion-slide>
-		</ion-slide-box>
+		<h2>Welcome, <span ng-bind="firstName"></span>!</h2>
+		<nav class="circular-menu">
 
+			<div class='circle-container'>
+				<a href='#' class='center ion-log-out'></a>
+				<a href='#' class='deg0 ion-plus-circled'></a>
+				<a href='#' class='deg45 ion-plus-circled'></a>
+				<a href='#' class='deg135 ion-plus-circled'></a>
+				<a href='#' class='deg180 ion-plus-circled'></a>
+				<a href='#' class='deg225 ion-plus-circled'></a>
+				<a href='#' class='deg315 ion-plus-circled'></a>
+			</div>
+
+		</nav>
 	</ion-content>
 </ion-view>

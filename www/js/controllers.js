@@ -1,4 +1,4 @@
-angular.module('myApp.controllers', [])
+angular.module('myApp.controllers', ['myApp.services'])
 
 	.controller('AppCtrl', function ($scope, $state, $ionicLoading, $timeout) {
 
@@ -164,6 +164,45 @@ angular.module('myApp.controllers', [])
 
 	})
 
+	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout, $localStorage, $user, $events) {
+		$scope.init = function() {
+			$user.updateLocalStorage();
+			console.log($user.firstName);
+			var currentEvents = Parse.Object.extend('Event');
+			var query = new Parse.Query('Event');
+			query.find( {
+				success: function (events) {
+					$localStorage.setObject('currentEvents', events);
+				},
+				error: function (error) {
+					alert('Error: ' + error.code + ' ' + error.message);
+				}
+			});
+			var currentEvents = $localStorage.getObject('currentEvents');
+			console.log($events.event1);
+
+			$scope.firstName = $user.firstName;
+			$timeout( function() {
+				$ionicLoading.hide();
+			}, 1000);
+		};
+		$scope.init();
+
+		$scope.toggleMenu = function() {
+			document.querySelector('.menu-button').onclick = function(e) {
+				e.preventDefault();
+				document.querySelector('.circle').classList.toggle('open');
+			};
+			var items = document.querySelectorAll('.circle a');
+			for(var i = 0, l = items.length; i < l; i++) {
+				items[i].style.left = (50 - 35*Math.cos(-0.5 * Math.PI - 2*(1/l)*i*Math.PI)).toFixed(4) + "%";
+				items[i].style.top = (50 + 35*Math.sin(-0.5 * Math.PI - 2*(1/l)*i*Math.PI)).toFixed(4) + "%";
+			}
+		};
+
+
+	})
+
 	// This controller handles editting the user's profile
 	.controller('ProfileCtrl', function($scope) {
 		$scope.id = Parse.User.current().get('username');
@@ -253,12 +292,6 @@ angular.module('myApp.controllers', [])
 				}
 			});
 		};
-	})
-
-	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout) {
-		$scope.firstName = Parse.User.current().get('firstName');
-		$timeout( function() {
-			$ionicLoading.hide();
-		}, 1000);
-
 	});
+
+
