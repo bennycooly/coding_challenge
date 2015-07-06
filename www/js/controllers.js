@@ -185,22 +185,22 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$timeout( function() {
 				$ionicLoading.hide();
 			}, 1000);
+
+			$scope.isActive = false;
 		};
 		$scope.init();
 
-		$scope.toggleMenu = function() {
-			document.querySelector('.menu-button').onclick = function(e) {
-				e.preventDefault();
-				document.querySelector('.circle').classList.toggle('open');
-			};
-			var items = document.querySelectorAll('.circle a');
-			for(var i = 0, l = items.length; i < l; i++) {
+		$scope.toggleMenu = function(event) {
+			var items = angular.element('.circle a');
+			console.log(items);
+			for (var i = 0, l = items.length; i < l; i++) {
 				items[i].style.left = (50 - 35*Math.cos(-0.5 * Math.PI - 2*(1/l)*i*Math.PI)).toFixed(4) + "%";
 				items[i].style.top = (50 + 35*Math.sin(-0.5 * Math.PI - 2*(1/l)*i*Math.PI)).toFixed(4) + "%";
+				console.log(items[i]);
 			}
+			event.preventDefault();
+			$scope.isActive = !$scope.isActive;
 		};
-
-
 	})
 
 	// This controller handles editting the user's profile
@@ -309,10 +309,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 				}
 			});
 		};
-	});
+	})
 
-<<<<<<< HEAD
-=======
 	.controller('EventCtrl', function($scope, $stateParams) {
 		var query = new Parse.Query("Event");
 		query.get($stateParams.param.id, {
@@ -326,12 +324,5 @@ angular.module('myApp.controllers', ['myApp.services'])
 				$scope.$apply();
 			}
 		});
-	})
-
-	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout) {
-		$scope.firstName = Parse.User.current().get('firstName');
-		$timeout( function() {
-			$ionicLoading.hide();
-		}, 1000);
->>>>>>> origin/Alec
+	});
 
