@@ -203,35 +203,39 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	})
 
-	// This controller handles editting the user's profile
-	.controller('ProfileCtrl', function($scope) {
-		$scope.id = Parse.User.current().get('username');
-		$scope.fullName = Parse.User.current().get('firstName')+" "+Parse.User.current().get('lastName');
-		$scope.email = Parse.User.current().get('email');
-		$scope.phone = Parse.User.current().get('phone');
-		$scope.interestsString = Parse.User.current().get('interests');
+	.controller('ProfileCtrl', function($scope, $state) {
+		var currentUser = Parse.User.current();
+
+		$scope.id = currentUser.get('username');
+		$scope.fullName = currentUser.get('firstName')+" "+Parse.User.current().get('lastName');
+		$scope.email = currentUser.get('email');
+		$scope.phone = currentUser.get('phone');
+		$scope.interestsString = currentUser.get('interests');
 		$scope.interests = $scope.interestsString.split(", ");
-		$scope.recentString = Parse.User.current().get('recent');
+		$scope.recentString = currentUser.get('recent');
 		$scope.recent = $scope.recentString.split(", ");
-		$scope.hours = Parse.User.current().get('hours');
+		$scope.hours = currentUser.get('hours');
 
 		$scope.pass = {first: "", second: "", update: false};
-		$scope.info = {interests: angular.copy($scope.interestsString), email: angular.copy($scope.email), phone: angular.copy($scope.phone)};
+		$scope.info = {interests: angular.copy($scope.interestsString), email: angular.copy($scope.email), phone: angular.copy($scope.phone), error: false};
 
-		// Once you click the save button
 		$scope.saveProfileChanges = function() {
 			if ($scope.pass.first != "" && $scope.pass.first == $scope.pass.second) {
 				$scope.pass.update = true;
-				Parse.User.current().set("password", $scope.pass.first);
+				currentUser.set("password", $scope.pass.first);
 			}
 
-			Parse.User.current().set("interests", $scope.info.interests);
-			Parse.User.current().set("email", $scope.info.email);
-			Parse.User.current().set("phone", $scope.info.phone);
-			Parse.User.current().save();
-			alert("Saved");
+			currentUser.set("interests", $scope.info.interests);
+			currentUser.set("email", $scope.info.email);
+			currentUser.set("phone", $scope.info.phone);
+			currentUser.save(null, { success: function(result) { $scope.info.error = false; }, error: function(result) {
+				$scope.info.error = true;
+				return;
+			}});
 
 			$scope.pass = {first: "", second: "", update: false};
+
+			$state.go("app.settings", {}, {refresh: true});
 		};
 	})
 
@@ -260,12 +264,13 @@ angular.module('myApp.controllers', ['myApp.services'])
 					$scope.$apply();
 				}, error: function(results) {
 					$scope.error.show = true;
+					return;
 				}
 			});
 		};
 
 		$scope.select = function(newsItem) {
-			$state.go("app.event", {param:{id:newsItem.id}});
+			if(newsItem.type == "event") $state.go("app.event", {param:{id:newsItem.id}});
 		};
 	})
 
@@ -273,20 +278,23 @@ angular.module('myApp.controllers', ['myApp.services'])
 		//alert($stateParams.param.id);
 	})
 
-	.controller('CreateEventCtrl', function($scope) {
-		$scope.info = {owner: "", name: "", description: "", location: "", date: "", startTime: "", endTime: "", url: "", error: false};
+	.controller('CreateEventCtrl', function($scope, $state) {
+		$scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: "", url: "", error: false};
 		$scope.creator = Parse.User.current().get('username');
 
 		$scope.createEvent = function() {
 
-			if ($scope.info.name == "" || $scope.info.description == "" || $scope.info.location == "" || $scope.info.date == "" || $scope.info.startTime == "" || $scope.info.endTime == "") {
-				$scope.info.error = true;
-				return;
+			for (var key in $scope.info) {
+				if (key != "url" && key != "error" && $scope.info[key] == "") {
+					$scope.info.error = true;
+					return;
+				}
 			}
 			$scope.info.error = false;
 
 			var EventClass = Parse.Object.extend("Event");
 			var event = new EventClass();
+
 			event.set("name", $scope.info.name);
 			event.set("owner", $scope.creator);
 			event.set("description", $scope.info.description);
@@ -295,16 +303,19 @@ angular.module('myApp.controllers', ['myApp.services'])
 			event.set("startTime", $scope.info.startTime);
 			event.set("endTime", $scope.info.endTime);
 			event.set("url", $scope.info.url);
+
 			event.save(null,{
 				success:function(result) {
-					alert("Created!");
 					var NewsClass = Parse.Object.extend("News");
 					var news = new NewsClass();
+
 					news.set("text", "New Event: "+$scope.info.name);
 					news.set("owner", $scope.creator);
 					news.set("type", "event");
 					news.set("eventId", result.id);
-					news.save(null, { success:function(result) { alert("Added to NewsFeed"); }});
+					news.save();
+
+					$state.go("app.profile", {}, {refresh: true});
 				}
 			});
 		};
