@@ -199,26 +199,40 @@ angular.module('myApp.controllers', [])
 	.controller('NewsCtrl', function($scope, $state) {
 
 		$scope.news = [];
+		$scope.newsCopy = {text: "", owner: "", id: "", type: ""};
+		$scope.error = {show: false};
 
-		var newsClass = Parse.Object.extend("News");
-		var query = new Parse.Query(newsClass);
+		$scope.refresh = function() {
+			var newsClass = Parse.Object.extend("News");
+			var query = new Parse.Query(newsClass);
 
-		query.find({
-			success: function(results) {
-				for (var i=0; i<results.length; i++) {
-					var newNews = {text: results[i].get("text"), owner: results[i].get("owner"), id: "1"};
-					$scope.news.push(newNews);
+			query.find({
+				success: function(results) {
+					$scope.news = [];
+					for (var i=0; i<results.length; i++) {
+						var newNews = angular.copy($scope.newsCopy);
+						newNews.text = results[i].get("text");
+						newNews.owner = results[i].get("owner");
+						newNews.id = results[i].get("eventId");
+						newNews.type = results[i].get("type");
+						$scope.news.push(newNews);
+					}
+					$scope.error.show = false;
+					$scope.$apply();
+				}, error: function(results) {
+					$scope.error.show = true;
 				}
-			}
-		});
+			});
+		};
 
-		$scope.clicked = function() {
-			$state.go("app.newsfeed_single", {param:{id: "1"}});
+		$scope.select = function(newsItem) {
+			// If the news type is event do the below
+			$state.go("app.event", {param:{id:newsItem.id}});
 		};
 	})
 
 	.controller('NewsSingleCtrl', function ($scope, $stateParams) {
-		alert($stateParams.param.id);
+		//alert($stateParams.param.id);
 	})
 
 	.controller('CreateEventCtrl', function($scope) {
@@ -235,6 +249,7 @@ angular.module('myApp.controllers', [])
 
 			var EventClass = Parse.Object.extend("Event");
 			var event = new EventClass();
+			event.set("name", $scope.info.name);
 			event.set("owner", $scope.creator);
 			event.set("description", $scope.info.description);
 			event.set("location", $scope.info.location);
@@ -249,10 +264,27 @@ angular.module('myApp.controllers', [])
 					var news = new NewsClass();
 					news.set("text", "New Event: "+$scope.info.name);
 					news.set("owner", $scope.creator);
+					news.set("type", "event");
+					news.set("eventId", result.id);
 					news.save(null, { success:function(result) { alert("Added to NewsFeed"); }});
 				}
 			});
 		};
+	})
+
+	.controller('EventCtrl', function($scope, $stateParams) {
+		var query = new Parse.Query("Event");
+		query.get($stateParams.param.id, {
+			success: function(object) {
+				$scope.name = object.attributes.name;
+				$scope.date = object.attributes.date;
+				$scope.startTime = object.attributes.startTime;
+				$scope.endTime = object.attributes.endTime;
+				$scope.location = object.attributes.location;
+				$scope.description = object.attributes.description;
+				$scope.$apply();
+			}
+		});
 	})
 
 	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout) {

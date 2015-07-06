@@ -1,7 +1,11 @@
 <ion-view view-title="Newsfeed" ng-controller="NewsCtrl">
 	<ion-content>
 		<ion-list>
-			<ion-item ng-repeat="newsItem in news" ng-click="clicked()">
+			<button class="button button-block button-positive" ng-click="refresh()">Refresh - temporary button</button>
+			<label class="item item-text-wrap" ng-show="error.show">
+				<p style="color:red;text-align:center;">Error loading newsfeed!</p>
+			</label>
+			<ion-item ng-repeat="newsItem in news" ng-click="select(newsItem)">
 				{{newsItem.text}}</br><p>Created by {{newsItem.owner}}</p>
 			</ion-item>
 		</ion-list>
