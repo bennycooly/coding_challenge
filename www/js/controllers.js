@@ -322,6 +322,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 	})
 
 	.controller('EventCtrl', function($scope, $stateParams) {
+
+		$scope.signedUp = false;
+
 		var query = new Parse.Query("Event");
 		query.get($stateParams.param.id, {
 			success: function(object) {
@@ -334,6 +337,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 				$scope.$apply();
 			}
 		});
+
+		$scope.signup = function() {
+
+		};
+
 	})
 
 	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout) {
