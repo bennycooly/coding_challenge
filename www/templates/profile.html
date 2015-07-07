@@ -3,57 +3,72 @@
 		<h1 class="title">Profile</h1>
 	</ion-header-bar>
 	<ion-content>
-		<h2 style="margin-top:8px;text-align:center;">{{fullName}}</h2>
-		<ul class="list">
-			<li class="item">
-				<div class="row">
-					<div class="col"><b>ATTUID</b></div>
-					<div class="col">{{id}}</div>
+		<tab-slide-box tab="0">
+			<div class="tsb-icons">
+				<div class="tsb-ic-wrp">
+					<a href="javascript:;" class="ion-person"></a>
+					<a href="javascript:;" class="ion-arrow-graph-up-right"></a>
 				</div>
-			</li>
-			<li class="item">
-				<div class="row">
-					<div class="col"><b>Total Hours</b></div>
-					<div class="col">{{hours}}</div>
-				</div>
-			</li>
-			<li class="item">
-				<div class="row">
-					<div class="col"><b>Recent Events</b></div>
-					<div class="col item-text-wrap">
-						<ul style="list-style-type:circle;" ng-repeat="event in recent">
-							<li>{{event}}</li>
-						</ul>
-					</div>
-				</div>
-			</li>
-			<li class="item">
-				<div class="row">
-					<div class="col"><b>Interests</b></div>
-					<div class="col item-text-wrap">
-						<ul style="list-style-type:circle;" ng-repeat="interest in interests">
-							<li>{{interest}}</li>
-						</ul>
-					</div>
-				</div>
-			</li>
-			<li class="item">
-				<div class="row">
-					<div class="col"><b>Email</b></div>
-					<div class="col"><a href="mailto:{{email}}">{{email}}</a></div>
-				</div>
-			</li>
-			<li class="item">
-				<div class="row">
-					<div class="col"><b>Phone Number</b></div>
-					<div class="col">{{phone}}</div>
-				</div>
-			</li>
-			<li class="item">
-				<a href="#app/create_event" style="text-decoration:none;">
-					<button class="button button-block button-positive">Create Event</button>
-				</a>
-			</li>
-		</ul>
+			</div>
+			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
+				<ion-slide>
+					<h2 style="margin-top:8px;text-align:center;">{{fullName}}</h2>
+					<ul class="list">
+						<li class="item">
+							<div class="row">
+								<div class="col"><b>ATTUID</b></div>
+								<div class="col">{{id}}</div>
+							</div>
+						</li>
+						<li class="item">
+							<div class="row">
+								<div class="col"><b>Total Hours</b></div>
+								<div class="col">{{hours}}</div>
+							</div>
+						</li>
+						<li class="item">
+							<div class="row">
+								<div class="col"><b>Recent Events</b></div>
+								<div class="col item-text-wrap">
+									<ul style="list-style-type:circle;" ng-repeat="event in recent">
+										<li>{{event}}</li>
+									</ul>
+								</div>
+							</div>
+						</li>
+						<li class="item">
+							<div class="row">
+								<div class="col"><b>Interests</b></div>
+								<div class="col item-text-wrap">
+									<ul style="list-style-type:circle;" ng-repeat="interest in interests">
+										<li>{{interest}}</li>
+									</ul>
+								</div>
+							</div>
+						</li>
+						<li class="item">
+							<div class="row">
+								<div class="col"><b>Email</b></div>
+								<div class="col"><a href="mailto:{{email}}">{{email}}</a></div>
+							</div>
+						</li>
+						<li class="item">
+							<div class="row">
+								<div class="col"><b>Phone Number</b></div>
+								<div class="col">{{phone}}</div>
+							</div>
+						</li>
+						<li class="item">
+							<a href="#app/create_event" style="text-decoration:none;">
+								<button class="button button-block button-positive">Create Event</button>
+							</a>
+						</li>
+					</ul>
+				</ion-slide>
+				<ion-slide>
+					<h2 style="margin-top:8px;text-align:center;">Progress</h2>
+				</ion-slide>
+			</ion-slide-box>
+		</tab-slide-box>
 	</ion-content>
 </ion-view>

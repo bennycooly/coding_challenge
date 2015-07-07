@@ -7,7 +7,8 @@
 angular.module('myApp', ['ionic',
 	'myApp.controllers',
 	'myApp.directives',
-	'ngCordova'])
+	'ngCordova',
+	'tabSlideBox'])
 
 	.factory('User', function() {
 		return {name: "Alec Masterson", id: "am790d", pass: "1234", hours: "4", events: "Empty", interests: ["Empty"], email: "am790d@att.com", phone: "512-992-9117"};
@@ -109,15 +110,6 @@ angular.module('myApp', ['ionic',
 					'menuContent': {
 						templateUrl: "templates/newsfeed_single.html",
 						controller: 'NewsSingleCtrl'
-					}
-				}
-			})
-
-			.state('app.progress', {
-				url: "/progress",
-				views: {
-					'menuContent': {
-						templateUrl: "templates/progress.html"
 					}
 				}
 			})
