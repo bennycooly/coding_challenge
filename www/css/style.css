@@ -48,9 +48,12 @@
 }
 
 .circular-menu {
-    width: 250px;
-    height: 250px;
-    margin: 50px auto 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    background-size: cover;
+    top: 0px;
+    left: 0px;
     position: relative;
 }
 
@@ -76,25 +79,8 @@
     -transform: scale(1);
 }
 
-.circle a {
-    text-decoration: none;
-    color: blue;
-    display: inline;
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
-    margin-left: -20px;
-    margin-top: -20px;
-    position: absolute;
-    text-align: center;
-}
-
-.circle a:hover {
-    color: #eef;
-}
-
 .circle strong {
-    color: darkcyan;
+    color: white;
     font-size: 10px;
     width: 50px;
     margin-top: -13px;

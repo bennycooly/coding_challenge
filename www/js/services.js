@@ -13,6 +13,9 @@ angular.module('myApp.services', [])
 			},
 			getObject: function(key) {
 				return JSON.parse($window.localStorage[key] || '{}');
+			},
+			remove: function(key) {
+				$window.localStorage.removeItem(key)
 			}
 		}
 	}])
@@ -27,6 +30,7 @@ angular.module('myApp.services', [])
 			interests: currentUser.interests,
 			hours: currentUser.hours,
 			updateLocalStorage: function() {
+				console.log('updating localstorage from parse');
 				$localStorage.setObject('currentUser', {
 					firstName: Parse.User.current().get('firstName'),
 					lastName: Parse.User.current().get('lastName'),
@@ -38,10 +42,14 @@ angular.module('myApp.services', [])
 			},
 			updateParse: function() {
 				/*Parse.User.current().set('firstName', this.firstName);
-				Parse.User.current().set('lastName', this.lastName);*/
+				 Parse.User.current().set('lastName', this.lastName);*/
 				Parse.User.current().set('email', this.email);
 				Parse.User.current().set('phone', this.phone);
 				Parse.User.current().set('interests', this.interests);
+			},
+			logout: function() {
+				console.log('removing user from local storage');
+				$localStorage.remove('currentUser');
 			}
 		}
 	})

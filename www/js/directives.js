@@ -11,8 +11,6 @@ angular.module('myApp.directives', [])
 				scope.$watch('focusMe', function (input) {
 					if (input == 'username') {
 						$timeout(function() {
-							console.log(" adding focus to element");
-							console.log(element.children()[0]);
 							element.children()[0].focus();
 							/*if (ionic.Platform.isAndroid()) {
 								cordova.plugins.Keyboard.show();
@@ -21,8 +19,6 @@ angular.module('myApp.directives', [])
 					}
 					else if (input == 'password') {
 						$timeout(function() {
-							console.log(" adding focus to element");
-							console.log(element.children()[1]);
 							element.children()[1].focus();
 							/*if (ionic.Platform.isAndroid()) {
 								cordova.plugins.Keyboard.show();

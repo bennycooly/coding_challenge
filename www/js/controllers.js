@@ -1,15 +1,17 @@
 angular.module('myApp.controllers', ['myApp.services'])
 
-	.controller('AppCtrl', function ($scope, $state, $ionicLoading, $timeout) {
+	.controller('AppCtrl', function ($scope, $state, $ionicLoading, $timeout, $user) {
 
 		$scope.logout = function() {
 			console.log('logging out');
+			$user.logout();
+			console.log($user.firstName);
 			Parse.User.logOut();
 			$ionicLoading.show({
 				template: '<p>Logging out...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
 			});
 			$timeout( function() {
-				$state.go('login', {}, {reload: true});
+				$state.go('login', {clear: true}, {reload: true});
 			}, 1000);
 		};
 
@@ -19,7 +21,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$state.go('login', {}, {reload: true});
 	})
 
-	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, User, $ionicLoading, $timeout) {
+	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, $ionicLoading, $timeout, $user) {
 
 		// With the new view caching in Ionic, Controllers are only called
 		// when they are recreated or on app start, instead of every page change.
@@ -27,11 +29,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 		// listen for the $ionicView.enter event:
 		//$scope.$on('$ionicView.enter', function(e) {
 		//});
-
-		$scope.init = function() {
+		$scope.$on('$ionicView.beforeEnter', function() {
 			// Form data for the login modal
 			$scope.loginData = {};
-			$scope.user = User;
 
 			// log in the user automatically if he's already logged on
 			var currentUser = Parse.User.current();
@@ -60,16 +60,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 				}, 1000);
 				// focus if needed...don't really need this though
 				/*$timeout( function() {
-					$scope.input = 'username';
-				}, 2900);*/
+				 $scope.input = 'username';
+				 }, 2900);*/
 				// now proceed to the login page
 			}
-
-		};
-		$scope.init();
-
-		//focus on username input when login page loads
-
+		});
 
 		$scope.login = function() {
 			// UNCOMMENT this line when deploying to device. Hides the keyboard on submit
@@ -120,6 +115,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			Parse.User.logIn(username, password, {
 				success: function(user) {
 					$timeout.cancel(networkErrorMessage);
+					$user.updateLocalStorage();
 					console.log('success!');
 					/*$rootScope.user = user;
 					$rootScope.isLoggedIn = true;*/
@@ -165,9 +161,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 	})
 
 	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout, $localStorage, $user, $events, $ionicBackdrop) {
-		$scope.init = function() {
+		$scope.$on('$ionicView.beforeEnter', function () {
 			$user.updateLocalStorage();
+			var user = $localStorage.getObject('currentUser');
 			console.log($user.firstName);
+			console.log(Parse.User.current().get('firstName'));
 			var currentEvents = Parse.Object.extend('Event');
 			var query = new Parse.Query('Event');
 			query.find( {
@@ -181,7 +179,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			var currentEvents = $localStorage.getObject('currentEvents');
 			console.log($events.event1);
 
-			$scope.firstName = $user.firstName;
+			$scope.firstName = user.firstName;
 			$timeout( function() {
 				$ionicLoading.hide();
 			}, 1000);
@@ -190,8 +188,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.menuOutlinePressed = false;
 			$scope.menuBackgroundPressed = false;
 			$scope.menuIconPressed = false;
-		};
-		$scope.init();
+		});
 
 		$scope.toggleMenu = function(event) {
 			//$ionicBackdrop.retain();
