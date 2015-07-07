@@ -1,196 +1,167 @@
-<ion-view view-title="Volunteer Calendar">
+<ion-view view-title="Calendar">
 	<ion-content>
 		<!DOCTYPE html>
 		<html>
 		<head>
-			<script language="JavaScript">
-				var dDate = new Date();
-				var dCurMonth = dDate.getMonth();
-				var dCurDayOfMonth = dDate.getDate();
-				var dCurYear = dDate.getFullYear();
-				var objPrevElement = new Object();
+			<meta charset="utf-8" />
+			<title>Calendar Widget</title>
 
-				function fToggleColor(myElement) {
-					var toggleColor = "#ff0000";
-					if (myElement.id == "calDateText") {
-						if (myElement.color == toggleColor) {
-							myElement.color = "";
-						} else {
-							myElement.color = toggleColor;
-						}
-					} else if (myElement.id == "calCell") {
-						for (var i in myElement.children) {
-							if (myElement.children[i].id == "calDateText") {
-								if (myElement.children[i].color == toggleColor) {
-									myElement.children[i].color = "";
-								} else {
-									myElement.children[i].color = toggleColor;
-								}
-							}
-						}
-					}
-				}
-				function fSetSelectedDay(myElement){
-					if (myElement.id == "calCell") {
-						if (!isNaN(parseInt(myElement.children["calDateText"].innerText))) {
-							myElement.bgColor = "#c0c0c0";
-							objPrevElement.bgColor = "";
-							document.all.calSelectedDate.value = parseInt(myElement.children["calDateText"].innerText);
-							objPrevElement = myElement;
-						}
-					}
-				}
-				function fGetDaysInMonth(iMonth, iYear) {
-					var dPrevDate = new Date(iYear, iMonth, 0);
-					return dPrevDate.getDate();
-				}
-				function fBuildCal(iYear, iMonth, iDayStyle) {
-					var aMonth = new Array();
-					aMonth[0] = new Array(7);
-					aMonth[1] = new Array(7);
-					aMonth[2] = new Array(7);
-					aMonth[3] = new Array(7);
-					aMonth[4] = new Array(7);
-					aMonth[5] = new Array(7);
-					aMonth[6] = new Array(7);
-					var dCalDate = new Date(iYear, iMonth-1, 1);
-					var iDayOfFirst = dCalDate.getDay();
-					var iDaysInMonth = fGetDaysInMonth(iMonth, iYear);
-					var iVarDate = 1;
-					var i, d, w;
-					if (iDayStyle == 2) {
-						aMonth[0][0] = "Sunday";
-						aMonth[0][1] = "Monday";
-						aMonth[0][2] = "Tuesday";
-						aMonth[0][3] = "Wednesday";
-						aMonth[0][4] = "Thursday";
-						aMonth[0][5] = "Friday";
-						aMonth[0][6] = "Saturday";
-					} else if (iDayStyle == 1) {
-						aMonth[0][0] = "Sun";
-						aMonth[0][1] = "Mon";
-						aMonth[0][2] = "Tue";
-						aMonth[0][3] = "Wed";
-						aMonth[0][4] = "Thu";
-						aMonth[0][5] = "Fri";
-						aMonth[0][6] = "Sat";
-					} else {
-						aMonth[0][0] = "Su";
-						aMonth[0][1] = "Mo";
-						aMonth[0][2] = "Tu";
-						aMonth[0][3] = "We";
-						aMonth[0][4] = "Th";
-						aMonth[0][5] = "Fr";
-						aMonth[0][6] = "Sa";
-					}
-					for (d = iDayOfFirst; d < 7; d++) {
-						aMonth[1][d] = iVarDate;
-						iVarDate++;
-					}
-					for (w = 2; w < 7; w++) {
-						for (d = 0; d < 7; d++) {
-							if (iVarDate <= iDaysInMonth) {
-								aMonth[w][d] = iVarDate;
-								iVarDate++;
-							}
-						}
-					}
-					return aMonth;
-				}
-				function fDrawCal(iYear, iMonth, iCellWidth, iCellHeight, sDateTextSize, sDateTextWeight, iDayStyle) {
-					var myMonth;
-					myMonth = fBuildCal(iYear, iMonth, iDayStyle);
-					document.write("<table border='1'>")
-					document.write("<tr>");
-					document.write("<td align='center'>" + myMonth[0][0] + "</td>");
-					document.write("<td align='center'>" + myMonth[0][1] + "</td>");
-					document.write("<td align='center'>" + myMonth[0][2] + "</td>");
-					document.write("<td align='center'>" + myMonth[0][3] + "</td>");
-					document.write("<td align='center'>" + myMonth[0][4] + "</td>");
-					document.write("<td align='center'>" + myMonth[0][5] + "</td>");
-					document.write("<td align='center'>" + myMonth[0][6] + "</td>");
-					document.write("</tr>");
-					for (w = 1; w < 7; w++) {
-						document.write("<tr>")
-						for (d = 0; d < 7; d++) {
-							document.write("<td align='left' valign='top' width='" + iCellWidth + "' height='" + iCellHeight + "' id=calCell style='CURSOR:Hand' onMouseOver='fToggleColor(this)' onMouseOut='fToggleColor(this)' onclick=fSetSelectedDay(this)>");
-							if (!isNaN(myMonth[w][d])) {
-								document.write("<font id=calDateText onMouseOver='fToggleColor(this)' style='CURSOR:Hand;FONT-FAMILY:Arial;FONT-SIZE:" + sDateTextSize + ";FONT-WEIGHT:" + sDateTextWeight + "' onMouseOut='fToggleColor(this)' onclick=fSetSelectedDay(this)>" + myMonth[w][d] + "</font>");
-							} else {
-								document.write("<font id=calDateText onMouseOver='fToggleColor(this)' style='CURSOR:Hand;FONT-FAMILY:Arial;FONT-SIZE:" + sDateTextSize + ";FONT-WEIGHT:" + sDateTextWeight + "' onMouseOut='fToggleColor(this)' onclick=fSetSelectedDay(this)> </font>");
-							}
-							document.write("</td>")
-						}
-						document.write("</tr>");
-					}
-					document.write("</table>")
-				}
-				function fUpdateCal(iYear, iMonth) {
-					myMonth = fBuildCal(iYear, iMonth);
-					objPrevElement.bgColor = "";
-					document.all.calSelectedDate.value = "";
-					for (w = 1; w < 7; w++) {
-						for (d = 0; d < 7; d++) {
-							if (!isNaN(myMonth[w][d])) {
-								calDateText[((7*w)+d)-7].innerText = myMonth[w][d];
-							} else {
-								calDateText[((7*w)+d)-7].innerText = " ";
-							}
-						}
-					}
-				}
-			</script>
+
+
 		</head>
-		<BODY>
-		<script language="JavaScript" for=window event=onload>
-			var dCurDate = new Date();
-			frmCalendarSample.tbSelMonth.options[dCurDate.getMonth()].selected = true;
-			for (i = 0; i < frmCalendarSample.tbSelYear.length; i++)
-				if (frmCalendarSample.tbSelYear.options[i].value == dCurDate.getFullYear())
-					frmCalendarSample.tbSelYear.options[i].selected = true;
-		</script>
-		<form name="frmCalendarSample" method="post" action="">
-			<input type="hidden" name="calSelectedDate" value="">
-			<table border="1">
-				<tr>
-					<td>
-						<select name="tbSelMonth" onchange='fUpdateCal(frmCalendarSample.tbSelYear.value, frmCalendarSample.tbSelMonth.value)'>
-							<option value="1">January</option>
-							<option value="2">February</option>
-							<option value="3">March</option>
-							<option value="4">April</option>
-							<option value="5">May</option>
-							<option value="6">June</option>
-							<option value="7">July</option>
-							<option value="8">August</option>
-							<option value="9">September</option>
-							<option value="10">October</option>
-							<option value="11">November</option>
-							<option value="12">December</option>
-						</select>
-						<select name="tbSelYear" onchange='fUpdateCal(frmCalendarSample.tbSelYear.value, frmCalendarSample.tbSelMonth.value)'>
-							<option value="2015">2015</option>
-							<option value="2016">2016</option>
-							<option value="2017">2017</option>
-							<option value="2018">2018</option>
-							<option value="2019">2019</option>
-							<option value="2020">2020</option>
-							<option value="2021">2021</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<script language="JavaScript">
-							var dCurDate = new Date();
-							fDrawCal(dCurDate.getFullYear(), dCurDate.getMonth()+1, 30, 30, "12px", "bold", 1);
-						</script>
-					</td>
-				</tr>
-			</table>
-		</form>
-		</BODY>
-		</HTML>
-   </ion-content>
-</ion-view>
 
+		<body>
+
+		<!-- calendar table-->
+
+		<div align="center">
+			<div id="calendar">
+				<div class="header">
+					<a class="button icon-left ion-arrow-left-a button-clear button-dark" id="btnL"></>
+					<a class="button disable-pointer-events button-clear button-dark" id="mnthName"></a> <!-- button for alignment purposes -->
+					<a class="button icon-right ion-arrow-right-a button-clear button-dark" id="btnR"></a>
+				</div>
+
+				<div id="cal-frame">
+					<table id="cal" class="curr">
+						<tbody id="calWeeks">
+						<!-- days of week headers -->
+						<td><div align="center"> Sun </div></td>
+						<td><div align="center"> Mon </div></td>
+						<td><div align="center"> Tue </div></td>
+						<td><div align="center"> Wed </div></td>
+						<td><div align="center"> Thu </div></td>
+						<td><div align="center"> Fri </div></td>
+						<td><div align="center"> Sat </div></td>
+						</tbody>
+
+						<tbody id="calBody">
+						<!-- body of calendar -->
+						<tr><td><a class="button" id="00"></a></td><td><a class="button" id="01"></a></td><td><a class="button" id="02"></a></td><td><a class="button" id="03"></a></td><td><a class="button" id="04"></a></td><td><a class="button" id="05"></a></td><td><a class="button" id="06"></a></td></tr>
+						<tr><td><a class="button" id="10"></a></td><td><a class="button" id="11"></a></td><td><a class="button" id="12"></a></td><td><a class="button" id="13"></a></td><td><a class="button" id="14"></a></td><td><a class="button" id="15"></a></td><td><a class="button" id="16"></a></td></tr>
+						<tr><td><a class="button" id="20"></a></td><td><a class="button" id="21"></a></td><td><a class="button" id="22"></a></td><td><a class="button" id="23"></a></td><td><a class="button" id="24"></a></td><td><a class="button" id="25"></a></td><td><a class="button" id="26"></a></td></tr>
+						<tr><td><a class="button" id="30"></a></td><td><a class="button" id="31"></a></td><td><a class="button" id="32"></a></td><td><a class="button" id="33"></a></td><td><a class="button" id="34"></a></td><td><a class="button" id="35"></a></td><td><a class="button" id="36"></a></td></tr>
+						<tr><td><a class="button" id="40"></a></td><td><a class="button" id="41"></a></td><td><a class="button" id="42"></a></td><td><a class="button" id="43"></a></td><td><a class="button" id="44"></a></td><td><a class="button" id="45"></a></td><td><a class="button" id="46"></a></td></tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+		</div>
+		</body>
+
+
+		<script>
+
+			var date = new Date();
+			var currDay = date.getDate();
+			var currMonth = date.getMonth();
+			var currYear = date.getFullYear();
+
+			//var leapYear;
+
+			var months = ["January","February","March","April","May","June","July","August", "September","October","November","December"];
+
+			<!-- load calendar with current month -->
+			$(document).ready(function(){
+				$("#mnthName").text(months[currMonth] + " " + currYear);
+
+				fillCal(currMonth, currYear);
+
+			});
+
+			<!-- decrement month -->
+			$(document).ready(function(){
+				$("#btnL").click(function(){
+					currMonth--;
+					if(currMonth<0) {
+						currMonth = 11;
+						currYear--;
+					}
+					$("#mnthName").text(months[currMonth] + " " + currYear);
+					fillCal(currMonth, currYear);
+				});
+			});
+
+			<!-- increment month -->
+			$(document).ready(function(){
+				$("#btnR").click(function(){
+					currMonth++;
+					if(currMonth>11) {
+						currMonth = 0;
+						currYear++;
+					}
+					$("#mnthName").text(months[currMonth] + " " + currYear);
+					fillCal(currMonth, currYear);
+				});
+			});
+
+			<!-- fills calendar with days -->
+			function fillCal(mnth, yr) {
+
+				var rowCount = $('#calBody tr').length;
+				if(rowCount>5)
+					$('#cal tr:last').remove();
+
+				var monthDays = [31,28,31,30,31,30,31,31,30,31,30,31];
+				var numDays = monthDays[currMonth];
+
+				//account for leap years
+				if(currMonth==1 && (currYear%4 == 0))
+					numDays++;
+
+				var day = 1;
+				var day1 = new Date(currYear, currMonth, 1);
+				var startDay = day1.getDay();
+
+				for(i = 0; i < 5; i++) {
+					for(j = 0; j < 7; j++) {
+						if(i==0 && j<startDay) {
+							createDefaultBtn(i, j, "");
+						}
+						else if(day<= numDays) {
+							createDefaultBtn(i, j, day);
+							day++;
+						}
+						else {
+							createDefaultBtn(i, j, "");
+						}
+					}
+				}
+
+				if(day<=numDays) {
+					$('#cal tr:last').after('<tr><td><a class="button" id="50"></a></td><td><a class="button" id="51"></a></td><td><a class="button" id="52"></a></td><td><a class="button" id="53"></a></td><td><a class="button" id="54"></a></td><td><a class="button" id="55"></a></td><td><a class="button" id="56"></a></td></tr>');
+					for(j = 0; j<7; j++) {
+						if(day<= numDays) {
+							createDefaultBtn(5, j, day);
+							day++;
+						}
+						else {
+							createDefaultBtn(5, j, "");
+						}
+					}
+				}
+
+				<!-- makes default button -->
+				function createDefaultBtn(iInd, jInd, txt) {
+					$("#" + iInd + jInd).attr({
+						"href" : "",
+						"class" : "button"
+					});
+
+					$("#" + iInd + jInd).text(txt);
+				}
+
+				<!-- will add events to calendar -->
+				function addEvents(iInd, jInd) {
+					$("#" + iInd + jInd).attr({
+						"href" : "",
+						"class" : "button button-positive"
+					});
+				}
+			}
+
+		</script>
+		</html>
+	</ion-content>
+</ion-view>
