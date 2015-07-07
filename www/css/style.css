@@ -1,3 +1,16 @@
+.backdrop {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+    -webkit-background-size: 100%;
+    -moz-background-size: 100%;
+    background-size: cover;
+    background-color: rgba(0,0,0,0.5);
+}
+
 .show-background {
     background: url(../img/splash.png) no-repeat center center fixed;
     -webkit-background-size: 100%;
@@ -93,19 +106,80 @@
 .menu-button {
     position: absolute;
     top: calc(50% - 30px);
-    left: calc(50% - 32px);
-    text-decoration: none;
-    text-align: center;
-    color: blueviolet;
-    border-radius: 50%;
-    display: block;
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
-    padding: 10px;
-    background: transparent;
+    left: calc(50% - 50px);
 }
 
-.menu-button:hover {
-    background-color: #eef;
+.menu-button-background {
+    color: darkgrey;
+    -webkit-transform: rotate(40deg);
+    -moz-transform: rotate(40deg);
+    -ms-transform: rotate(40deg);
+    -o-transform: rotate(40deg);
+    transform: rotate(40deg);
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+
+.menu-button-background-pressed {
+    color: darkgrey;
+    -webkit-transform: translateY(50px) rotate(120deg) scale(2);
+    -moz-transform: translateY(50px) rotate(120deg) scale(2);
+    -ms-transform: translateY(50px) rotate(120deg) scale(2);
+    -o-transform: translateY(50px) rotate(120deg) scale(2);
+    transform: translateY(50px) rotate(120deg) scale(2);
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+
+.menu-button-outline {
+    color: darkslategray;
+    z-index: -100;
+    -webkit-transform: rotate(40deg);
+    -moz-transform: rotate(40deg);
+    -ms-transform: rotate(40deg);
+    -o-transform: rotate(40deg);
+    transform: rotate(40deg);
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+
+.menu-button-outline-pressed {
+    color: darkblue;
+    z-index: -100;
+    -webkit-transform: translateY(50px) rotate(120deg) scale(2);
+    -moz-transform: translateY(50px) rotate(120deg) scale(2);
+    -ms-transform: translateY(50px) rotate(120deg) scale(2);
+    -o-transform: translateY(50px) rotate(120deg) scale(2);
+    transform: translateY(50px) rotate(120deg) scale(2);
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+
+.menu-button-icon {
+    color: white;
+    z-index: 1;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+
+.menu-button-icon-pressed {
+    color: lightblue;
+    z-index: 1;
+    -webkit-transform: translateY(100px);
+    -moz-transform: translateY(50px) rotate(120deg) scale(2);
+    -ms-transform: translateY(50px) rotate(120deg) scale(2);
+    -o-transform: translateY(50px) rotate(120deg) scale(2);
+    transform: translateY(100px);
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+
+.menu-button-text {
+
 }

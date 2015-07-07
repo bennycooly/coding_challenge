@@ -1,11 +1,14 @@
 <ion-view view-title="Home" class="transparent">
 	<ion-content>
 		<h2>Welcome, <span ng-bind="firstName"></span>!</h2>
-		<nav class="circular-menu">
+		<div class="backdrop"></div>
+		<nav class="circular-menu animated fadeIn">
 
 			<div ng-class="{'circle open': isActive, 'circle': !isActive}">
+
 				<a href="" class="fa-stack fa-2x">
-					<i class="fa fa-plus-square fa-stack-1x"></i>
+					<i class="fa fa-circle fa-stack-2x"></i>
+					<i class="fa fa-plus-square fa-stack-1x fa-inverse"></i>
 					<strong class="fa-stack-1x icon-text">Add Event</strong>
 				</a>
 				<a href="" class="fa-stack fa-2x">
@@ -24,8 +27,20 @@
 				</a>
 
 			</div>
-
-			<a href="" class="menu-button fa fa-plus-circle fa-4x" ng-click="toggleMenu($event)"></a>
+			<div class="menu-button">
+				<span class="fa-stack fa-4x" ng-click="toggleMenu($event)">
+					<i class="fa fa-circle fa-stack-2x"
+						ng-class="{'menu-button-background': !menuBackgroundPressed,
+						'menu-button-background-pressed': menuBackgroundPressed}"></i>
+					<i class="fa fa-circle-o-notch fa-stack-2x fa-inverse"
+					   ng-class="{'menu-button-outline': !menuOutlinePressed,
+					'menu-button-outline-pressed': menuOutlinePressed}"></i>
+					<i class="fa fa-user fa-stack-1x fa-inverse"
+					   ng-class="{'menu-button-icon': !menuIconPressed,
+					'menu-button-icon-pressed': menuIconPressed}"></i>
+					<strong class="menu-button-label fa-stack-1x icon-text"></strong>
+				</span>
+			</div>
 
 		</nav>
 	</ion-content>

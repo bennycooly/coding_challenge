@@ -164,7 +164,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	})
 
-	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout, $localStorage, $user, $events) {
+	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout, $localStorage, $user, $events, $ionicBackdrop) {
 		$scope.init = function() {
 			$user.updateLocalStorage();
 			console.log($user.firstName);
@@ -187,10 +187,14 @@ angular.module('myApp.controllers', ['myApp.services'])
 			}, 1000);
 
 			$scope.isActive = false;
+			$scope.menuOutlinePressed = false;
+			$scope.menuBackgroundPressed = false;
+			$scope.menuIconPressed = false;
 		};
 		$scope.init();
 
 		$scope.toggleMenu = function(event) {
+			//$ionicBackdrop.retain();
 			var items = angular.element('.circle a');
 			console.log(items);
 			for (var i = 0, l = items.length; i < l; i++) {
@@ -200,6 +204,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 			}
 			event.preventDefault();
 			$scope.isActive = !$scope.isActive;
+			$scope.menuOutlinePressed = !$scope.menuOutlinePressed;
+			$scope.menuBackgroundPressed = !$scope.menuBackgroundPressed;
+			$scope.menuIconPressed = !$scope.menuIconPressed;
 		};
 	})
 
@@ -344,12 +351,5 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		};
 
-	})
-
-	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout) {
-		$scope.firstName = Parse.User.current().get('firstName');
-		$timeout(function () {
-			$ionicLoading.hide();
-		}, 1000);
 	});
 
