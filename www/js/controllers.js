@@ -344,12 +344,4 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		};
 
-	})
-
-	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout) {
-		$scope.firstName = Parse.User.current().get('firstName');
-		$timeout(function () {
-			$ionicLoading.hide();
-		}, 1000);
 	});
-
