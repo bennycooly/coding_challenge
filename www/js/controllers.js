@@ -244,22 +244,15 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.recent = $scope.recentString.split(", ");
 		$scope.hours = currentUser.get('hours');
 
-		$scope.pass = {first: "", second: "", update: false};
-		$scope.info = {error: false};
+		$scope.info = {firstName: currentUser.get('firstName'), lastName: currentUser.get('lastName'), error: false};
 
 		$scope.saveProfileChanges = function() {
-			if ($scope.pass.first != "" && $scope.pass.first == $scope.pass.second) {
-				$scope.pass.update = true;
-				currentUser.set("password", $scope.pass.first);
-			}
-
+			currentUser.set('firstName', $scope.info.firstName);
+			currentUser.set('lastName', $scope.info.lastName);
 			currentUser.save(null, { success: function(result) { $scope.info.error = false; }, error: function(result) {
 				$scope.info.error = true;
 				return;
 			}});
-
-			$scope.pass = {first: "", second: "", update: false};
-
 			$state.go("app.settings", {}, {refresh: true});
 		};
 	})
@@ -312,13 +305,13 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.creator = Parse.User.current().get('username');
 
 		$scope.inject = function() {
-			$scope.info = { name: 'Youth First Family Dinner Night', description: 'Friday Night Family Dinner at Youth First, a Resource Center Dallas program. LEAGUE at AT&T will be hosting the evening by preparing a simple meal for 20-30 youth, including serving and cleaning-up. Volunteers are needed to help LEAGUE prepare meals.', location: '3918 Harry Hines Blvd. Dallas, TX 75219', date: '42216', startTime: '6:00pm', endTime: '8:00pm', contact: 'Richard Wilson', contactInfo: 'rw2675@att.com', url: '' };
+			$scope.info = { name: 'Youth First Family Dinner Night', description: 'Friday Night Family Dinner at Youth First, a Resource Center Dallas program. LEAGUE at AT&T will be hosting the evening by preparing a simple meal for 20-30 youth, including serving and cleaning-up. Volunteers are needed to help LEAGUE prepare meals.', location: '3918 Harry Hines Blvd. Dallas, TX 75219', date: '07/31/2015', startTime: '6:00pm', endTime: '8:00pm', contact: 'Richard Wilson', contactInfo: 'rw2675@att.com', url: '' };
 			$scope.createEvent(true);
-			$scope.info = { name: 'North Texas Food Bank with AT&T Pioneers', description: 'Sorting, boxing, and/or bagging food in a warehouse environment. Helping the North Texas Food Bank (NTFB) feed hungry people. Volunteers needed.', location: '4500 S. Cockrell Hill Road Dallas, TX 75236', date: '42263', startTime: '1:00pm', endTime: '3:30pm', contact: 'Elisabet Freer', contactInfo: 'ef7394@att.com', url: '' };
+			$scope.info = { name: 'North Texas Food Bank with AT&T Pioneers', description: 'Sorting, boxing, and/or bagging food in a warehouse environment. Helping the North Texas Food Bank (NTFB) feed hungry people. Volunteers needed.', location: '4500 S. Cockrell Hill Road Dallas, TX 75236', date: '09/16/2015', startTime: '1:00pm', endTime: '3:30pm', contact: 'Elisabet Freer', contactInfo: 'ef7394@att.com', url: '' };
 			$scope.createEvent(true);
-			$scope.info = { name: 'Parsons Team Volunteering at Minnie\'s Food Pantry', description: 'Volunteers will assist with inspecting, sorting, and boxing donated food, stocking shelves, and providing red carpet concierge service to our clients.', location: '3033 W. Parker Road, Suite 117 Plano, TX 75023', date: '42207', startTime: '8:00am', endTime: '11:30am', contact: 'Sindoori Murugavel', contactInfo: 'sm786t@att.com', url: '' };
+			$scope.info = { name: 'Parsons Team Volunteering at Minnie\'s Food Pantry', description: 'Volunteers will assist with inspecting, sorting, and boxing donated food, stocking shelves, and providing red carpet concierge service to our clients.', location: '3033 W. Parker Road, Suite 117 Plano, TX 75023', date: '07/22/2015', startTime: '8:00am', endTime: '11:30am', contact: 'Sindoori Murugavel', contactInfo: 'sm786t@att.com', url: '' };
 			$scope.createEvent(true);
-			$scope.info = { name: 'Homeless Veterans Stand Down', description: 'Stand Down is a one day event providing supplies and services to homeless Veterans, such as food, shelter, clothing, health screenings and VA Social Security benefits counseling. Veterans can also receive referrals to other assistance such as health care, housing solutions, employment, substance use treatment and mental health counseling. they are collaborative events, coordinated between local VA Medical Centers, other government agencies and community-based homeless service providers. Volunteers are needed to help provide food, clothing and other services.', location: '4500 S. Lancaster Rd. Dallas, TX 75216', date: '42314', startTime: '7:00am', endTime: '3:00pm', contact: 'Cheryl Nelms', contactInfo: 'cn4113@att.com', url: '' };
+			$scope.info = { name: 'Homeless Veterans Stand Down', description: 'Stand Down is a one day event providing supplies and services to homeless Veterans, such as food, shelter, clothing, health screenings and VA Social Security benefits counseling. Veterans can also receive referrals to other assistance such as health care, housing solutions, employment, substance use treatment and mental health counseling. they are collaborative events, coordinated between local VA Medical Centers, other government agencies and community-based homeless service providers. Volunteers are needed to help provide food, clothing and other services.', location: '4500 S. Lancaster Rd. Dallas, TX 75216', date: '11/06/2015', startTime: '7:00am', endTime: '3:00pm', contact: 'Cheryl Nelms', contactInfo: 'cn4113@att.com', url: '' };
 			$scope.createEvent(true);
 			$scope.info = { name: 'Sleeping Mats for the Homeless', description: 'Project Mission: Pioneers intent is to recycle plastic bags and make them useful by crocheting them into sleeping mats and donate them to local shelters, churches or other like organizations for distribution to the homeless community.', location: 'Contact Danielle for Location', date: 'Contact Danielle for Dates', startTime: '6:00am', endTime: '11:00pm', contact: 'Danielle Carnicom', contactInfo: 'dc1568@att.com', url: '' };
 			$scope.createEvent(true);
@@ -381,6 +374,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 				$scope.startTime = object.attributes.startTime;
 				$scope.endTime = object.attributes.endTime;
 				$scope.location = object.attributes.location;
+				$scope.contact = object.attributes.contact;
+				$scope.contactInfo = object.attributes.contactInfo;
 				$scope.description = object.attributes.description;
 				$scope.$apply();
 			}
