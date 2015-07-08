@@ -163,8 +163,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout, $localStorage, $user, $events, $ionicBackdrop) {
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$user.updateLocalStorage();
-			var user = $localStorage.getObject('currentUser');
-			console.log($user.firstName);
+			var user = $user.get();
+			console.log(user.firstName);
 			console.log(Parse.User.current().get('firstName'));
 			var currentEvents = Parse.Object.extend('Event');
 			var query = new Parse.Query('Event');

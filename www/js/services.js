@@ -23,12 +23,31 @@ angular.module('myApp.services', [])
 	.factory('$user', function($localStorage) {
 		var currentUser = $localStorage.getObject('currentUser');
 		return {
-			firstName: currentUser.firstName,
-			lastName: currentUser.lastName,
-			email: currentUser.email,
-			phone: currentUser.phone,
-			interests: currentUser.interests,
-			hours: currentUser.hours,
+			get: function(key) {
+				currentUser = $localStorage.getObject('currentUser');
+				switch (key) {
+					case 'firstName':
+						return currentUser.firstName;
+						break;
+					case 'lastName':
+						return currentUser.lastName;
+						break;
+					case 'email':
+						return currentUser.email;
+						break;
+					case 'phone':
+						return currentUser.phone;
+						break;
+					case 'interests':
+						return currentUser.interests;
+						break;
+					case 'hours':
+						return currentUser.hours;
+						break;
+					default:
+						return currentUser;
+				}
+			},
 			updateLocalStorage: function() {
 				console.log('updating localstorage from parse');
 				$localStorage.setObject('currentUser', {
@@ -39,6 +58,8 @@ angular.module('myApp.services', [])
 					interests: Parse.User.current().get('interests'),
 					hours: Parse.User.current().get('hours')
 				});
+				currentUser = $localStorage.getObject('currentUser');
+				console.log(currentUser.firstName);
 			},
 			updateParse: function() {
 				/*Parse.User.current().set('firstName', this.firstName);
