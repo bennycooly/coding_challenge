@@ -160,7 +160,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	})
 
-	.controller('HomeCtrl', function($scope, $ionicLoading, $timeout, $localStorage, $user, $events, $ionicBackdrop) {
+	.controller('HomeCtrl', function($scope, $state, $ionicHistory, $ionicLoading, $timeout, $localStorage, $user, $events, $ionicBackdrop) {
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$user.updateLocalStorage();
 			var user = $user.get();
@@ -188,22 +188,50 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.menuOutlinePressed = false;
 			$scope.menuBackgroundPressed = false;
 			$scope.menuIconPressed = false;
+			$scope.menuOpen = false;
+			$scope.menuClicked = false;
 		});
 
 		$scope.toggleMenu = function(event) {
 			//$ionicBackdrop.retain();
 			var items = angular.element('.circle a');
-			console.log(items);
-			for (var i = 0, l = items.length; i < l; i++) {
-				items[i].style.left = (50 - 35*Math.cos(-0.5 * Math.PI - 2*(1/l)*i*Math.PI)).toFixed(4) + "%";
-				items[i].style.top = (50 + 35*Math.sin(-0.5 * Math.PI - 2*(1/l)*i*Math.PI)).toFixed(4) + "%";
-				console.log(items[i]);
-			}
 			event.preventDefault();
 			$scope.isActive = !$scope.isActive;
 			$scope.menuOutlinePressed = !$scope.menuOutlinePressed;
 			$scope.menuBackgroundPressed = !$scope.menuBackgroundPressed;
 			$scope.menuIconPressed = !$scope.menuIconPressed;
+			$scope.menuOpen = !$scope.menuOpen;
+		};
+
+		$scope.menuGo = function(state) {
+			$scope.menuClicked = state;
+			$scope.menuOpen = false;
+			$ionicHistory.nextViewOptions({
+				disableBack: true
+			});
+			switch(state) {
+				case 'profile':
+					$timeout(function() {
+						$state.go('app.profile');
+					}, 500);
+					break;
+				case 'calendar':
+					$timeout(function() {
+						$state.go('app.calendar');
+					}, 500);
+					break;
+				case 'event':
+					$timeout(function() {
+						$state.go('app.create_event');
+					}, 500);
+					break;
+				case 'search':
+					$timeout(function() {
+						$state.go('app.search');
+					}, 500);
+					break;
+			}
+
 		};
 	})
 
