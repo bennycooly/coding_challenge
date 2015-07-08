@@ -188,8 +188,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.menuOutlinePressed = false;
 			$scope.menuBackgroundPressed = false;
 			$scope.menuIconPressed = false;
+			$scope.menuText = false;
 			$scope.menuOpen = false;
 			$scope.menuClicked = false;
+			$scope.showBackdrop = false;
 		});
 
 		$scope.toggleMenu = function(event) {
@@ -200,7 +202,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.menuOutlinePressed = !$scope.menuOutlinePressed;
 			$scope.menuBackgroundPressed = !$scope.menuBackgroundPressed;
 			$scope.menuIconPressed = !$scope.menuIconPressed;
+			$scope.menuText = !$scope.menuText;
 			$scope.menuOpen = !$scope.menuOpen;
+			$scope.showBackdrop = !$scope.showBackdrop;
 		};
 
 		$scope.menuGo = function(state) {
@@ -215,14 +219,19 @@ angular.module('myApp.controllers', ['myApp.services'])
 						$state.go('app.profile');
 					}, 500);
 					break;
-				case 'calendar':
-					$timeout(function() {
-						$state.go('app.calendar');
-					}, 500);
-					break;
 				case 'event':
 					$timeout(function() {
 						$state.go('app.create_event');
+					}, 500);
+					break;
+				case 'newsfeed':
+					$timeout(function() {
+						$state.go('app.newsfeed');
+					}, 500);
+					break;
+				case 'calendar':
+					$timeout(function() {
+						$state.go('app.calendar');
 					}, 500);
 					break;
 				case 'search':
@@ -232,6 +241,16 @@ angular.module('myApp.controllers', ['myApp.services'])
 					break;
 			}
 
+		};
+
+		$scope.menuClose = function() {
+			console.log('clicked');
+			if ($scope.isActive) {$scope.isActive = !$scope.isActive;}
+			if ($scope.menuOutlinePressed) {$scope.menuOutlinePressed = !$scope.menuOutlinePressed;}
+			if ($scope.menuBackgroundPressed) {$scope.menuBackgroundPressed = !$scope.menuBackgroundPressed;}
+			if ($scope.menuIconPressed) {$scope.menuIconPressed = !$scope.menuIconPressed;}
+			if ($scope.menuOpen) {$scope.menuOpen = !$scope.menuOpen;}
+			if ($scope.showBackdrop) {$scope.showBackdrop = !$scope.showBackdrop;}
 		};
 	})
 

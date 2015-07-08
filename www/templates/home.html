@@ -1,19 +1,19 @@
 <ion-view view-title="Home" class="transparent">
-	<ion-content>
+	<ion-content ng-class="{'circle-menu': !showBackdrop, 'circle-menu-backdrop': showBackdrop}">
+		<div class="menu-backdrop" ng-click="menuClose()"></div>
 		<h2>Welcome, <span ng-bind="firstName"></span>!</h2>
-		<div class="backdrop"></div>
 		<nav class="menu-button">
 			<span class="fa-stack fa-4x" ng-click="toggleMenu($event)">
 				<i class="fa fa-circle fa-stack-2x"
-					ng-class="{'menu-button-background': !menuBackgroundPressed,
+				   ng-class="{'menu-button-background': !menuBackgroundPressed,
 					'menu-button-background-pressed': menuBackgroundPressed}"></i>
 				<i class="fa fa-circle-o-notch fa-stack-2x fa-inverse"
 				   ng-class="{'menu-button-outline': !menuOutlinePressed,
 				'menu-button-outline-pressed': menuOutlinePressed}"></i>
-				<i class="fa fa-user fa-stack-1x fa-inverse"
+				<i class="fa fa-power-off fa-stack-1x fa-inverse"
 				   ng-class="{'menu-button-icon': !menuIconPressed,
 				'menu-button-icon-pressed': menuIconPressed}"></i>
-				<strong class="menu-button-label fa-stack-1x icon-text"></strong>
+				<strong class="fa-stack-1x icon-text" ng-class="{'menu-button-text': !menuText, 'menu-button-text-pressed': menuText}">Menu</strong>
 			</span>
 			<div class="circle">
 				<span class="fa-stack fa-2x" ng-class="{'home-profile': !menuOpen, 'home-profile-pressed': menuOpen, 'menu-clicked': menuClicked == 'profile'}" ng-click="menuGo('profile')">
@@ -21,15 +21,20 @@
 					<i class="fa fa-user fa-stack-1x"></i>
 					<strong class="fa-stack-1x icon-text">Profile</strong>
 				</span>
-				<span class="fa-stack fa-2x" ng-class="{'home-calendar': !menuOpen, 'home-calendar-pressed': menuOpen, 'menu-clicked': menuClicked == 'calendar'}" ng-click="menuGo('calendar')">
-					<i class="fa fa-circle fa-stack-2x circle-calendar"></i>
-					<i class="fa fa-calendar fa-stack-1x"></i>
-					<strong class="fa-stack-1x icon-text">Calendar</strong>
-				</span>
 				<span class="fa-stack fa-2x" ng-class="{'home-event': !menuOpen, 'home-event-pressed': menuOpen, 'menu-clicked': menuClicked == 'event'}" ng-click="menuGo('event')">
 					<i class="fa fa-circle fa-stack-2x circle-event"></i>
 					<i class="fa fa-plus-square fa-stack-1x"></i>
 					<strong class="fa-stack-1x icon-text">Add Event</strong>
+				</span>
+				<span class="fa-stack fa-2x" ng-class="{'home-newsfeed': !menuOpen, 'home-newsfeed-pressed': menuOpen, 'menu-clicked': menuClicked == 'newsfeed'}" ng-click="menuGo('newsfeed')">
+					<i class="fa fa-circle fa-stack-2x circle-newsfeed"></i>
+					<i class="fa fa-list-alt fa-stack-1x"></i>
+					<strong class="fa-stack-1x icon-text">Newsfeed</strong>
+				</span>
+				<span class="fa-stack fa-2x" ng-class="{'home-calendar': !menuOpen, 'home-calendar-pressed': menuOpen, 'menu-clicked': menuClicked == 'calendar'}" ng-click="menuGo('calendar')">
+					<i class="fa fa-circle fa-stack-2x circle-calendar"></i>
+					<i class="fa fa-calendar fa-stack-1x"></i>
+					<strong class="fa-stack-1x icon-text">Calendar</strong>
 				</span>
 				<span class="fa-stack fa-2x " ng-class="{'home-search': !menuOpen, 'home-search-pressed': menuOpen, 'menu-clicked': menuClicked == 'search'}" ng-click="menuGo('search')">
 					<i class="fa fa-circle fa-stack-2x circle-search"></i>
@@ -38,5 +43,7 @@
 				</span>
 			</div>
 		</nav>
+
+
 	</ion-content>
 </ion-view>
