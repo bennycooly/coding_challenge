@@ -3,16 +3,15 @@
         <h1 class="title">Edit Profile</h1>
     </ion-header-bar>
     <ion-content>
-        <h2 style="margin-top:8px;text-align:center;">{{fullName}}</h2>
         <form ng-submit="saveProfileChanges()">
             <div class="list">
                 <label class="item item-input">
-                    <span class="input-label">Password</span>
-                    <input type="password" ng-model="pass.first">
+                    <span class="input-label">First Name</span>
+                    <input type="text" ng-model="info.firstName">
                 </label>
                 <label class="item item-input">
-                    <span class="input-label">Confirm Password</span>
-                    <input type="password" ng-model="pass.second">
+                    <span class="input-label">Last Name</span>
+                    <input type="text" ng-model="info.lastName">
                 </label>
                 <label class="item">
                     <button class="button button-block button-positive" type="submit">Save</button>
