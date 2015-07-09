@@ -261,9 +261,31 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.id = currentUser.get('username');
 		$scope.fullName = currentUser.get('firstName')+" "+Parse.User.current().get('lastName');
-		$scope.recentString = currentUser.get('recent');
-		$scope.recent = $scope.recentString.split(", ");
+		$scope.eventsString = currentUser.get('events');
+		if($scope.eventsString !== undefined) $scope.events = $scope.eventsString.split(", ");
+		else $scope.events = [];
 		$scope.hours = currentUser.get('hours');
+
+		$scope.upcoming = [];
+		$scope.currentDate = new Date();
+		if ($scope.events.length != 0) {
+			for (var i=0; i<$scope.events.length; i++) {
+				var query = new Parse.Query("Event");
+				query.get($scope.events[i], {
+					success: function(object) {
+						var date = object.attributes.date;
+						var month = parseInt(date.split("/")[0]);
+						var day = parseInt(date.split("/")[1]);
+						var year = parseInt(date.split("/")[2]);
+						if (year >= $scope.currentDate.getYear() && month >= $scope.currentDate.getMonth() && $scope.currentDate.getDate()) {
+							var upcomingEvent = {id: $scope.events[$scope.events.indexOf(object.id)]};
+							$scope.upcoming.push(upcomingEvent);
+						}
+						$scope.$apply();
+					}
+				});
+			}
+		}
 
 		$scope.info = {firstName: currentUser.get('firstName'), lastName: currentUser.get('lastName'), error: false};
 
@@ -402,8 +424,27 @@ angular.module('myApp.controllers', ['myApp.services'])
 			}
 		});
 
-		$scope.signup = function() {
+		$scope.signUp = function() {
+			var currentUser = Parse.User.current();
+			var events = currentUser.get("events");
+			//var things = events+", "+$stateParams.param.id;
+			//alert(things);
+			return;
+			currentUser.set("events", things);
+			event.save(null,{
+				success: function(result) {
+					var NewsClass = Parse.Object.extend("News");
+					var news = new NewsClass();
 
+					news.set("text", "New Event: "+result.attributes.name);
+					news.set("owner", $scope.creator);
+					news.set("type", "event");
+					news.set("eventId", result.id);
+					news.save();
+
+					if(!injected) $state.go("app.profile", {}, {refresh: true});
+				}
+			});
 		};
 
 	});
