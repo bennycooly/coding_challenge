@@ -212,48 +212,42 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.menuGo = function(state) {
 			$scope.menuClicked = state;
-			$scope.menuOpen = false;
+			/*$scope.menuOpen = false;*/
 			$ionicHistory.nextViewOptions({
 				disableBack: true
 			});
-			switch(state) {
-				case 'profile':
-					$timeout(function() {
+			$timeout(function() {
+				switch(state) {
+					case 'profile':
 						$state.go('app.profile');
-					}, 500);
-					break;
-				case 'event':
-					$timeout(function() {
+						break;
+					case 'event':
 						$state.go('app.create_event');
-					}, 500);
-					break;
-				case 'newsfeed':
-					$timeout(function() {
+						break;
+					case 'newsfeed':
 						$state.go('app.newsfeed');
-					}, 500);
-					break;
-				case 'calendar':
-					$timeout(function() {
+						break;
+					case 'calendar':
 						$state.go('app.calendar');
-					}, 500);
-					break;
-				case 'search':
-					$timeout(function() {
+						break;
+					case 'search':
 						$state.go('app.search');
-					}, 500);
-					break;
-			}
+						break;
+				}
+			}, 300);
 
 		};
-
+		//close the menu if it's open
 		$scope.menuClose = function() {
 			console.log('clicked');
-			if ($scope.isActive) {$scope.isActive = !$scope.isActive;}
-			if ($scope.menuOutlinePressed) {$scope.menuOutlinePressed = !$scope.menuOutlinePressed;}
+			if ($scope.isActive) {$scope.toggleMenu(event);}
+			/*if ($scope.menuOutlinePressed) {$scope.menuOutlinePressed = !$scope.menuOutlinePressed;}
 			if ($scope.menuBackgroundPressed) {$scope.menuBackgroundPressed = !$scope.menuBackgroundPressed;}
 			if ($scope.menuIconPressed) {$scope.menuIconPressed = !$scope.menuIconPressed;}
+			if ($scope.menuText) {$scope.menuText = !$scope.menuText;}
 			if ($scope.menuOpen) {$scope.menuOpen = !$scope.menuOpen;}
-			if ($scope.showBackdrop) {$scope.showBackdrop = !$scope.showBackdrop;}
+			if ($scope.menuAnimate) {$scope.menuAnimate = !$scope.menuAnimate;}
+			if ($scope.showBackdrop) {$scope.showBackdrop = !$scope.showBackdrop;}*/
 		};
 	})
 

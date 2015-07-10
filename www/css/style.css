@@ -6,6 +6,7 @@
 
 .circle-menu {
     position: fixed;
+    opacity: 0;
     visibility: hidden;
     height: 100%;
     width: 100%;
@@ -297,7 +298,7 @@
 }
 
 .menu-clicked {
-    animation: rotateOut 1s !important;
+    animation: rotateOut 1s; !important;
 }
 
 .menu-animate {

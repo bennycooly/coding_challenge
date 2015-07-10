@@ -1,6 +1,6 @@
 <ion-view view-title="Home">
 	<ion-content class="transparent">
-		<div class="circle-menu" ng-class="{'show-backdrop': showBackdrop}"></div>
+		<div class="circle-menu" ng-class="{'show-backdrop': showBackdrop}" ng-click="menuClose()"></div>
 		<h2>Welcome, <span ng-bind="firstName"></span>!</h2>
 		<nav class="menu-button">
 			<span class="fa-stack fa-4x" ng-click="toggleMenu($event)">
