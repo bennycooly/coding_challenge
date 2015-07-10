@@ -273,7 +273,7 @@ angular.module('myApp', ['ionic',
 		// if none of the above states are matched, use this as the fallback
 		$urlRouterProvider.otherwise('/login');
 
-		$ionicConfigProvider.views.maxCache(0);
+		//$ionicConfigProvider.views.maxCache(0);
 		$ionicConfigProvider.tabs.position('bottom');
 	});
 

@@ -1,6 +1,6 @@
 angular.module('myApp.controllers', ['myApp.services'])
 
-	.controller('AppCtrl', function ($scope, $state, $ionicLoading, $timeout, $user) {
+	.controller('AppCtrl', function ($scope, $state, $ionicLoading, $timeout, $user, $ionicHistory) {
 
 		$scope.logout = function() {
 			console.log('logging out');
@@ -8,7 +8,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 			console.log($user.firstName);
 			Parse.User.logOut();
 			$ionicLoading.show({
-				template: '<p>Logging out...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+				template: '<p>Logging out...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
+				animation: 'fade-in'
 			});
 			$timeout( function() {
 				$state.go('login', {clear: true}, {reload: true});
@@ -41,7 +42,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 					$scope.loginData.password = 'password';
 					$timeout( function() {
 						$ionicLoading.show({
-							template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+							template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
+							animation: 'fade-in'
 						});
 					}, 500);
 					Parse.User.current().fetch({});
@@ -136,7 +138,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.showLogin = function() {
 			$ionicLoading.show({
-				template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+				template: '<p>Logging in...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
+				animation: 'fade-in'
 			});
 		};
 
@@ -164,6 +167,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	.controller('HomeCtrl', function($scope, $state, $ionicHistory, $ionicLoading, $timeout, $localStorage, $user, $events, $ionicBackdrop) {
 		$scope.$on('$ionicView.beforeEnter', function () {
+			$scope.loadingHome = $ionicLoading.show({
+				template: '<p>Loading...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+			});
+
 			$user.updateLocalStorage();
 			var user = $user.get();
 			console.log(user.firstName);
@@ -182,6 +189,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			console.log($events.event1);
 
 			$scope.firstName = user.firstName;
+
 			$timeout( function() {
 				$ionicLoading.hide();
 			}, 1000);
