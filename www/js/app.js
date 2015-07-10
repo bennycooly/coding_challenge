@@ -278,5 +278,6 @@ angular.module('myApp', ['ionic',
 		$urlRouterProvider.otherwise('/login');
 
 		$ionicConfigProvider.views.maxCache(0);
+		$ionicConfigProvider.tabs.position('bottom');
 	});
 

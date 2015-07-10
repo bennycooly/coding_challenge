@@ -1,34 +1,9 @@
 @import 'animate.css';
 
-* {
+/** {
     box-shadow: none !important;
-}
+}*/
 
-.circle-menu {
-    position: fixed;
-    opacity: 0;
-    visibility: hidden;
-    height: 100%;
-    width: 100%;
-    min-height: 100%;
-    min-width: 100%;
-    left: 0;
-    top: 0;
-    z-index: 10;
-    -webkit-transform: translate3D(0,0,0);
-    -moz-transform: translate3D(0,0,0);
-    transform: translate3D(0,0,0);
-    -webkit-transition: all 0.1s linear;
-    -moz-transition: all 0.1s linear;
-    transition: all 0.1s linear;
-    transition-delay: 0.2s;
-}
-.circle-menu.show-backdrop {
-    visibility: visible;
-    background-color: black;
-    opacity: 0.5;
-    transition-delay: 0s;
-}
 
 .show-background {
     background: url(../img/splash.png) no-repeat center center fixed;
@@ -64,6 +39,33 @@
 
 #email {
     background-color: transparent;
+}
+
+.circle-menu {
+    position: fixed;
+    opacity: 0;
+    visibility: hidden;
+    height: 100%;
+    width: 100%;
+    min-height: 100%;
+    min-width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    -webkit-transform: translate3D(0,0,0);
+    -moz-transform: translate3D(0,0,0);
+    transform: translate3D(0,0,0);
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+    transition-delay: 0.2s;
+}
+
+.circle-menu.show-backdrop {
+    visibility: visible;
+    background-color: black;
+    opacity: 0.5;
+    transition-delay: 0s;
 }
 
 .circle-profile {
@@ -304,4 +306,51 @@
 .menu-animate {
     animation: pulse 1s infinite ease-out;
     animation-delay: 1s;
+}
+
+.scroll-content > .scroll {
+    height: 100%;
+}
+
+.show-background-card {
+    background: url(../img/background.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    /*filter: blur(10px);*/
+}
+.home-card-wrapper {
+    position: fixed;
+    background: url(../img/background.png);
+    background-size: cover;
+    top: 80px;
+    left: 0;
+    height: calc(100% - 180px);
+    width: calc(100% - 20px);
+    filter: blur(30px);
+    -webkit-filter: blur(30px);
+    z-index: 5;
+}
+.home-card {
+    position: absolute;
+    background: rgba(0,0,0,0.1);
+    top: 80px;
+    left: 0;
+    height: calc(100% - 180px);
+    width: calc(100% - 20px);
+    z-index: 6;
+}
+
+.home-menu {
+    margin-top: 10px;
+}
+
+.card-line {
+    top: -50px;
+}
+
+.front-page-module {
+    position: relative;
+    left: 25%;
+    width: 50%;
 }
