@@ -192,13 +192,13 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.menuIconPressed = false;
 			$scope.menuText = false;
 			$scope.menuOpen = false;
+			$scope.menuAnimate = false;
 			$scope.menuClicked = false;
 			$scope.showBackdrop = false;
 		});
 
 		$scope.toggleMenu = function(event) {
 			//$ionicBackdrop.retain();
-			var items = angular.element('.circle a');
 			event.preventDefault();
 			$scope.isActive = !$scope.isActive;
 			$scope.menuOutlinePressed = !$scope.menuOutlinePressed;
@@ -206,6 +206,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.menuIconPressed = !$scope.menuIconPressed;
 			$scope.menuText = !$scope.menuText;
 			$scope.menuOpen = !$scope.menuOpen;
+			$scope.menuAnimate = !$scope.menuAnimate;
 			$scope.showBackdrop = !$scope.showBackdrop;
 		};
 
