@@ -129,7 +129,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 					$scope.hideLogin();
 					$scope.showInvalid('Incorrect AT&T UID and/or password. Please check your credentials and try again.', 'password');
 					$scope.clear();
-					$state.go('app.home', {clear: true}, {refresh: true});
+					/*$state.go('app.home', {clear: true}, {refresh: true});*/
 				}
 			});
 		};
