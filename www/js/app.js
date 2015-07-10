@@ -11,10 +11,6 @@ angular.module('myApp', ['ionic',
 	'tabSlideBox',
 	'chart.js'])
 
-	.factory('User', function() {
-		return {name: "Alec Masterson", id: "am790d", pass: "1234", hours: "4", events: "Empty", interests: ["Empty"], email: "am790d@att.com", phone: "512-992-9117"};
-	})
-
 	.run(function ($ionicPlatform, $state, $rootScope, $cordovaNetwork, $ionicLoading, $timeout) {
 
 		$ionicPlatform.ready(function () {

@@ -28,18 +28,20 @@
 						</li>
 						<li class="item">
 							<div class="row">
-								<div class="col"><b>Recent Events</b></div>
-								<div class="col item-text-wrap">
-									<ul style="list-style-type:circle;" ng-repeat="event in recent">
-										<li>{{event}}</li>
-									</ul>
-								</div>
+								<div class="col"><h2><strong>Upcoming Events</strong></h2></div>
 							</div>
 						</li>
-						<li class="item">
-							<a href="#app/create_event" style="text-decoration:none;">
-								<button class="button button-block button-positive">Create Event</button>
-							</a>
+						<li class="item" ng-repeat="event in upcoming">
+							<div class="row">
+								<div class="col item-text-wrap">
+										<strong>Name:</strong> {{event.name}}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col item-text-wrap">
+									<p><strong>Date:</strong> {{event.date}}</p>
+								</div>
+							</div>
 						</li>
 					</ul>
 				</ion-slide>
