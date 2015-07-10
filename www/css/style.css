@@ -3,7 +3,28 @@
 /** {
     box-shadow: none !important;
 }*/
+.bar.bar-light {
+    background: url(../img/background.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+}
 
+.side-menu-background {
+    background: #444;
+    border: 0px;
+    border-color: transparent;
+    border-top: transparent;
+    border-bottom: transparent;
+    background-image: none !important;
+}
+
+.item.item-dark {
+    /*background: #444;*/
+    border-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+}
 
 .show-background {
     background: url(../img/splash.png) no-repeat center center fixed;
