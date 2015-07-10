@@ -274,12 +274,12 @@ angular.module('myApp.controllers', ['myApp.services'])
 				query.get($scope.events[i], {
 					success: function(object) {
 						var date = object.attributes.date;
-						var month = parseInt(date.split("/")[0]);
-						var day = parseInt(date.split("/")[1]);
-						var year = parseInt(date.split("/")[2]);
-						if (year >= $scope.currentDate.getYear() && month >= $scope.currentDate.getMonth() && $scope.currentDate.getDate()) {
-							var upcomingEvent = {id: $scope.events[$scope.events.indexOf(object.id)]};
+						var testDate = new Date(parseInt(date.split("/")[2]), parseInt(date.split("/")[0])-1, parseInt(date.split("/")[1]), 0, 0, 0, 0);
+						if (testDate >= $scope.currentDate) {
+							var upcomingEvent = {id: object.id, name: object.attributes.name, date: date};
 							$scope.upcoming.push(upcomingEvent);
+						} else {
+
 						}
 						$scope.$apply();
 					}
@@ -348,19 +348,29 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.creator = Parse.User.current().get('username');
 
 		$scope.inject = function() {
-			$scope.info = { name: 'Youth First Family Dinner Night', description: 'Friday Night Family Dinner at Youth First, a Resource Center Dallas program. LEAGUE at AT&T will be hosting the evening by preparing a simple meal for 20-30 youth, including serving and cleaning-up. Volunteers are needed to help LEAGUE prepare meals.', location: '3918 Harry Hines Blvd. Dallas, TX 75219', date: '07/31/2015', startTime: '6:00pm', endTime: '8:00pm', contact: 'Richard Wilson', contactInfo: 'rw2675@att.com', url: '' };
+			$scope.info = { name: 'Youth First Family Dinner Night', description: 'Friday Night Family Dinner at Youth First, a Resource Center Dallas program. LEAGUE at AT&T will be hosting the evening by preparing a simple meal for 20-30 youth, including serving and cleaning-up. Volunteers are needed to help LEAGUE prepare meals.', location: '3918 Harry Hines Blvd. Dallas, TX 75219', date: '07/31/2015', startTime: '6:00 PM', endTime: '8:00 PM', contact: 'Richard Wilson', contactInfo: 'rw2675@att.com', url: '' };
 			$scope.createEvent(true);
-			$scope.info = { name: 'North Texas Food Bank with AT&T Pioneers', description: 'Sorting, boxing, and/or bagging food in a warehouse environment. Helping the North Texas Food Bank (NTFB) feed hungry people. Volunteers needed.', location: '4500 S. Cockrell Hill Road Dallas, TX 75236', date: '09/16/2015', startTime: '1:00pm', endTime: '3:30pm', contact: 'Elisabet Freer', contactInfo: 'ef7394@att.com', url: '' };
+			$scope.info = { name: 'North Texas Food Bank with AT&T Pioneers', description: 'Sorting, boxing, and/or bagging food in a warehouse environment. Helping the North Texas Food Bank (NTFB) feed hungry people. Volunteers needed.', location: '4500 S. Cockrell Hill Road Dallas, TX 75236', date: '09/16/2015', startTime: '1:00 PM', endTime: '3:30 PM', contact: 'Elisabet Freer', contactInfo: 'ef7394@att.com', url: '' };
 			$scope.createEvent(true);
-			$scope.info = { name: 'Parsons Team Volunteering at Minnie\'s Food Pantry', description: 'Volunteers will assist with inspecting, sorting, and boxing donated food, stocking shelves, and providing red carpet concierge service to our clients.', location: '3033 W. Parker Road, Suite 117 Plano, TX 75023', date: '07/22/2015', startTime: '8:00am', endTime: '11:30am', contact: 'Sindoori Murugavel', contactInfo: 'sm786t@att.com', url: '' };
+			$scope.info = { name: 'Parsons Team Volunteering at Minnie\'s Food Pantry', description: 'Volunteers will assist with inspecting, sorting, and boxing donated food, stocking shelves, and providing red carpet concierge service to our clients.', location: '3033 W. Parker Road, Suite 117 Plano, TX 75023', date: '07/22/2015', startTime: '8:00 AM', endTime: '11:30 PM', contact: 'Sindoori Murugavel', contactInfo: 'sm786t@att.com', url: '' };
 			$scope.createEvent(true);
-			$scope.info = { name: 'Homeless Veterans Stand Down', description: 'Stand Down is a one day event providing supplies and services to homeless Veterans, such as food, shelter, clothing, health screenings and VA Social Security benefits counseling. Veterans can also receive referrals to other assistance such as health care, housing solutions, employment, substance use treatment and mental health counseling. they are collaborative events, coordinated between local VA Medical Centers, other government agencies and community-based homeless service providers. Volunteers are needed to help provide food, clothing and other services.', location: '4500 S. Lancaster Rd. Dallas, TX 75216', date: '11/06/2015', startTime: '7:00am', endTime: '3:00pm', contact: 'Cheryl Nelms', contactInfo: 'cn4113@att.com', url: '' };
+			$scope.info = { name: 'Homeless Veterans Stand Down', description: 'Stand Down is a one day event providing supplies and services to homeless Veterans, such as food, shelter, clothing, health screenings and VA Social Security benefits counseling. Veterans can also receive referrals to other assistance such as health care, housing solutions, employment, substance use treatment and mental health counseling. they are collaborative events, coordinated between local VA Medical Centers, other government agencies and community-based homeless service providers. Volunteers are needed to help provide food, clothing and other services.', location: '4500 S. Lancaster Rd. Dallas, TX 75216', date: '11/06/2015', startTime: '7:00 AM', endTime: '3:00 PM', contact: 'Cheryl Nelms', contactInfo: 'cn4113@att.com', url: '' };
 			$scope.createEvent(true);
-			$scope.info = { name: 'Sleeping Mats for the Homeless', description: 'Project Mission: Pioneers intent is to recycle plastic bags and make them useful by crocheting them into sleeping mats and donate them to local shelters, churches or other like organizations for distribution to the homeless community.', location: 'Contact Danielle for Location', date: 'Contact Danielle for Dates', startTime: '6:00am', endTime: '11:00pm', contact: 'Danielle Carnicom', contactInfo: 'dc1568@att.com', url: '' };
+			$scope.info = { name: 'Sleeping Mats for the Homeless', description: 'Project Mission: Pioneers intent is to recycle plastic bags and make them useful by crocheting them into sleeping mats and donate them to local shelters, churches or other like organizations for distribution to the homeless community.', location: 'Contact Danielle for Location', date: '01/01/2016', startTime: '6:00 AM', endTime: '11:00 PM', contact: 'Danielle Carnicom', contactInfo: 'dc1568@att.com', url: '' };
 			$scope.createEvent(true);
-			$scope.info = { name: 'Oasis-Texas Habitat for Humanity', description: 'Oasis-Texas partnered with Habitat for Humanity to provide our members volunteer opportunities. Habitat for Humanity is currently building a home in East Plano that will one day shelter a family and provide them the means to build a brighter future for themselves and their children.', location: '904 13th St. Plano, TX 75074', date: 'Contact Habitat for Humanity for Date', startTime: '8:00am', endTime: '3:00pm', contact: 'Not Provided', contactInfo: 'Not Provided', url: '' };
+			$scope.info = { name: 'Oasis-Texas Habitat for Humanity', description: 'Oasis-Texas partnered with Habitat for Humanity to provide our members volunteer opportunities. Habitat for Humanity is currently building a home in East Plano that will one day shelter a family and provide them the means to build a brighter future for themselves and their children.', location: '904 13th St. Plano, TX 75074', date: '01/01/2016', startTime: '8:00 AM', endTime: '3:00 PM', contact: 'Not Provided', contactInfo: 'Not Provided', url: '' };
 			$scope.createEvent(true);
-			$scope.info = { name: 'Dallas Life: New Life for the Homeless', description: 'We are in need of volunteers to help with childcare during our weekly chapel services. Volunteers will care for potty trained children between ages of 2 and 5 years old.', location: 'Not Provided', date: 'Not Provided', startTime: '6:00pm', endTime: '7:00pm', contact: 'Not Provided', contactInfo: 'Not Provided', url: '' };
+			$scope.info = { name: 'Dallas Life: New Life for the Homeless', description: 'We are in need of volunteers to help with childcare during our weekly chapel services. Volunteers will care for potty trained children between ages of 2 and 5 years old.', location: '', date: '01/01/2016', startTime: '6:00 PM', endTime: '7:00 PM', contact: 'Not Provided', contactInfo: 'Not Provided', url: '' };
+			$scope.createEvent(true);
+			$scope.info = { name: 'Test Past Event', description: 'This is to test an event that has already passed.', location: '211 S. Akard St. Dallas, TX', date: '05/20/2015', startTime: '11:00 AM', endTime: '2:00 PM', contact: 'None', contactInfo: 'None', url: '' };
+			$scope.createEvent(true);
+			$scope.info = { name: 'DFW Family of ERGs – Day at the North Texas Food Bank', description: 'This is a food collection ending with a food sorting event at the North Texas Food Bank to promote the collaboration of all corporate ERG chapters and their members located in Dallas and Fort Worth.', location: '4500 S Cockrell Hill Dallas, TX 75236', date: '08/28/2015', startTime: '9:00 AM', endTime: '3:00 PM', contact: 'Robert Cardarelli', contactInfo: 'rc2654@att.com', url: '' };
+			$scope.createEvent(true);
+			$scope.info = { name: 'Rugged and Raw Trail Run', description: 'Sign up today to volunteer at the Rugged & Raw Trail Race event benefitting Back on My Feet. Back on my Feet is a national for purpose organization that uses running to help those experiencing homelessness to change the way they see themselves so they can make real changes in their lives that results in employment and independent living. This 10k/20k race is one of the toughest in the Dallas- Fort Worth area. Various volunteer jobs and shifts are available for this fun trail race event. Volunteers under the age of 18 must have a parent volunteer with them. Min. Age is 12 years. If you would like to run the race, the entrance fee is $40-$60 and the race goes from 8:30am-12:30pm. ', location: '7171 Mountain Creek Pkwy Dallas, TX 75249', date: '10/17/2015', startTime: '6:45 AM', endTime: '1:00 PM', contact: 'Back on my feet Dallas', contactInfo: '215-772-1080', url: '' };
+			$scope.createEvent(true);
+			$scope.info = { name: 'Victory Plaza Dallas Heart Walk', description: 'The Heart Walk is a three mile non-competitive event. The Heart Walk starts at Victory Plaza and goes through downtown Dallas, ending at Victory Park. The cause areas for this event are community, education and literacy, and health and medicine. ', location: '2440 Victory Park Lane Dallas,, TX 75219', date: '09/12/2015', startTime: '8:30 AM', endTime: '11:30 AM', contact: 'Cheryl Nelms', contactInfo: 'cn4113@att.com', url: '' };
+			$scope.createEvent(true);
+			$scope.info = { name: 'Move For Hunger', description: 'Move For Hunger is looking for runners and walkers to help us turn miles into meals at the Michelob Ultra 13.1 Dallas Half Marathon & 5K! Team members receive a free guaranteed race entry, training help and some stylish running gear. By joining Team Move For Hunger, you can help us race away hunger in the Lone Star State! Team Captain Emily will send over some fundraising and training tips, along with a link to your personal fundraising page on Crowdrise . Upload your personal picture and information and you’re ready to go! Gather donations from friends, family, coworkers and anyone who wants to help us fight hunger in America. You’ll receive bi-monthly newsletters filled with great information to help you cross the finish line, all while your fundraising donations enable us to continue our lifesaving services. Once you’ve raised $500, we will register you with the race, getting your free registration along with a stylish Team Move For Hunger technical tee. If you raise more, the incentives just get better! Our network of relocation industry specialists help to reduce food waste and deliver much needed food to our local food banks. With over 18% of residents in the Dallas area that are food insecure, your help is needed more than ever! With 96% of every dollar donated going back to our hunger relief and food rescue programs, you can be assured that your miles are turned into meals for those in need. In the last five years, we have delivered over 5 million pounds of food - let\'s keep it moving!', location: '2403 Flora St #500, Dallas, TX 75201', date: '10/24/2015', startTime: '8:00 AM', endTime: '12:30 PM', contact: 'Emily', contactInfo: 'emily@moveforhunger.org 732-832-5025 ', url: '' };
 			$scope.createEvent(true);
 		};
 
@@ -398,6 +408,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 					news.set("type", "event");
 					news.set("eventId", result.id);
 					news.save();
+
+					event.set("eventId", result.id);
+					event.save();
 
 					if(!injected) $state.go("app.profile", {}, {refresh: true});
 				}

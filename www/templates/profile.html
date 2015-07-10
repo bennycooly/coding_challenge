@@ -28,13 +28,18 @@
 						</li>
 						<li class="item">
 							<div class="row">
-								<div class="col"><b>Upcoming Events</b></div>
+								<div class="col"><h2><strong>Upcoming Events</strong></h2></div>
+							</div>
+						</li>
+						<li class="item" ng-repeat="event in upcoming">
+							<div class="row">
+								<div class="col item-text-wrap">
+										<strong>Name:</strong> {{event.name}}
+								</div>
 							</div>
 							<div class="row">
 								<div class="col item-text-wrap">
-									<ul style="list-style-type:circle;" ng-repeat="event in upcoming">
-										<li>{{event.id}}</li>
-									</ul>
+									<p><strong>Date:</strong> {{event.date}}</p>
 								</div>
 							</div>
 						</li>
