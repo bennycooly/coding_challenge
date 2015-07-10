@@ -282,7 +282,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 							var upcomingEvent = {id: object.id, name: object.attributes.name, date: date};
 							$scope.upcoming.push(upcomingEvent);
 						} else {
-
+							// Calculate hours
 						}
 						$scope.$apply();
 					}
@@ -303,11 +303,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 	})
 
-	.controller('NewsCtrl', function($scope, $state) {
+	.controller('NewsCtrl', function($scope, $state, $ionicPopup) {
 
 		$scope.news = [];
 		$scope.newsCopy = {text: "", owner: "", id: "", type: ""};
-		$scope.error = {show: false};
 
 		$scope.refresh = function() {
 			var newsClass = Parse.Object.extend("News");
@@ -324,10 +323,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 						newNews.type = results[i].get("type");
 						$scope.news.push(newNews);
 					}
-					$scope.error.show = false;
 					$scope.$apply();
 				}, error: function(results) {
-					$scope.error.show = true;
+					var alert = $ionicPopup.alert({
+						title: "Error refreshing the newsfeed!"
+					});
 					$scope.$broadcast('scroll.refreshComplete');
 					return;
 				}
@@ -346,7 +346,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		//alert($stateParams.param.id);
 	})
 
-	.controller('CreateEventCtrl', function($scope, $state) {
+	.controller('CreateEventCtrl', function($scope, $state, $ionicPopup) {
 		$scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: "", contact: "", contactInfo: "", url: "", error: false};
 		$scope.creator = Parse.User.current().get('username');
 
@@ -381,11 +381,12 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 			for (var key in $scope.info) {
 				if (key != "url" && key != "error" && $scope.info[key] == "") {
-					$scope.info.error = true;
+					var alert = $ionicPopup.alert({
+						title: "Please fill in all the required fields"
+					});
 					return;
 				}
 			}
-			$scope.info.error = false;
 
 			var EventClass = Parse.Object.extend("Event");
 			var event = new EventClass();
@@ -410,18 +411,39 @@ angular.module('myApp.controllers', ['myApp.services'])
 					news.set("owner", $scope.creator);
 					news.set("type", "event");
 					news.set("eventId", result.id);
-					news.save();
+					news.save(null, {
+						success: function(result) {
+						}, error: function(result) {
+							var alert = $ionicPopup.alert({
+								title: "Error creating newsfeed post!"
+							});
+							return;
+						}
+					});
 
 					event.set("eventId", result.id);
-					event.save();
+					event.save(null, {
+						success: function(result) {
+						}, error: function(result) {
+							var alert = $ionicPopup.alert({
+								title: "Error providing Calendar entry ID!"
+							});
+							return;
+						}
+					});
 
 					if(!injected) $state.go("app.profile", {}, {refresh: true});
+				}, error: function(result) {
+					var alert = $ionicPopup.alert({
+						title: "Error creating event!"
+					});
+					return;
 				}
 			});
 		};
 	})
 
-	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory) {
+	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup) {
 
 		$ionicHistory.nextViewOptions({
 			disableBack: true
@@ -456,10 +478,14 @@ angular.module('myApp.controllers', ['myApp.services'])
 			var events = currentUser.get("events");
 			var newEvents = events+", "+$stateParams.param.id;
 			currentUser.set("events", newEvents);
-			currentUser.save(null, { success: function(result) {
+			currentUser.save(null, {
+			success: function(result) {
 				$state.go("app.profile", {}, {refresh: true} );
 			}, error: function(result) {
-				alert("Error signing up for event!");
+				var alert = $ionicPopup.alert({
+					title: "Error signing up for event!"
+				});
+					return;
 			}});
 		};
 
@@ -470,10 +496,14 @@ angular.module('myApp.controllers', ['myApp.services'])
 				newEvents += $scope.events[i]+", ";
 			}
 			Parse.User.current().set("events", newEvents);
-			Parse.User.current().save(null, { success: function(result) {
+			Parse.User.current().save(null, {
+			success: function(result) {
 				$state.go("app.profile", {}, {refresh: true} );
 			}, error: function(result) {
-				alert("Error removing event from calendar!");
+				var alert = $ionicPopup.alert({
+					title: "Error removing event from calendar!"
+				});
+					return;
 			}});
 		};
 
