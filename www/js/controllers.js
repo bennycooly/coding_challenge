@@ -418,9 +418,19 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 	})
 
-	.controller('EventCtrl', function($scope, $stateParams) {
+	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory) {
 
-		$scope.signedUp = false;
+		$ionicHistory.nextViewOptions({
+			disableBack: true
+		});
+
+		$scope.info = { signedUp: false };
+
+		$scope.eventsString = Parse.User.current().get('events');
+		if($scope.eventsString !== undefined) $scope.events = $scope.eventsString.split(", ");
+		else $scope.events = [];
+
+		if($scope.events.indexOf($stateParams.param.id) >= 0) $scope.info.signedUp = true;
 
 		var query = new Parse.Query("Event");
 		query.get($stateParams.param.id, {
@@ -433,6 +443,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 				$scope.contact = object.attributes.contact;
 				$scope.contactInfo = object.attributes.contactInfo;
 				$scope.description = object.attributes.description;
+				$scope.url = object.attributes.url;
 				$scope.$apply();
 			}
 		});
@@ -440,24 +451,27 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.signUp = function() {
 			var currentUser = Parse.User.current();
 			var events = currentUser.get("events");
-			//var things = events+", "+$stateParams.param.id;
-			//alert(things);
-			return;
-			currentUser.set("events", things);
-			event.save(null,{
-				success: function(result) {
-					var NewsClass = Parse.Object.extend("News");
-					var news = new NewsClass();
+			var newEvents = events+", "+$stateParams.param.id;
+			currentUser.set("events", newEvents);
+			currentUser.save(null, { success: function(result) {
+				$state.go("app.profile", {}, {refresh: true} );
+			}, error: function(result) {
+				alert("Error signing up for event!");
+			}});
+		};
 
-					news.set("text", "New Event: "+result.attributes.name);
-					news.set("owner", $scope.creator);
-					news.set("type", "event");
-					news.set("eventId", result.id);
-					news.save();
-
-					if(!injected) $state.go("app.profile", {}, {refresh: true});
-				}
-			});
+		$scope.remove = function() {
+			$scope.events.splice($scope.events.indexOf($stateParams.param.id), 1);
+			var newEvents = "";
+			for (var i=0; i<$scope.events.length; i++) {
+				newEvents += $scope.events[i]+", ";
+			}
+			Parse.User.current().set("events", newEvents);
+			Parse.User.current().save(null, { success: function(result) {
+				$state.go("app.profile", {}, {refresh: true} );
+			}, error: function(result) {
+				alert("Error removing event from calendar!");
+			}});
 		};
 
 	});
