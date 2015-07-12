@@ -78,7 +78,8 @@ angular.module('myApp', ['ionic',
 				url: "/profile",
 				views: {
 					'menuContent': {
-						templateUrl: "templates/profile.html"
+						templateUrl: "templates/profile.html",
+						controller: "ProfileCtrl"
 					}
 				}
 			})
@@ -272,8 +273,5 @@ angular.module('myApp', ['ionic',
 
 		// if none of the above states are matched, use this as the fallback
 		$urlRouterProvider.otherwise('/login');
-
-		//$ionicConfigProvider.views.maxCache(0);
-		$ionicConfigProvider.tabs.position('bottom');
 	});
 

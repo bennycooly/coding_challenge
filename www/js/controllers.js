@@ -192,7 +192,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 			$timeout( function() {
 				$ionicLoading.hide();
-			}, 1000);
+			}, 0);
 
 			$scope.isActive = false;
 			$scope.menuOutlinePressed = false;
@@ -220,14 +220,14 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.menuGo = function(state) {
 			$scope.menuClicked = state;
-			/*$scope.menuOpen = false;*/
+
 			$ionicHistory.nextViewOptions({
 				disableBack: true
 			});
 			$timeout(function() {
 				switch(state) {
 					case 'profile':
-						$state.go('app.profile');
+						$state.go('app.profile', {clear: true}, {refresh: true});
 						break;
 					case 'event':
 						$state.go('app.create_event');
@@ -243,7 +243,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 						break;
 				}
 			}, 300);
-
 		};
 		//close the menu if it's open
 		$scope.menuClose = function() {
