@@ -64,9 +64,9 @@ angular.module('myApp.services', [])
 			updateParse: function() {
 				/*Parse.User.current().set('firstName', this.firstName);
 				 Parse.User.current().set('lastName', this.lastName);*/
-				Parse.User.current().set('email', this.email);
-				Parse.User.current().set('phone', this.phone);
-				Parse.User.current().set('interests', this.interests);
+				Parse.User.current().set('email', $localStorage.get('email'));
+				Parse.User.current().set('phone', $localStorage.get('phone'));
+				Parse.User.current().set('interests', $localStorage.get('interests'));
 			},
 			logout: function() {
 				console.log('removing user from local storage');
@@ -78,6 +78,21 @@ angular.module('myApp.services', [])
 	.factory('$events', function($localStorage) {
 		var currentEvents = $localStorage.getObject('currentEvents');
 		return {
+			get: function(key) {
+				currentEvents = $localStorage.getObject('currentEvents');
+				return currentEvents;
+			},
+			updateLocalStorage: function() {
+				var query = new Parse.Query('Event');
+				query.find( {
+					success: function (events) {
+						$localStorage.setObject('currentEvents', events);
+					},
+					error: function (error) {
+						alert('Error: ' + error.code + ' ' + error.message);
+					}
+				});
+			},
 			event1: currentEvents[0]
 		}
 	});

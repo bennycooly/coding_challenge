@@ -165,28 +165,20 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	})
 
-	.controller('HomeCtrl', function($scope, $state, $ionicHistory, $ionicLoading, $timeout, $localStorage, $user, $events, $ionicBackdrop) {
+	.controller('HomeCtrl', function($scope, $state, $ionicHistory, $ionicLoading, $timeout, $localStorage, $user, $events, $ionicModal) {
+
 		$scope.$on('$ionicView.beforeEnter', function () {
+
 			$scope.loadingHome = $ionicLoading.show({
 				template: '<p>Loading...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
 			});
-
 			$user.updateLocalStorage();
 			var user = $user.get();
 			console.log(user.firstName);
 			console.log(Parse.User.current().get('firstName'));
-			var currentEvents = Parse.Object.extend('Event');
-			var query = new Parse.Query('Event');
-			query.find( {
-				success: function (events) {
-					$localStorage.setObject('currentEvents', events);
-				},
-				error: function (error) {
-					alert('Error: ' + error.code + ' ' + error.message);
-				}
-			});
-			var currentEvents = $localStorage.getObject('currentEvents');
-			console.log($events.event1);
+			$events.updateLocalStorage();
+			$scope.events = $events.get();
+			console.log($scope.events);
 
 			$scope.firstName = user.firstName;
 
@@ -205,6 +197,32 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.showBackdrop = false;
 		});
 
+		$ionicModal.fromTemplateUrl('templates/search.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.modal = modal;
+		});
+
+		$scope.openModal = function() {
+			$scope.modal.show();
+		};
+		$scope.closeModal = function() {
+			$scope.modal.hide();
+		};
+		//Cleanup the modal when we're done with it!
+		$scope.$on('$destroy', function() {
+			$scope.modal.remove();
+		});
+		// Execute action on hide modal
+		$scope.$on('modal.hidden', function() {
+			// Execute action
+		});
+		// Execute action on remove modal
+		$scope.$on('modal.removed', function() {
+			// Execute action
+		});
+
 		$scope.toggleMenu = function(event) {
 			//$ionicBackdrop.retain();
 			event.preventDefault();
@@ -220,7 +238,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.menuGo = function(state) {
 			$scope.menuClicked = state;
-
 			$ionicHistory.nextViewOptions({
 				disableBack: true
 			});
@@ -239,7 +256,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 						$state.go('app.calendar');
 						break;
 					case 'search':
-						$state.go('app.search');
+						$scope.openModal();
 						break;
 				}
 			}, 300);

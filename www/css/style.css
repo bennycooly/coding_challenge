@@ -356,13 +356,6 @@
     position: relative;
 }
 
-.show-background-card {
-    background: url(../img/background.png) no-repeat left -40px fixed;
-    -webkit-background-size: 130%;
-    -moz-background-size: 130%;
-    background-size: 130%;
-    /*filter: blur(10px);*/
-}
 .home-card-wrapper {
     position: absolute;
     background: url(../img/background.png) no-repeat left -120px fixed;
