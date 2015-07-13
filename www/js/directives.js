@@ -25,6 +25,15 @@ angular.module('myApp.directives', [])
 							}*/
 						}, 500);
 					}
+					else if (input == 'search') {
+						$timeout(function() {
+							console.log(element[0]);
+							element[0].focus();
+							/*if (ionic.Platform.isAndroid()) {
+							 cordova.plugins.Keyboard.show();
+							 }*/
+						}, 100);
+					}
 				});
 			}
 		};

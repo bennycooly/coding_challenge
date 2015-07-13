@@ -60,20 +60,20 @@ angular.module('myApp.services', [])
 	})
 
 	.factory('$events', function($localStorage) {
-		var currentEvents = $localStorage.getObject('events');
+		var events = $localStorage.getObject('events');
 		return {
 			get: function(key) {
 				switch (key) {
 					case 'eventsDateAscending':
-						currentEvents = $localStorage.getObject('eventsDateAscending');
-						console.log(currentEvents);
+						events = $localStorage.getObject('eventsDateAscending');
+						console.log(events);
 						break;
 					default:
-						currentEvents = $localStorage.getObject('events');
+						events = $localStorage.getObject('events');
 						break;
 				}
 
-				return currentEvents;
+				return events;
 			},
 			updateLocalStorage: function() {
 				var query = new Parse.Query('Event');
@@ -94,7 +94,10 @@ angular.module('myApp.services', [])
 						alert('Error: ' + error.code + ' ' + error.message);
 					}
 				});
-			},
-			event1: currentEvents[0]
+			}
 		}
+	})
+
+	.factory('$newsfeed', function($localStorage) {
+		var newsfeed = $localStorage.getObject('newsfeed');
 	});
