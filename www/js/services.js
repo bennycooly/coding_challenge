@@ -25,27 +25,11 @@ angular.module('myApp.services', [])
 		return {
 			get: function(key) {
 				currentUser = $localStorage.getObject('currentUser');
-				switch (key) {
-					case 'firstName':
-						return currentUser.firstName;
-						break;
-					case 'lastName':
-						return currentUser.lastName;
-						break;
-					case 'email':
-						return currentUser.email;
-						break;
-					case 'phone':
-						return currentUser.phone;
-						break;
-					case 'interests':
-						return currentUser.interests;
-						break;
-					case 'hours':
-						return currentUser.hours;
-						break;
-					default:
-						return currentUser;
+				if (key) {
+					return currentUser[key];
+				}
+				else {
+					return currentUser;
 				}
 			},
 			updateLocalStorage: function() {
@@ -76,17 +60,35 @@ angular.module('myApp.services', [])
 	})
 
 	.factory('$events', function($localStorage) {
-		var currentEvents = $localStorage.getObject('currentEvents');
+		var currentEvents = $localStorage.getObject('events');
 		return {
 			get: function(key) {
-				currentEvents = $localStorage.getObject('currentEvents');
+				switch (key) {
+					case 'eventsDateAscending':
+						currentEvents = $localStorage.getObject('eventsDateAscending');
+						console.log(currentEvents);
+						break;
+					default:
+						currentEvents = $localStorage.getObject('events');
+						break;
+				}
+
 				return currentEvents;
 			},
 			updateLocalStorage: function() {
 				var query = new Parse.Query('Event');
 				query.find( {
 					success: function (events) {
-						$localStorage.setObject('currentEvents', events);
+						$localStorage.setObject('events', events);
+					},
+					error: function (error) {
+						alert('Error: ' + error.code + ' ' + error.message);
+					}
+				});
+				query.ascending('date');
+				query.find( {
+					success: function (events) {
+						$localStorage.setObject('eventsDateAscending', events);
 					},
 					error: function (error) {
 						alert('Error: ' + error.code + ' ' + error.message);

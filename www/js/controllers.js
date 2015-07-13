@@ -173,14 +173,12 @@ angular.module('myApp.controllers', ['myApp.services'])
 				template: '<p>Loading...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
 			});
 			$user.updateLocalStorage();
-			var user = $user.get();
-			console.log(user.firstName);
-			console.log(Parse.User.current().get('firstName'));
+			$scope.user = $user.get();
+			console.log('user from localstorage: ' + $scope.user.firstName);
 			$events.updateLocalStorage();
 			$scope.events = $events.get();
-			console.log($scope.events);
-
-			$scope.firstName = user.firstName;
+			$scope.eventsDateAscending = $events.get('eventsDateAscending');
+			console.log($scope.eventsDateAscending);
 
 			$timeout( function() {
 				$ionicLoading.hide();

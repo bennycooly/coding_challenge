@@ -1,11 +1,19 @@
 <ion-modal-view>
-    <ion-header-bar>
-        <h1 class="title">My Modal title</h1>
-    </ion-header-bar>
-    <ion-header-bar>
-        <h1 class="title">My Modal title</h1>
+    <ion-header-bar class="bar bar-header item-input-inset">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+            <input type="search" placeholder="Search" ng-model="searchText">
+        </label>
+        <button class="button button-clear" ng-click="closeModal()">
+            Cancel
+        </button>
     </ion-header-bar>
     <ion-content>
-        Hello!
+        <ion-list>
+            <ion-item ng-repeat="event in eventsDateAscending | filter:searchText" >
+                <h2>{{event.name}}</h2>
+                <p>{{event.date.iso | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-modal-view>
