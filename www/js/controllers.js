@@ -183,7 +183,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 				$ionicLoading.hide();
 			}, 0);
 
-			/*$scope.isActive = false;
+			$scope.isActive = false;
 			$scope.menuOutlinePressed = false;
 			$scope.menuBackgroundPressed = false;
 			$scope.menuIconPressed = false;
@@ -191,7 +191,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.menuOpen = false;
 			$scope.menuAnimate = false;
 			$scope.menuClicked = false;
-			$scope.showBackdrop = false;*/
+			$scope.showBackdrop = false;
 		});
 
 		$scope.$on('$ionicView.afterEnter', function() {
@@ -243,6 +243,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 				disableBack: true
 			});
 			$timeout(function() {
+				$scope.menuClose();
 				switch(state) {
 					case 'profile':
 						$state.go('app.profile', {clear: true}, {refresh: true});
@@ -261,11 +262,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 						/*$scope.openSearchModal();*/
 						break;
 				}
-			}, 300);
+			}, 500);
 		};
 		//close the menu if it's open
 		$scope.menuClose = function() {
-			console.log('clicked');
 			if ($scope.isActive) {$scope.toggleMenu(event);}
 		};
 
@@ -277,6 +277,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$state.go("app.event", {param:{id:event.eventId}});
 		};
 
+		$scope.$on('$ionicView.beforeLeave', function() {
+			$scope.menuClose();
+		});
 		$scope.$on('$ionicView.afterLeave', function () {
 			$scope.menuClose();
 		});
@@ -287,8 +290,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$events.updateLocalStorage();
 			$scope.events = $events.get();
 			$scope.eventsDateAscending = $events.get('eventsDateAscending');
-			$scope.input = 'search';
 			console.log($ionicHistory.viewHistory());
+		});
+
+		$scope.$on('$ionicView.afterEnter', function() {
+			$scope.input = 'search';
 		});
 
 		$scope.selectEvent = function(event) {
