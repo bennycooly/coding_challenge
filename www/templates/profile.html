@@ -55,22 +55,6 @@
 					<p style="text-align:center;">For every hour you volunteer, you are saving AT&T $22.90</p>
 					<p style="text-align:center;">You have save ${{hours*22.90}} based on your hours.</p>
 				</ion-slide>
-				<script>
-					var data = {
-						labels: ["January","February","March","April"],
-						datasets: [{
-							fillColor: "rgba(0,0,0,0.5)",
-							strokeColor: "rgba(0,0,0,0.8)",
-							highlightFill: "rgba(0,0,0,0.75)",
-							highlightStroke: "rgba(0,0,0,1)",
-							data: [2, 2, 1, 4]
-						}]
-					};
-					$(document).ready(function() {
-						var chart = document.getElementById("canvas").getContext("2d");
-						document.chart = new Chart(chart).Bar(data, { responsive: true });
-					});
-				</script>
 			</ion-slide-box>
 		</tab-slide-box>
 	</ion-content>

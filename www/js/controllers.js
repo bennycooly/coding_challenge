@@ -316,27 +316,60 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.id = currentUser.get('username');
 		$scope.fullName = currentUser.get('firstName')+" "+Parse.User.current().get('lastName');
+		$scope.hours = currentUser.get('hours');
+
 		$scope.eventsString = currentUser.get('events');
 		if($scope.eventsString !== undefined) $scope.events = $scope.eventsString.split(", ");
 		else $scope.events = [];
-		$scope.hours = currentUser.get('hours');
 
 		$scope.upcoming = [];
 		$scope.currentDate = new Date();
+
+		$scope.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		$scope.progress = [0, 0, 0];
+		$scope.progressMonth = ["", "", ""];
+		for (var i=2; i>=0; i--) { $scope.progressMonth[Math.abs(i-2)] = $scope.months[$scope.currentDate.getMonth()-(i+1)]; }
+
 		if ($scope.events.length != 0) {
 			for (var i=0; i<$scope.events.length; i++) {
 				var query = new Parse.Query("Event");
 				query.get($scope.events[i], {
 					success: function(object) {
 						var date = object.attributes.date;
-						var testDate = new Date(parseInt(date.split("/")[2]), parseInt(date.split("/")[0])-1, parseInt(date.split("/")[1]), 0, 0, 0, 0);
-						if (testDate >= $scope.currentDate) {
+						if (date >= $scope.currentDate) {
 							var upcomingEvent = {id: object.id, name: object.attributes.name, date: date};
 							$scope.upcoming.push(upcomingEvent);
 						} else {
-							// Calculate hours
+							var progressDate = $scope.currentDate;
+							for (var j=0; j<3; j++) {
+								progressDate.setMonth(progressDate.getMonth()-1);
+								if (date.getYear() == progressDate.getYear() && date.getMonth() == progressDate.getMonth()) {
+									var start = object.attributes.startTime;
+									var startHour = parseInt(start.split(":")[0]);
+									var end = object.attributes.endTime;
+									var endHour = parseInt(end.split(":")[0]);
+									if (start.split(" ")[1] == "PM") startHour += 12;
+									if (end.split(" ")[1] == "PM") endHour += 12;
+									$scope.progress[j] += (endHour - startHour);
+								}
+							}
 						}
 						$scope.$apply();
+						if ($scope.events.indexOf(object.id) == $scope.events.length-1) {
+							var data = {
+								labels: $scope.progressMonth,
+								datasets: [{
+									fillColor: "rgba(0,0,0,0.5)",
+									strokeColor: "rgba(0,0,0,0.8)",
+									highlightFill: "rgba(0,0,0,0.75)",
+									highlightStroke: "rgba(0,0,0,1)",
+									data: $scope.progress
+								}]
+							};
+
+							var chart = document.getElementById("canvas").getContext("2d");
+							document.chart = new Chart(chart).Bar(data, { responsive: true });
+						}
 					}
 				});
 			}
@@ -440,6 +473,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 				}
 			}
 
+			var dateList = $scope.info.date.split("/");
+			var date = new Date(parseInt(dateList[2]), parseInt(dateList[0]), parseInt(dateList[1]), 0, 0, 0, 0);
+
 			var EventClass = Parse.Object.extend("Event");
 			var event = new EventClass();
 
@@ -447,7 +483,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			event.set("owner", $scope.creator);
 			event.set("description", $scope.info.description);
 			event.set("location", $scope.info.location);
-			event.set("date", $scope.info.date);
+			event.set("date", date);
 			event.set("startTime", $scope.info.startTime);
 			event.set("endTime", $scope.info.endTime);
 			event.set("contact", $scope.info.contact);
@@ -528,7 +564,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.signUp = function() {
 			var currentUser = Parse.User.current();
 			var events = currentUser.get("events");
-			var newEvents = events+", "+$stateParams.param.id;
+			if (events == undefined || events.length == 0) var newEvents = $stateParams.param.id;
+			else var newEvents = events+", "+$stateParams.param.id;
 			currentUser.set("events", newEvents);
 			currentUser.save(null, {
 			success: function(result) {
