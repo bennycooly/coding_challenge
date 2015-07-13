@@ -183,7 +183,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 				$ionicLoading.hide();
 			}, 0);
 
-			$scope.isActive = false;
+			/*$scope.isActive = false;
 			$scope.menuOutlinePressed = false;
 			$scope.menuBackgroundPressed = false;
 			$scope.menuIconPressed = false;
@@ -191,16 +191,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.menuOpen = false;
 			$scope.menuAnimate = false;
 			$scope.menuClicked = false;
-			$scope.showBackdrop = false;
-
+			$scope.showBackdrop = false;*/
 		});
 
-		$scope.$on('$ionicView.enter', function() {
-			if ($localStorage.get('leftSearchModal') == true) {
-				$localStorage.set('leftSearchModal', false);
-				$scope.openSearchModal();
-			}
-			console.log('entered view');
+		$scope.$on('$ionicView.afterEnter', function() {
+			$scope.menuClose();
 		});
 
 		$ionicModal.fromTemplateUrl('templates/search.html', {
@@ -230,9 +225,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 			// Execute action
 		});
 
-		$scope.toggleMenu = function(event) {
+		$scope.toggleMenu = function() {
 			//$ionicBackdrop.retain();
-			event.preventDefault();
 			$scope.isActive = !$scope.isActive;
 			$scope.menuOutlinePressed = !$scope.menuOutlinePressed;
 			$scope.menuBackgroundPressed = !$scope.menuBackgroundPressed;
@@ -245,9 +239,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.menuGo = function(state) {
 			$scope.menuClicked = state;
-			/*$ionicHistory.nextViewOptions({
+			$ionicHistory.nextViewOptions({
 				disableBack: true
-			});*/
+			});
 			$timeout(function() {
 				switch(state) {
 					case 'profile':
@@ -289,20 +283,22 @@ angular.module('myApp.controllers', ['myApp.services'])
 	})
 
 	.controller('SearchCtrl', function($scope, $state, $events, $localStorage, $ionicHistory) {
-		$events.updateLocalStorage();
-		$scope.events = $events.get();
-		$scope.eventsDateAscending = $events.get('eventsDateAscending');
-		$scope.input = '';
-		$scope.input = 'search';
+		$scope.$on('$ionicView.beforeEnter', function () {
+			$events.updateLocalStorage();
+			$scope.events = $events.get();
+			$scope.eventsDateAscending = $events.get('eventsDateAscending');
+			$scope.input = 'search';
+			console.log($ionicHistory.viewHistory());
+		});
 
 		$scope.selectEvent = function(event) {
 			// If the news type is event do the below
-			console.log(event.eventId);
-			$localStorage.set('leftSearchModal', true);
+			$scope.input = '';
 			$state.go("app.event", {param:{id:event.eventId}});
 		};
 
 		$scope.closeSearch = function() {
+			$scope.input = '';
 			$ionicHistory.nextViewOptions({
 				disableBack: true,
 				disableAnimate: true

@@ -7,7 +7,6 @@ angular.module('myApp.directives', [])
 				focusMe: '='
 			},
 			link: function(scope, element) {
-				console.log(scope);
 				scope.$watch('focusMe', function (input) {
 					if (input == 'username') {
 						$timeout(function() {
@@ -27,12 +26,11 @@ angular.module('myApp.directives', [])
 					}
 					else if (input == 'search') {
 						$timeout(function() {
-							console.log(element[0]);
 							element[0].focus();
 							/*if (ionic.Platform.isAndroid()) {
 							 cordova.plugins.Keyboard.show();
 							 }*/
-						}, 100);
+						}, 200);
 					}
 				});
 			}
