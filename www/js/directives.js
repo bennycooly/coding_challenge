@@ -30,7 +30,7 @@ angular.module('myApp.directives', [])
 							/*if (ionic.Platform.isAndroid()) {
 							 cordova.plugins.Keyboard.show();
 							 }*/
-						}, 200);
+						}, 1000);
 					}
 				});
 			}

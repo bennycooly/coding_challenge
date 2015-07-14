@@ -4,7 +4,7 @@
     box-shadow: none !important;
 }
 
-.pane, .view {
+.pane, .view, .modal {
     background: url(../img/background.png) no-repeat left top fixed;
     -webkit-background-size: 130%;
     -moz-background-size: 130%;
