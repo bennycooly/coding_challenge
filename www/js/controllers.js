@@ -108,7 +108,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		//clear forms after login
 		$scope.clear = function(password) {
-			if (password!='password') {$scope.loginData.username="";}
+			if (password != 'password') {$scope.loginData.username="";}
 			$scope.loginData.password="";
 		};
 
@@ -130,8 +130,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 					$scope.clear('password');
 					$scope.hideLogin();
 					$scope.showInvalid('Incorrect AT&T UID and/or password. Please check your credentials and try again.', 'password');
-					$scope.clear();
-					/*$state.go('app.home', {clear: true}, {refresh: true});*/
+					/*$scope.clear();
+					$state.go('app.home', {clear: true}, {refresh: true});*/
 				}
 			});
 		};
@@ -265,13 +265,13 @@ angular.module('myApp.controllers', ['myApp.services'])
 						$state.go('app.profile', {clear: true}, {refresh: true});
 						break;
 					case 'event':
-						$state.go('app.create_event');
+						$state.go('app.create_event', {clear: true}, {refresh: true});
 						break;
 					case 'newsfeed':
-						$state.go('app.newsfeed');
+						$state.go('app.newsfeed', {clear: true}, {refresh: true});
 						break;
 					case 'calendar':
-						$state.go('app.calendar');
+						$state.go('app.calendar', {clear: true}, {refresh: true});
 						break;
 					case 'search':
 						/*$ionicHistory.nextViewOptions({
