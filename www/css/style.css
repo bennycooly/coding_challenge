@@ -3,15 +3,15 @@
 * {
     box-shadow: none !important;
 }
-
+/*
 .backdrop {
     z-index: 1000;
-}
-.pane, .view, .modal {
-    background: url(../img/background.png) no-repeat left top fixed;
-    -webkit-background-size: 130%;
-    -moz-background-size: 130%;
-    background-size: 130%;
+}*/
+.pane .home, .view .home {
+    background: url(../img/people.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
 }
 
 .scroll-content > .scroll {
@@ -47,7 +47,7 @@
 }
 
 .show-background {
-    background: url(../img/splash.png) no-repeat center center fixed;
+    background: url(../img/people.jpg) no-repeat center center fixed;
     -webkit-background-size: 100%;
     -moz-background-size: 100%;
     background-size: cover;
@@ -361,14 +361,14 @@
 
 .home-card-wrapper {
     position: absolute;
-    background: url(../img/background.png) no-repeat left -120px fixed;
-    -webkit-background-size: 130%;
-    -moz-background-size: 130%;
-    background-size: 130%;
+    background: url(../img/people.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
     top: 80px;
-    left: 0;
+    left: 10px;
     height: calc(100% - 180px);
-    width: calc(100% - 20px);
+    width: calc(100% - 40px);
     -webkit-filter: blur(10px);
     z-index: 5;
 }
@@ -376,9 +376,9 @@
     position: absolute;
     background: rgba(0,0,0,0.3);
     top: 80px;
-    left: 0;
+    left: 10px;
     height: calc(100% - 180px);
-    width: calc(100% - 20px);
+    width: calc(100% - 40px);
     z-index: 6;
 }
 

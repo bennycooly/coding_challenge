@@ -338,15 +338,15 @@ angular.module('myApp.controllers', ['myApp.services'])
 		}
 	})
 
-	.controller('ProfileCtrl', function($scope, $state) {
+	.controller('ProfileCtrl', function($scope, $state, $ionicPopup) {
 		var currentUser = Parse.User.current();
 
 		$scope.id = currentUser.get('username');
 		$scope.fullName = currentUser.get('firstName')+" "+Parse.User.current().get('lastName');
-		$scope.hours = currentUser.get('hours');
+		$scope.hours = 0;
 
-		$scope.eventsString = currentUser.get('events');
-		if($scope.eventsString !== undefined) $scope.events = $scope.eventsString.split(", ");
+		var eventsString = currentUser.get('events');
+		if(eventsString !== undefined && eventsString != "") $scope.events = eventsString.split(", ");
 		else $scope.events = [];
 
 		$scope.upcoming = [];
@@ -357,58 +357,66 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.progressMonth = ["", "", ""];
 		for (var i=2; i>=0; i--) { $scope.progressMonth[Math.abs(i-2)] = $scope.months[$scope.currentDate.getMonth()-(i+1)]; }
 
-		if ($scope.events.length != 0) {
-			for (var i=0; i<$scope.events.length; i++) {
-				var query = new Parse.Query("Event");
-				query.get($scope.events[i], {
-					success: function(object) {
-						var date = object.attributes.date;
-						if (date >= $scope.currentDate) {
-							var upcomingEvent = {id: object.id, name: object.attributes.name, date: date};
-							$scope.upcoming.push(upcomingEvent);
-						} else {
-							var progressDate = $scope.currentDate;
-							for (var j=0; j<3; j++) {
-								progressDate.setMonth(progressDate.getMonth()-1);
-								if (date.getYear() == progressDate.getYear() && date.getMonth() == progressDate.getMonth()) {
-									var start = object.attributes.startTime;
-									var startHour = parseInt(start.split(":")[0]);
-									var end = object.attributes.endTime;
-									var endHour = parseInt(end.split(":")[0]);
-									if (start.split(" ")[1] == "PM") startHour += 12;
-									if (end.split(" ")[1] == "PM") endHour += 12;
-									$scope.progress[j] += (endHour - startHour);
-								}
+		for (var i=0; i<$scope.events.length; i++) {
+			var query = new Parse.Query("Event");
+			query.get($scope.events[i], {
+				success: function(object) {
+					var date = object.attributes.date;
+					if (date >= $scope.currentDate) {
+						var upcomingDate = date.getMonthFormatted()+"/"+date.getDate()+"/"+date.getFullYear();
+						var upcomingEvent = {id: object.id, name: object.attributes.name, date: upcomingDate};
+						$scope.upcoming.push(upcomingEvent);
+					} else {
+						var progressDate = $scope.currentDate;
+						for (var j=0; j<3; j++) {
+							progressDate.setMonth(progressDate.getMonth()-1);
+							if (date.getYear() == progressDate.getYear() && date.getMonth() == progressDate.getMonth()) {
+								var start = object.attributes.startTime;
+								var startHour = parseInt(start.split(":")[0]);
+								var end = object.attributes.endTime;
+								var endHour = parseInt(end.split(":")[0]);
+								if (start.split(" ")[1] == "PM") startHour += 12;
+								if (end.split(" ")[1] == "PM") endHour += 12;
+								$scope.progress[j] += (endHour - startHour);
+								$scope.hours += (endHour - startHour);
 							}
 						}
-						$scope.$apply();
-						if ($scope.events.indexOf(object.id) == $scope.events.length-1) {
-							var data = {
-								labels: $scope.progressMonth,
-								datasets: [{
-									fillColor: "rgba(0,0,0,0.5)",
-									strokeColor: "rgba(0,0,0,0.8)",
-									highlightFill: "rgba(0,0,0,0.75)",
-									highlightStroke: "rgba(0,0,0,1)",
-									data: $scope.progress
-								}]
-							};
-
-							var chart = document.getElementById("canvas").getContext("2d");
-							document.chart = new Chart(chart).Bar(data, { responsive: true });
-						}
 					}
-				});
-			}
+					$scope.$apply();
+					if ($scope.events.indexOf(object.id) == $scope.events.length-1) {
+						$scope.moneySaved = Math.round($scope.hours*22.9*100)/100;
+						var data = {
+							labels: $scope.progressMonth,
+							datasets: [{
+								fillColor: "rgba(0,0,0,0.5)",
+								strokeColor: "rgba(0,0,0,0.8)",
+								highlightFill: "rgba(0,0,0,0.75)",
+								highlightStroke: "rgba(0,0,0,1)",
+								data: $scope.progress
+							}]
+						};
+
+						var chart = document.getElementById("canvas").getContext("2d");
+						document.chart = new Chart(chart).Bar(data, { responsive: true });
+					}
+				}
+			});
 		}
 
-		$scope.info = {firstName: currentUser.get('firstName'), lastName: currentUser.get('lastName'), error: false};
+		$scope.info = {firstName: currentUser.get('firstName'), lastName: currentUser.get('lastName')};
+
+		$scope.selectUpcoming = function(event) {
+			if(event.type == "event") $state.go("app.event", {param:{id:event.id}});
+			$state.go("app.event", {param:{id:event.id}});
+		};
 
 		$scope.saveProfileChanges = function() {
 			currentUser.set('firstName', $scope.info.firstName);
 			currentUser.set('lastName', $scope.info.lastName);
-			currentUser.save(null, { success: function(result) { $scope.info.error = false; }, error: function(result) {
-				$scope.info.error = true;
+			currentUser.save(null, { success: function(result) {}, error: function(result) {
+				var alert = $ionicPopup.alert({
+					title: "Error saving info!"
+				});
 				return;
 			}});
 			$state.go("app.settings", {}, {refresh: true});
@@ -448,9 +456,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 
 		$scope.select = function(newsItem) {
-			// If the news type is event do the below
-			$state.go("app.event", {param:{id:newsItem.id}});
 			if(newsItem.type == "event") $state.go("app.event", {param:{id:newsItem.id}});
+			$state.go("app.event", {param:{id:newsItem.id}});
 		};
 	})
 
