@@ -628,6 +628,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 						}
 					});
 
+					var alert = $ionicPopup.alert({title: "Event Successfully Created!"});
+
 					if(!injected) $state.go("app.profile", {}, {refresh: true});
 				}, error: function(result) {
 					var alert = $ionicPopup.alert({
