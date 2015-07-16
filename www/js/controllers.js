@@ -140,7 +140,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.login = function() {
 			// UNCOMMENT this line when deploying to device. Hides the keyboard on submit
-			cordova.plugins.Keyboard.close();
+			//cordova.plugins.Keyboard.close();
 			var username = $scope.loginData.username;
 			var password = $scope.loginData.password;
 			//check for valid characters
@@ -235,7 +235,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	})
 
-	.controller('HomeCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicLoading, $timeout, $localStorage, $user, $events, $ionicModal) {
+	.controller('HomeCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicBackdrop, $timeout, $localStorage, $user, $events, $ionicModal) {
 		$scope.$on('$ionicView.loaded', function() {
 			$ionicModal.fromTemplateUrl('templates/search_modal.html', {
 				scope: $scope,
@@ -247,26 +247,34 @@ angular.module('myApp.controllers', ['myApp.services'])
 		});
 
 		$scope.$on('$ionicView.beforeEnter', function () {
-			$scope.loadingHome = $ionicLoading.show({
-				template: '<p>Loading...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
-			});
-			$scope.isActive = false;
-			$scope.menuOutlinePressed = false;
-			$scope.menuBackgroundPressed = false;
-			$scope.menuIconPressed = false;
-			$scope.menuText = false;
-			$scope.menuOpen = false;
-			$scope.menuAnimate = false;
-			$scope.menuClicked = false;
-			$scope.showBackdrop = false;
+			$ionicHistory.clearHistory();
+			var openModal = $localStorage.get('leftSearchModal');
+			if(openModal != 'true') {
+				$scope.isActive = false;
+				$scope.menuOutlinePressed = false;
+				$scope.menuBackgroundPressed = false;
+				$scope.menuIconPressed = false;
+				$scope.menuText = false;
+				$scope.menuOpen = false;
+				$scope.menuAnimate = false;
+				$scope.menuClicked = false;
+				$scope.showBackdrop = false;
+				$scope.animateMenu = true;
 
-			$user.updateLocalStorage();
-			$scope.user = $user.get();
-			console.log('user from localstorage: ' + $scope.user.firstName);
-			$events.updateLocalStorage();
-			$scope.events = $events.get();
-			$scope.eventsDateAscending = $events.get('eventsDateAscending');
-			console.log($scope.eventsDateAscending);
+				$user.updateLocalStorage();
+				$scope.user = $user.get();
+				console.log('user from localstorage: ' + $scope.user.firstName);
+				$events.updateLocalStorage();
+				$scope.events = $events.get();
+				$scope.eventsDateAscending = $events.get('eventsDateAscending');
+				console.log($scope.eventsDateAscending);
+			}
+			/*$scope.loadingHome = $ionicLoading.show({
+				template: '<p>Loading...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
+			});*/
+			else {
+				$scope.animateMenu = false;
+			}
 
 		});
 
@@ -275,7 +283,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			console.log(openModal);
 			if (openModal == 'true') {
 				console.log('plz');
-				$scope.openSearchModal();
+				//$scope.openSearchModal();
 				console.log('opening modal');
 				$localStorage.set('leftSearchModal', 'false');
 			}
@@ -283,16 +291,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.showHomeMenu = true;
 			$timeout( function() {
 				$ionicLoading.hide();
-			}, 100);
+			}, 1000);
 
 		});
-		/*$ionicModal.fromTemplateUrl('templates/search_modal.html', {
-			scope: $scope,
-			animation: 'slide-in-up',
-			focusFirstInput: true
-		}).then(function(modal) {
-			$scope.searchModal = modal;
-		});*/
 
 		$scope.openSearchModal = function() {
 			$scope.searchModal.show();
@@ -346,15 +347,15 @@ angular.module('myApp.controllers', ['myApp.services'])
 						$state.go('app.calendar', {clear: true}, {refresh: true});
 						break;
 					case 'search':
-						/*$ionicHistory.nextViewOptions({
+						$ionicHistory.nextViewOptions({
 							disableBack: false
 						});
-						$state.go('app.search');*/
-						$scope.openSearchModal();
+						$state.go('app.search');
+						//$scope.openSearchModal();
 						break;
 				}
 				$scope.menuClicked = false;
-			}, 500);
+			}, 200);
 		};
 		//close the menu if it's open
 		$scope.menuClose = function() {
@@ -374,8 +375,12 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.$on('$ionicView.beforeLeave', function() {
 			console.log('closing menu');
-			$scope.menuClose();
-			$scope.showHomeMenu = false;
+			console.log($ionicHistory.currentStateName());
+			if($ionicHistory.currentStateName() != 'app.search') {
+				$scope.menuClose();
+				$scope.showHomeMenu = false;
+			}
+
 		});
 		$scope.$on('$ionicView.afterLeave', function () {
 			/*$scope.menuClose();
@@ -383,7 +388,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		});
 	})
 
-	.controller('SearchCtrl', function($scope, $state, $events, $localStorage, $ionicHistory) {
+	.controller('SearchCtrl', function($scope, $state, $events, $localStorage, $ionicHistory, $ionicViewSwitcher) {
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$scope.events = $events.get();
 			$scope.eventsDateAscending = $events.get('eventsDateAscending');
@@ -408,6 +413,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$state.go('app.home');*/
 			//cordova.plugins.Keyboard.close();
 			$localStorage.set('leftSearchModal', 'true');
+			console.log($ionicHistory.viewHistory());
+			$ionicViewSwitcher.nextDirection('back');
 			$state.go('app.home');
 		}
 	})
