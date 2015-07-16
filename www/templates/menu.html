@@ -18,23 +18,23 @@
 		</ion-header-bar>
 		<ion-content class="side-menu-background">
 			<ion-list>
-				<ion-item menu-close href="#/app/home" class="item item-icon-left item-dark">
+				<ion-item menu-close ng-click="goHome()" class="item item-icon-left item-dark">
 					<i class="icon ion-home"></i>
 					Home
 				</ion-item>
-				<ion-item menu-close href="#/app/profile" class="item item-icon-left item-dark">
+				<ion-item menu-close ng-click="goProfile()" class="item item-icon-left item-dark">
 					<i class="icon ion-person"></i>
 					Profile
 				</ion-item>
-				<ion-item menu-close href="#/app/calendar" class="item item-icon-left item-dark">
+				<ion-item menu-close ng-click="goCalendar()" class="item item-icon-left item-dark">
 					<i class="icon ion-calendar"></i>
 					Calendar
 				</ion-item>
-				<ion-item menu-close href="#/app/newsfeed" class="item item-icon-left item-dark">
+				<ion-item menu-close ng-click="goNewsfeed()" class="item item-icon-left item-dark">
 					<i class="icon ion-ios-people"></i>
 					Newsfeed
 				</ion-item>
-				<ion-item menu-close href="#/app/settings" class="item item-icon-left item-dark">
+				<ion-item menu-close ng-click="goSettings()" class="item item-icon-left item-dark">
 					<i class="icon ion-gear-a"></i>
 					Settings
 				</ion-item>

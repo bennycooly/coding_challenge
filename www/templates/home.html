@@ -8,7 +8,7 @@
 			</button>
 		</ion-nav-buttons>
 	</ion-nav-bar>
-	<ion-content class="animated fadeIn" scroll="false">
+	<ion-content class="animated fadeIn" ng-show="showHomeMenu" scroll="false">
 		<div style="z-index:6;">
 			<h2 style="text-align: center; color: white;">
 				Hello, <span ng-bind="user.firstName">!</span>
@@ -22,7 +22,7 @@
 						   ng-class="{'pressed': menuBackgroundPressed}"></i>
 						<i class="fa fa-circle-o-notch fa-stack-2x fa-inverse menu-button-outline"
 						   ng-class="{'pressed': menuOutlinePressed}"></i>
-						<i class="fa fa-power-off fa-stack-1x fa-inverse menu-button-icon"
+						<i class="fa fa-street-view fa-stack-1x fa-inverse menu-button-icon"
 						   ng-class="{'pressed': menuIconPressed}"></i>
 						<strong class="fa-stack-1x icon-text menu-button-text" ng-class="{'pressed': menuText}">Menu</strong>
 					</span>
@@ -67,7 +67,12 @@
 		</div>
 		<div class="list list-inset home-card-wrapper"></div>
 		<div class="list list-inset home-card">
-			<ion-content>
+			<ion-content has-bouncing="true" style="">
+				<h5 style="text-align: center; color: white;">
+					<i class="fa fa-angle-up fa-1x"></i>
+					Quick Menu
+					<i class="fa fa-angle-up fa-1x"></i>
+				</h5>
 				<div class="item list-inset front-page-module">
 					hello
 				</div>

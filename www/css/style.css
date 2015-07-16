@@ -151,16 +151,15 @@
 }
 
 .menu-button-background {
-    color: darkgrey;
+    color: #a1bbb0;
     z-index: 0;
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     transition-delay: 0.2s;
 }
 
 .menu-button-background.pressed {
-    color: darkslateblue;
     -webkit-transform: translate3D(0,1em,0) scale(2);
     -moz-transform: translate3D(0,1em,0) scale(2);
     transform: translate3D(0,1em,0) scale(2);
@@ -173,14 +172,14 @@
     -webkit-transform: rotate(40deg);
     -moz-transform: rotate(40deg);
     transform: rotate(40deg);
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     transition-delay: 0.2s;
 }
 
 .menu-button-outline.pressed {
-    color: darksalmon;
+    color: darkslategray;
     -webkit-transform: translate3D(0,1em,0) rotate(130deg) scale(2);
     -moz-transform: translate3D(0,1em,0) rotate(130deg) scale(2);
     transform: translate3D(0,1em,0) rotate(130deg) scale(2);
@@ -188,16 +187,16 @@
 }
 
 .menu-button-icon {
-    color: white;
+    color: darkslategray;
     z-index: 1;
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     transition-delay: 0.2s;
 }
 
 .menu-button-icon.pressed {
-    color: lightblue;
+    color: white;
     -webkit-transform: translate3D(0,3em,0);
     -moz-transform: translate3D(0,3em,0);
     transform: translate3D(0,3em,0);
@@ -205,7 +204,7 @@
 }
 
 .menu-button-text {
-    color: lightblue;
+    color: white;
     opacity: 0;
     visibility: hidden;
     font-size: 30px;
@@ -215,16 +214,15 @@
     left: calc(50% - 50px);
     line-height: 10px;
     position: absolute;
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 .menu-button-text.pressed {
-    color: lightblue;
     opacity: 1;
     visibility: visible;
-    transition-delay: 0.9s;
+    transition-delay: 0.5s;
 }
 
 .circle {
@@ -250,10 +248,10 @@
     -webkit-transform: translate3D(-4em,0,0);
     -moz-transform: translate3D(-4em,0,0);
     transform: translate3D(-4em,0,0);
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-    transition-delay: 0.5s;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    transition-delay: 0.3s;
 }
 
 .home-event {
@@ -272,10 +270,10 @@
     -webkit-transform: translate3D(-3em,-3em,0);
     -moz-transform: translate3D(-3em,-3em,0);
     transform: translate3D(-3em,-3em,0);
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-    transition-delay: 0.5s;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    transition-delay: 0.3s;
 }
 
 .home-newsfeed {
@@ -294,10 +292,10 @@
     -webkit-transform: translate3D(0,-4.3em,0);
     -moz-transform: translate3D(0,-4.3em,0);
     transform: translate3D(0,-4.3em,0);
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-    transition-delay: 0.5s;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    transition-delay: 0.3s;
 }
 
 .home-calendar {
@@ -316,10 +314,10 @@
     -webkit-transform: translate3D(3em,-3em,0);
     -moz-transform: translate3D(3em,-3em,0);
     transform: translate3D(3em,-3em,0);
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-    transition-delay: 0.5s;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    transition-delay: 0.3s;
 }
 
 .home-search {
@@ -338,10 +336,10 @@
     -webkit-transform: translate3D(4em,0,0);
     -moz-transform: translate3D(4em,0,0);
     transform: translate3D(4em,0,0);
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-    transition-delay: 0.5s;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    transition-delay: 0.3s;
 }
 
 .menu-clicked {
@@ -384,6 +382,6 @@
 
 .front-page-module {
     position: relative;
-    left: 25%;
-    width: 50%;
+    left: 15%;
+    width: 70%;
 }

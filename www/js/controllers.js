@@ -16,6 +16,76 @@ angular.module('myApp.controllers', ['myApp.services'])
 			}, 1000);
 		};
 
+		$scope.goHome = function() {
+			console.log($state.current.name);
+			if ($state.current.name != 'app.home') {
+				$timeout( function() {
+					$ionicHistory.nextViewOptions({
+						disableBack: true,
+						disableAnimate: true
+					});
+					$state.go('app.home');
+				}, 0);
+
+			}
+		};
+
+		$scope.goProfile = function() {
+			console.log($state.current.name);
+			if ($state.current.name != 'app.profile') {
+				$timeout( function() {
+					$ionicHistory.nextViewOptions({
+						disableBack: true,
+						disableAnimate: true
+					});
+					$state.go('app.profile');
+				}, 0);
+
+			}
+		};
+
+		$scope.goCalendar = function() {
+			console.log($state.current.name);
+			if ($state.current.name != 'app.calendar') {
+				$timeout( function() {
+					$ionicHistory.nextViewOptions({
+						disableBack: true,
+						disableAnimate: true
+					});
+					$state.go('app.calendar');
+				}, 0);
+
+			}
+		};
+
+		$scope.goNewsfeed = function() {
+			console.log($state.current.name);
+			if ($state.current.name != 'app.newsfeed') {
+				$timeout( function() {
+					$ionicHistory.nextViewOptions({
+						disableBack: true,
+						disableAnimate: true
+					});
+					$state.go('app.newsfeed');
+				}, 0);
+
+			}
+		};
+
+		$scope.goSettings = function() {
+			console.log($state.current.name);
+			if ($state.current.name != 'app.settings') {
+				$timeout( function() {
+					$ionicHistory.nextViewOptions({
+						disableBack: true,
+						disableAnimate: true
+					});
+					$state.go('app.settings');
+				}, 0);
+
+			}
+		};
+
 	})
 
 	.controller('WelcomeCtrl', function($state) {
@@ -70,7 +140,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.login = function() {
 			// UNCOMMENT this line when deploying to device. Hides the keyboard on submit
-			// cordova.plugins.Keyboard.close();
+			cordova.plugins.Keyboard.close();
 			var username = $scope.loginData.username;
 			var password = $scope.loginData.password;
 			//check for valid characters
@@ -210,9 +280,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 				$localStorage.set('leftSearchModal', 'false');
 			}
 			//$scope.openSearchModal();
+			$scope.showHomeMenu = true;
 			$timeout( function() {
 				$ionicLoading.hide();
-			}, 200);
+			}, 100);
+
 		});
 		/*$ionicModal.fromTemplateUrl('templates/search_modal.html', {
 			scope: $scope,
@@ -301,7 +373,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 
 		$scope.$on('$ionicView.beforeLeave', function() {
-			//$scope.menuClose();
+			console.log('closing menu');
+			$scope.menuClose();
+			$scope.showHomeMenu = false;
 		});
 		$scope.$on('$ionicView.afterLeave', function () {
 			/*$scope.menuClose();
