@@ -425,6 +425,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.id = currentUser.get('username');
 		$scope.fullName = currentUser.get('firstName')+" "+Parse.User.current().get('lastName');
 		$scope.hours = 0;
+		$scope.phone = currentUser.get('phone');
+		$scope.email = currentUser.get('email');
+		$scope.interests = currentUser.get('interests');
+		$scope.interestsList = $scope.interests.split(',');
 
 		var eventsString = currentUser.get('events');
 		if(eventsString !== undefined && eventsString != "") $scope.events = eventsString.split(", ");
@@ -484,7 +488,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 			});
 		}
 
-		$scope.info = {firstName: currentUser.get('firstName'), lastName: currentUser.get('lastName')};
+
+
+		$scope.info = {firstName: currentUser.get('firstName'), lastName: currentUser.get('lastName'), phone: currentUser.get('phone'),
+			email: currentUser.get('email'), interests: currentUser.get('interests')};
 
 		$scope.selectUpcoming = function(event) {
 			if(event.type == "event") $state.go("app.event", {param:{id:event.id}});
@@ -494,6 +501,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.saveProfileChanges = function() {
 			currentUser.set('firstName', $scope.info.firstName);
 			currentUser.set('lastName', $scope.info.lastName);
+			currentUser.set('phone', $scope.info.phone);
+			currentUser.set('email', $scope.info.email);
+			currentUser.set('interests', $scope.info.interests);
 			currentUser.save(null, { success: function(result) {}, error: function(result) {
 				var alert = $ionicPopup.alert({
 					title: "Error saving info!"
