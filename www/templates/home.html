@@ -8,7 +8,8 @@
 			</button>
 		</ion-nav-buttons>
 	</ion-nav-bar>
-	<ion-content ng-class="{'animated fadeIn': animateMenu}" ng-show="showHomeMenu" scroll="false">
+	<ion-content ng-class="{'animated fadeIn': animateMenu}" ng-show="showHomeMenu" style="animation-delay: 0.5s;"
+				 scroll="false">
 		<div style="z-index:6;">
 			<h2 style="text-align: center; color: white;">
 				Hello, <span ng-bind="user.firstName">!</span>
@@ -67,19 +68,34 @@
 		</div>
 		<div class="list list-inset home-card-wrapper"></div>
 		<div class="list list-inset home-card">
-			<ion-content has-bouncing="true" style="">
-				<h5 style="text-align: center; color: white;">
-					<i class="fa fa-angle-up fa-1x"></i>
-					Quick Menu
-					<i class="fa fa-angle-up fa-1x"></i>
-				</h5>
-				<div class="item list-inset front-page-module">
-					hello
-				</div>
-				<div class="item list-inset front-page-module">
-					hi
-				</div>
-			</ion-content>
+			<ion-slide-box pager-click="changeSlide(index)">
+				<ion-slide>
+                    <ion-content scroll="false">
+                        <h4 class="front-page-header">Your Events</h4>
+                    </ion-content>
+					<ion-scroll has-bouncing="true" class="front-page-list-container">
+						<ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
+                            <ion-item class="front-page-item item-dark" ng-repeat="event in eventsDateAscending">
+                                <h2>{{event.name}}</h2>
+                                <p>{{event.date.iso | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
+                            </ion-item>
+                        </ion-list>
+					</ion-scroll>
+				</ion-slide>
+				<ion-slide>
+                    <ion-content scroll="false">
+                        <h4 class="front-page-header">Upcoming Events</h4>
+                    </ion-content>
+                    <ion-scroll has-bouncing="true" class="front-page-list-container">
+                        <ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
+                            <ion-item class="front-page-item item-dark" ng-repeat="event in eventsDateAscending">
+                                <h2>{{event.name}}</h2>
+                                <p>{{event.date.iso | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
+                            </ion-item>
+                        </ion-list>
+                    </ion-scroll>
+				</ion-slide>
+			</ion-slide-box>
 		</div>
 
 	</ion-content>
