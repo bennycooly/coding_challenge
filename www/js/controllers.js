@@ -235,20 +235,19 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	})
 
-	.controller('HomeCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicBackdrop, $timeout, $localStorage, $user, $events, $ionicModal) {
-		$scope.$on('$ionicView.loaded', function() {
-			$ionicModal.fromTemplateUrl('templates/search_modal.html', {
-				scope: $scope,
-				animation: 'slide-in-up',
-				focusFirstInput: true
-			}).then(function(modal) {
-				$scope.searchModal = modal;
-			});
-		});
+	.controller('HomeCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicBackdrop, $timeout, $localStorage, $user, $events, $ionicSlideBoxDelegate) {
 
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$ionicHistory.clearHistory();
 			var openModal = $localStorage.get('leftSearchModal');
+			$scope.showHomeMenu = true;
+            $user.updateLocalStorage();
+            $scope.user = $user.get();
+            console.log('user from localstorage: ' + $scope.user.firstName);
+            $events.updateLocalStorage();
+            $scope.events = $events.get();
+            $scope.eventsDateAscending = $events.get('eventsDateAscending');
+            console.log($scope.eventsDateAscending);
 			if(openModal != 'true') {
 				$scope.isActive = false;
 				$scope.menuOutlinePressed = false;
@@ -260,14 +259,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 				$scope.menuClicked = false;
 				$scope.showBackdrop = false;
 				$scope.animateMenu = true;
-
-				$user.updateLocalStorage();
-				$scope.user = $user.get();
-				console.log('user from localstorage: ' + $scope.user.firstName);
-				$events.updateLocalStorage();
-				$scope.events = $events.get();
-				$scope.eventsDateAscending = $events.get('eventsDateAscending');
-				console.log($scope.eventsDateAscending);
 			}
 			/*$scope.loadingHome = $ionicLoading.show({
 				template: '<p>Loading...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
@@ -279,39 +270,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 		});
 
 		$scope.$on('$ionicView.afterEnter', function() {
-			var openModal = $localStorage.get('leftSearchModal');
-			console.log(openModal);
-			if (openModal == 'true') {
-				console.log('plz');
-				//$scope.openSearchModal();
-				console.log('opening modal');
-				$localStorage.set('leftSearchModal', 'false');
-			}
-			//$scope.openSearchModal();
 			$scope.showHomeMenu = true;
 			$timeout( function() {
 				$ionicLoading.hide();
 			}, 1000);
 
-		});
-
-		$scope.openSearchModal = function() {
-			$scope.searchModal.show();
-		};
-		$scope.closeSearchModal = function() {
-			$scope.searchModal.hide();
-		};
-		//Cleanup the modal when we're done with it!
-		$scope.$on('$destroy', function() {
-			$scope.searchModal.remove();
-		});
-		// Execute action on hide modal
-		$scope.$on('modal.hidden', function() {
-			// Execute action
-		});
-		// Execute action on remove modal
-		$scope.$on('modal.removed', function() {
-			// Execute action
 		});
 
 		$scope.toggleMenu = function() {
@@ -362,15 +325,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 			if ($scope.isActive) {$scope.toggleMenu(event);}
 		};
 
-		$scope.selectEvent = function(event) {
-			// If the news type is event do the below
-			console.log(event.eventId);
-			$localStorage.set('leftSearchModal', true);
-			$scope.closeSearchModal();
-			$ionicHistory.nextViewOptions({
-				disableBack: false
-			});
-			$state.go("app.event", {param:{id:event.eventId}});
+		$scope.changeSlide = function(index) {
+			console.log('clicked');
+			//change slide to clicked index
+			$ionicSlideBoxDelegate.slide(index);
 		};
 
 		$scope.$on('$ionicView.beforeLeave', function() {
@@ -401,7 +359,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.selectEvent = function(event) {
 			// If the news type is event do the below
 			$scope.input = '';
-			$state.go("app.event", {param:{id:event.eventId}});
+            console.log(event);
+			$state.go("app.event", {param:{id:event.eventId}}, {reload: true});
 		};
 
 		$scope.closeSearch = function() {

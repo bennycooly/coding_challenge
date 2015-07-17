@@ -115,14 +115,14 @@
 .circle-event {
     color: coral;
 }
-.circle-calendar {
-    color: greenyellow;
-}
 .circle-newsfeed {
     color: hotpink;
 }
+.circle-calendar {
+    color: #66CD00;
+}
 .circle-search {
-    color: gold;
+    color: #cccc00;
 }
 
 .menu-icon-scale {
@@ -151,7 +151,7 @@
 }
 
 .menu-button-background {
-    color: #a1bbb0;
+    color: #95c5c2;
     z-index: 0;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -204,7 +204,7 @@
 }
 
 .menu-button-text {
-    color: white;
+    color: darkslategray;
     opacity: 0;
     visibility: hidden;
     font-size: 30px;
@@ -380,8 +380,63 @@
     z-index: 6;
 }
 
+.slider{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.slider-pager {
+    top: initial;
+    bottom: 0;
+    color: #fff;
+}
+
+.slider-pager .slider-pager-page.active
+{
+    color: #86b8b6;
+}
+
+.slider-pager .slider-pager-page
+{
+    color: #86b8b6;
+    stroke: #fff !important;
+}
+
 .front-page-module {
     position: relative;
-    left: 15%;
-    width: 70%;
+    left: 5%;
+    width: 90%;
+}
+
+.front-page-header {
+    position: relative;
+    background: none;
+    top: 70px;
+    border-bottom: 1px solid white;
+    text-align: center;
+    color: white;
+}
+
+.front-page-list-container {
+    width: 100%;
+    height: 80%;
+    top: 120px;
+}
+
+.front-page-list {
+    position: relative;
+    border: none;
+}
+.front-page-item {
+    background: none;
+    border: 1px solid white;
+}
+.front-page-item h2 {
+    color: white;
+}
+.front-page-item p {
+    color: lightgray;
 }
