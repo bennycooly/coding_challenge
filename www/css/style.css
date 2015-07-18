@@ -48,19 +48,19 @@
 
 .show-background {
     background: url(../img/people.jpg) no-repeat center center fixed;
-    -webkit-background-size: 100%;
-    -moz-background-size: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
     background-size: cover;
 }
 
 #login {
-    animation-delay: 1s;
-    -webkit-animation-delay: 1s;
+    animation-delay: 2s;
+    -webkit-animation-delay: 2s;
 }
 
 .login-button-delay {
-    animation-delay: 2s;
-    -webkit-animation-delay: 2s;
+    animation-delay: 3s;
+    -webkit-animation-delay: 3s;
 }
 
 .transparent {
@@ -80,6 +80,26 @@
 
 #email {
     background-color: transparent;
+}
+
+.animate-home-menu {
+    animation-delay: 0.5s;
+    animation-duration: 3s;
+}
+
+.animate-home-menu-first {
+    animation-delay: 1.5s;
+    animation-duration: 6s;
+}
+
+.animate-home-circle {
+    animation-delay: 0.75s;
+    animation-duration: 1.5s;
+}
+
+.animate-home-circle-first {
+    animation-delay: 1.5s;
+    animation-duration: 3s;
 }
 
 .circle-menu {
@@ -237,9 +257,9 @@
     visibility: hidden;
     left: calc(50% - 28px);
     top: calc(50% + 100px);
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
 }
 
 .home-profile.pressed {
@@ -260,9 +280,9 @@
     visibility: hidden;
     left: calc(50% - 28px);
     top: calc(50% + 100px);
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
 }
 .home-event.pressed {
     opacity: 1;
@@ -282,9 +302,9 @@
     visibility: hidden;
     left: calc(50% - 28px);
     top: calc(50% + 100px);
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
 }
 .home-newsfeed.pressed {
     opacity: 1;
@@ -304,9 +324,9 @@
     visibility: hidden;
     left: calc(50% - 28px);
     top: calc(50% + 100px);
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
 }
 .home-calendar.pressed {
     opacity: 1;
@@ -326,9 +346,9 @@
     visibility: hidden;
     left: calc(50% - 28px);
     top: calc(50% + 100px);
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
 }
 .home-search.pressed {
     opacity: 1;
@@ -348,7 +368,7 @@
 
 .menu-animate {
     animation: pulse 1s infinite ease-out;
-    animation-delay: 1s;
+    animation-delay: 0.7s;
 }
 
 .home-menu {
@@ -359,23 +379,23 @@
 
 .home-card-wrapper {
     position: absolute;
-    background: url(../img/people.jpg) no-repeat center center fixed;
+    background: url('../img/people.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
-    -moz-background-size: cover;
     background-size: cover;
-    top: 80px;
+    top: -60px;
     left: 10px;
-    height: calc(100% - 180px);
+    /*height: calc(100% - 180px);*/
+    height: calc(100% + 40px);
     width: calc(100% - 40px);
     -webkit-filter: blur(10px);
     z-index: 5;
 }
 .home-card {
     position: absolute;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.4);
     top: 80px;
     left: 10px;
-    height: calc(100% - 180px);
+    height: calc(100% - 120px);
     width: calc(100% - 40px);
     z-index: 6;
 }
@@ -414,7 +434,7 @@
 .front-page-header {
     position: relative;
     background: none;
-    top: 70px;
+    top: 50px;
     border-bottom: 1px solid white;
     text-align: center;
     color: white;
@@ -423,11 +443,11 @@
 .front-page-list-container {
     width: 100%;
     height: 80%;
-    top: 120px;
+    top: 100px;
 }
 
 .front-page-list {
-    position: relative;
+    top: -50px;
     border: none;
 }
 .front-page-item {

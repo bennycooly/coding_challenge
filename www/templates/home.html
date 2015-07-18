@@ -8,15 +8,16 @@
 			</button>
 		</ion-nav-buttons>
 	</ion-nav-bar>
-	<ion-content ng-class="{'animated fadeIn': animateMenu}" ng-show="showHomeMenu" style="animation-delay: 0.5s;"
-				 scroll="false">
-		<div style="z-index:6;">
-			<h2 style="text-align: center; color: white;">
+	<ion-content ng-class="{'animated fadeIn animate-home-menu': animateMenu && !animateMenuFirst,
+	'animated fadeIn animate-home-menu-first': animateMenuFirst && !animateMenu}" ng-show="showHomeMenu" scroll="false">
+		<div style="z-index:6; position: relative;">
+			<h3 style="text-align: center; color: white;">
 				Hello, <span ng-bind="user.firstName">!</span>
-			</h2>
+			</h3>
 		</div>
 		<div class="circle-menu" ng-class="{'show-backdrop': showBackdrop}" ng-click="menuClose()"></div>
-		<div class="home-menu" ng-class="{'animated fadeIn': animateMenu}" style="animation-delay: 0.5s;">
+		<div class="home-menu" ng-class="{'animated flipInX animate-home-circle': animateMenu && !animateMenuFirst,
+		'animated flip animate-home-circle-first': animateMenuFirst && !animateMenu}">
 			<nav class="menu-button">
 					<span class="fa-stack fa-4x" ng-click="toggleMenu()">
 						<i class="fa fa-circle fa-stack-2x menu-button-background"

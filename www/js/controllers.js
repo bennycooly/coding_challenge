@@ -1,7 +1,9 @@
 angular.module('myApp.controllers', ['myApp.services'])
 
 	.controller('AppCtrl', function ($scope, $state, $ionicLoading, $timeout, $user, $ionicHistory) {
-
+        $scope.$on('$ionicView.beforeEnter', function () {
+            $scope.fadeOut = false;
+        });
 		$scope.logout = function() {
 			console.log('logging out');
 			$user.logout();
@@ -11,6 +13,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 				template: '<p>Logging out...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
 				animation: 'fade-in'
 			});
+            $scope.fadeOut = true;
 			$timeout( function() {
 				$state.go('login', {clear: true}, {reload: true});
 			}, 1000);
@@ -92,7 +95,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$state.go('login', {}, {reload: true});
 	})
 
-	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, $ionicLoading, $timeout, $user) {
+	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, $ionicLoading, $timeout, $user, $ionicHistory, $localStorage) {
 
 		// With the new view caching in Ionic, Controllers are only called
 		// when they are recreated or on app start, instead of every page change.
@@ -103,7 +106,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.$on('$ionicView.beforeEnter', function() {
 			// Form data for the login modal
 			$scope.loginData = {};
-
+            $scope.fadeOut = false;
 			// log in the user automatically if he's already logged on
 			var currentUser = Parse.User.current();
 			if (currentUser) {
@@ -118,9 +121,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 					}, 500);
 					Parse.User.current().fetch({});
 					$timeout( function() {
-						$state.go('app.home', {}, {reload: true});
+                        $scope.fadeOut = true;
+                        $localStorage.set('fromLogin', 'true');
+						$state.go('app.home');
 					}, 3000);
-				}, 2500);
+				}, 3500);
 				// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
 
 			}
@@ -129,7 +134,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 				// close logout load if applicable
 				$timeout( function() {
 					$ionicLoading.hide();
-				}, 1000);
+				}, 2000);
 				// focus if needed...don't really need this though
 				/*$timeout( function() {
 				 $scope.input = 'username';
@@ -187,12 +192,21 @@ angular.module('myApp.controllers', ['myApp.services'])
 			Parse.User.logIn(username, password, {
 				success: function(user) {
 					$timeout.cancel(networkErrorMessage);
+                    $scope.fadeOut = true;
 					$user.updateLocalStorage();
 					console.log('success!');
 					/*$rootScope.user = user;
 					$rootScope.isLoggedIn = true;*/
 					$scope.clear();
-					$state.go('app.home', {clear: true}, {refresh: true});
+                    $localStorage.set('fromLogin', 'true');
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true,
+                        disableAnimate: true
+                    });
+                    $timeout( function() {
+                        $state.go('app.home');
+                    },0);
+
 					//$scope.hideLogin();
 				},
 				error: function(user, error) {
@@ -239,42 +253,46 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$ionicHistory.clearHistory();
-			var openModal = $localStorage.get('leftSearchModal');
-			$scope.showHomeMenu = true;
-            $user.updateLocalStorage();
-            $scope.user = $user.get();
-            console.log('user from localstorage: ' + $scope.user.firstName);
-            $events.updateLocalStorage();
-            $scope.events = $events.get();
-            $scope.eventsDateAscending = $events.get('eventsDateAscending');
-            console.log($scope.eventsDateAscending);
-			if(openModal != 'true') {
-				$scope.isActive = false;
-				$scope.menuOutlinePressed = false;
-				$scope.menuBackgroundPressed = false;
-				$scope.menuIconPressed = false;
-				$scope.menuText = false;
-				$scope.menuOpen = false;
-				$scope.menuAnimate = false;
-				$scope.menuClicked = false;
-				$scope.showBackdrop = false;
-				$scope.animateMenu = true;
-			}
-			/*$scope.loadingHome = $ionicLoading.show({
-				template: '<p>Loading...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>'
-			});*/
-			else {
-				$scope.animateMenu = false;
-			}
-
+            $scope.showHomeMenu = true;
+            var fromSearch = $localStorage.get('leftSearchModal');
+            if(fromSearch != 'true') {
+                $user.updateLocalStorage();
+                $scope.user = $user.get();
+                console.log('user from localstorage: ' + $scope.user.firstName);
+                $events.updateLocalStorage();
+                $scope.events = $events.get();
+                $scope.eventsDateAscending = $events.get('eventsDateAscending');
+                console.log($scope.eventsDateAscending);
+                $scope.isActive = false;
+                $scope.menuOutlinePressed = false;
+                $scope.menuBackgroundPressed = false;
+                $scope.menuIconPressed = false;
+                $scope.menuText = false;
+                $scope.menuOpen = false;
+                $scope.menuAnimate = false;
+                $scope.menuClicked = false;
+                $scope.showBackdrop = false;
+                if($localStorage.get('fromLogin') == 'true') {
+                    $scope.animateMenuFirst = true;
+                    $scope.animateMenu = false;
+                    $localStorage.set('fromLogin', 'false');
+                }
+                else {
+                    $scope.animateMenu = true;
+                    $scope.animateMenuFirst = false;
+                }
+                //$scope.animateMenu = true;
+            }
+            else {
+                $localStorage.set('leftSearchModal', 'false');
+                $scope.animateMenu = false;
+            }
 		});
 
 		$scope.$on('$ionicView.afterEnter', function() {
-			$scope.showHomeMenu = true;
 			$timeout( function() {
 				$ionicLoading.hide();
 			}, 1000);
-
 		});
 
 		$scope.toggleMenu = function() {
@@ -310,9 +328,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 						$state.go('app.calendar', {clear: true}, {refresh: true});
 						break;
 					case 'search':
-						$ionicHistory.nextViewOptions({
-							disableBack: false
-						});
 						$state.go('app.search');
 						//$scope.openSearchModal();
 						break;
@@ -336,7 +351,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 			console.log($ionicHistory.currentStateName());
 			if($ionicHistory.currentStateName() != 'app.search') {
 				$scope.menuClose();
-				$scope.showHomeMenu = false;
 			}
 
 		});
@@ -372,7 +386,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$state.go('app.home');*/
 			//cordova.plugins.Keyboard.close();
 			$localStorage.set('leftSearchModal', 'true');
-			console.log($ionicHistory.viewHistory());
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
 			$ionicViewSwitcher.nextDirection('back');
 			$state.go('app.home');
 		}
