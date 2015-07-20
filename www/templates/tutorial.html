@@ -1,0 +1,41 @@
+<ion-modal-view>
+    <ion-header-bar align-title="left" class="bar-light">
+        <div class="buttons">
+            <button class="button button-clear button-positive" ng-click="leftButtonClick()">{{leftButton}}</button>
+        </div>
+        <h1 class="title" style="text-align: center;">Welcome Tutorial</h1>
+        <div class="buttons">
+            <button class="button button-clear button-positive" ng-click="rightButtonClick()">{{rightButton}}</button>
+        </div>
+    </ion-header-bar>
+    <div>
+        <ion-slide-box style="top: 50px;" show-pager="false" on-slide-changed="updateSlide($index)">
+            <!-- Slide page one -->
+            <ion-slide>
+                <h2>Welcome!</h2>
+                <p>
+                    Thanks for trying my app.
+                </p>
+            </ion-slide>
+            <!-- Slide page two -->
+            <ion-slide>
+                <h2>Try this!</h2>
+                <p>
+                    Tap the "Awesome" button anytime you want
+                    to feel a bit more awesome. It's easy!
+                </p>
+            </ion-slide>
+            <!-- More slides here... -->
+            <ion-slide>
+                <h2>Try this!</h2>
+                <p>
+                    Tap the "Awesome" button anytime you want
+                    to feel a bit more awesome. It's easy!
+                </p>
+                <button class="button button-calm" ng-click="goHome()">Go Home</button>
+                <button class="button button-assertive" ng-click="closeModal()" ng-show="allowClose">Close</button>
+            </ion-slide>
+        </ion-slide-box>
+    </div>
+
+</ion-modal-view>

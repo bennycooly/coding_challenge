@@ -52,10 +52,10 @@ angular.module('myApp', ['ionic',
 				controller: 'AppCtrl'
 			})
 
-			.state('welcome', {
-				url: "/welcome",
-				templateUrl: "templates/welcome.html",
-				controller: 'WelcomeCtrl'
+			.state('showtutorial', {
+				url: "/showtutorial",
+				templateUrl: "templates/showtutorial.html",
+				controller: 'TutorialCtrl'
 
 			})
 			.state('login', {
@@ -126,7 +126,8 @@ angular.module('myApp', ['ionic',
 				url: "/settings",
 				views: {
 					'menuContent': {
-						templateUrl: "templates/settings.html"
+						templateUrl: "templates/settings.html",
+                        controller: 'SettingsCtrl'
 					}
 				}
 			})

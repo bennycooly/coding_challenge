@@ -120,11 +120,13 @@ angular.module('myApp.controllers', ['myApp.services'])
 						});
 					}, 500);
 					Parse.User.current().fetch({});
-					$timeout( function() {
+                    $timeout( function() {
                         $scope.fadeOut = true;
+                    }, 1500);
+					$timeout( function() {
                         $localStorage.set('fromLogin', 'true');
 						$state.go('app.home');
-					}, 3000);
+					}, 2000);
 				}, 3500);
 				// get the most updated information (if changed on Parse.com, will not need in actual app deployment)
 
@@ -192,9 +194,14 @@ angular.module('myApp.controllers', ['myApp.services'])
 			Parse.User.logIn(username, password, {
 				success: function(user) {
 					$timeout.cancel(networkErrorMessage);
+                    // need these 2 lines of code for animation to work
+                    $scope.hideLogin();
+                    $scope.showLogin();
+                    // aniamte out
                     $scope.fadeOut = true;
+
 					$user.updateLocalStorage();
-					console.log('success!');
+					console.log(user);
 					/*$rootScope.user = user;
 					$rootScope.isLoggedIn = true;*/
 					$scope.clear();
@@ -204,8 +211,14 @@ angular.module('myApp.controllers', ['myApp.services'])
                         disableAnimate: true
                     });
                     $timeout( function() {
-                        $state.go('app.home');
-                    },0);
+                        if (user.attributes.firstTime) {
+                            //$state.go('showtutorial');
+                            $state.go('app.home');
+                        }
+                        else {
+                            $state.go('app.home');
+                        }
+                    },500);
 
 					//$scope.hideLogin();
 				},
@@ -252,6 +265,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 	.controller('HomeCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicBackdrop, $timeout, $localStorage, $user, $events, $ionicSlideBoxDelegate) {
 
 		$scope.$on('$ionicView.beforeEnter', function () {
+
 			$ionicHistory.clearHistory();
             $scope.showHomeMenu = true;
             var fromSearch = $localStorage.get('leftSearchModal');
@@ -281,11 +295,12 @@ angular.module('myApp.controllers', ['myApp.services'])
                     $scope.animateMenu = true;
                     $scope.animateMenuFirst = false;
                 }
-                //$scope.animateMenu = true;
+
             }
             else {
                 $localStorage.set('leftSearchModal', 'false');
                 $scope.animateMenu = false;
+                $scope.animateMenuFirst = false;
             }
 		});
 
@@ -698,4 +713,187 @@ angular.module('myApp.controllers', ['myApp.services'])
 			}});
 		};
 
-	});
+	})
+
+    .controller('SettingsCtrl', function($ionicModal, $ionicSlideBoxDelegate, $ionicLoading, $scope, $state, $ionicHistory, $localStorage) {
+        $scope.$on('$ionicView.loaded', function() {
+            $ionicModal.fromTemplateUrl('/templates/tutorial.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                $scope.modal = modal;
+            });
+        });
+
+        $scope.$on('$ionicView.beforeEnter', function() {
+            $scope.leftButton = '';
+            $scope.rightButton = 'Next';
+            $scope.allowClose = true;
+            $ionicSlideBoxDelegate.slide(0);
+        });
+
+        $scope.openModal = function() {
+            $scope.modal.show();
+        };
+        $scope.closeModal = function() {
+            $scope.modal.hide();
+        };
+        //Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
+        // Execute action on hide modal
+        $scope.$on('modal.hidden', function() {
+            // Execute action
+            $ionicSlideBoxDelegate.slide(0);
+        });
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function() {
+            // Execute action
+        });
+
+        $scope.showTutorial = function() {
+            $scope.openModal();
+        };
+
+        $scope.updateSlide = function($index) {
+            if ($index == 0) {
+                $scope.leftButton = '';
+                $scope.rightButton = 'Next';
+            }
+            else if ($index < ($ionicSlideBoxDelegate.slidesCount() - 1)) {
+                $scope.leftButton = 'Previous';
+                $scope.rightButton = 'Next';
+            }
+            else {
+                $scope.leftButton = 'Previous';
+                $scope.rightButton = 'Start Over';
+            }
+        };
+
+        $scope.leftButtonClick = function() {
+            if ($scope.leftButton == 'Previous') {
+                $ionicSlideBoxDelegate.previous();
+            }
+        };
+
+        $scope.rightButtonClick = function() {
+            if ($scope.rightButton == 'Next') {
+                $ionicSlideBoxDelegate.next();
+            }
+
+            else if ($scope.rightButton == 'Start Over') {
+                $ionicSlideBoxDelegate.slide(0);
+            }
+        };
+
+        $scope.goHome = function() {
+            $ionicLoading.show({
+                template: '<p>Loading...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
+                animation: 'fade-in'
+            });
+            $localStorage.set('fromLogin', 'true');
+            $scope.closeModal();
+            $ionicHistory.nextViewOptions({
+                disableBack: true,
+                disableAnimate: true
+            });
+            $state.go('app.home');
+        }
+    })
+
+    .controller('TutorialCtrl', function($ionicModal, $ionicSlideBoxDelegate, $ionicLoading, $scope, $state, $ionicHistory, $localStorage, $timeout) {
+        $scope.$on('$ionicView.loaded', function() {
+            $ionicModal.fromTemplateUrl('/templates/tutorial.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                $scope.modal = modal;
+            });
+
+        });
+
+        $scope.$on('$ionicView.beforeEnter', function() {
+            $scope.leftButton = '';
+            $scope.rightButton = 'Next';
+            $scope.allowClose = false;
+            $ionicSlideBoxDelegate.slide(0);
+
+            $ionicLoading.hide();
+        });
+
+        $scope.$on('$ionicView.afterEnter', function() {
+            $timeout( function() {
+                $scope.openModal();
+            }, 100);
+        });
+
+        $scope.openModal = function() {
+            $scope.modal.show();
+        };
+        $scope.closeModal = function() {
+            $scope.modal.hide();
+        };
+        //Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
+        // Execute action on hide modal
+        $scope.$on('modal.hidden', function() {
+            // Execute action
+            $ionicSlideBoxDelegate.slide(0);
+        });
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function() {
+            // Execute action
+        });
+
+        $scope.showTutorial = function() {
+            $scope.openModal();
+        };
+
+        $scope.updateSlide = function($index) {
+            if ($index == 0) {
+                $scope.leftButton = '';
+                $scope.rightButton = 'Next';
+            }
+            else if ($index < ($ionicSlideBoxDelegate.slidesCount() - 1)) {
+                $scope.leftButton = 'Previous';
+                $scope.rightButton = 'Next';
+            }
+            else {
+                $scope.leftButton = 'Previous';
+                $scope.rightButton = 'Start Over';
+            }
+        };
+
+        $scope.leftButtonClick = function() {
+            if ($scope.leftButton == 'Previous') {
+                $ionicSlideBoxDelegate.previous();
+            }
+        };
+
+        $scope.rightButtonClick = function() {
+            if ($scope.rightButton == 'Next') {
+                $ionicSlideBoxDelegate.next();
+            }
+
+            else if ($scope.rightButton == 'Start Over') {
+                $ionicSlideBoxDelegate.slide(0);
+            }
+        };
+
+        $scope.goHome = function() {
+            $ionicLoading.show({
+                template: '<p>Loading...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
+                animation: 'fade-in'
+            });
+            $localStorage.set('fromLogin', 'true');
+            $scope.closeModal();
+            $ionicHistory.nextViewOptions({
+                disableBack: true,
+                disableAnimate: true
+            });
+            $state.go('app.home');
+        }
+    });

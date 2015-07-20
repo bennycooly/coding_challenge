@@ -8,96 +8,102 @@
 			</button>
 		</ion-nav-buttons>
 	</ion-nav-bar>
-	<ion-content ng-class="{'animated fadeIn animate-home-menu': animateMenu && !animateMenuFirst,
-	'animated fadeIn animate-home-menu-first': animateMenuFirst && !animateMenu}" ng-show="showHomeMenu" scroll="false">
-		<div style="z-index:6; position: relative;">
+	<ion-content ng-show="showHomeMenu" scroll="false" ng-class="{'animated fadeIn animate-home-menu-container': animateMenu && !animateMenuFirst,
+	'animated fadeIn animate-home-menu-container-first': animateMenuFirst && !animateMenu}">
+		<div style="z-index:6; position: relative;" ng-class="{'animated fadeIn animate-home-menu': animateMenu && !animateMenuFirst,
+	'animated fadeIn animate-home-menu-first': animateMenuFirst && !animateMenu}">
 			<h3 style="text-align: center; color: white;">
 				Hello, <span ng-bind="user.firstName">!</span>
 			</h3>
 		</div>
 		<div class="circle-menu" ng-class="{'show-backdrop': showBackdrop}" ng-click="menuClose()"></div>
-		<div class="home-menu" ng-class="{'animated flipInX animate-home-circle': animateMenu && !animateMenuFirst,
-		'animated flip animate-home-circle-first': animateMenuFirst && !animateMenu}">
-			<nav class="menu-button">
-					<span class="fa-stack fa-4x" ng-click="toggleMenu()">
-						<i class="fa fa-circle fa-stack-2x menu-button-background"
-						   ng-class="{'pressed': menuBackgroundPressed}"></i>
-						<i class="fa fa-circle-o-notch fa-stack-2x fa-inverse menu-button-outline"
-						   ng-class="{'pressed': menuOutlinePressed}"></i>
-						<i class="fa fa-street-view fa-stack-1x fa-inverse menu-button-icon"
-						   ng-class="{'pressed': menuIconPressed}"></i>
-						<strong class="fa-stack-1x icon-text menu-button-text" ng-class="{'pressed': menuText}">Menu</strong>
-					</span>
-			</nav>
-			<div class="circle">
-					<span class="fa-stack fa-2x home-profile" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'profile'}" ng-click="menuGo('profile')">
-						<div ng-class="{'menu-animate': menuAnimate}">
-							<i class="fa fa-circle fa-stack-2x circle-profile menu-icon-scale"></i>
-							<i class="fa fa-user fa-stack-1x menu-icon-scale icon-white"></i>
-						</div>
-						<strong class="fa-stack-1x icon-text">Profile</strong>
-					</span>
-					<span class="fa-stack fa-2x home-event" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'event'}" ng-click="menuGo('event')">
-						<div ng-class="{'menu-animate': menuAnimate}">
-							<i class="fa fa-circle fa-stack-2x circle-event menu-icon-scale"></i>
-							<i class="fa fa-plus-square fa-stack-1x menu-icon-scale icon-white"></i>
-						</div>
-						<strong class="fa-stack-1x icon-text">Add Event</strong>
-					</span>
-					<span class="fa-stack fa-2x home-newsfeed" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'newsfeed'}" ng-click="menuGo('newsfeed')">
-						<div ng-class="{'menu-animate': menuAnimate}">
-							<i class="fa fa-circle fa-stack-2x circle-newsfeed menu-icon-scale"></i>
-							<i class="fa fa-list-alt fa-stack-1x menu-icon-scale icon-white"></i>
-						</div>
-						<strong class="fa-stack-1x icon-text">Newsfeed</strong>
-					</span>
-					<span class="fa-stack fa-2x home-calendar" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'calendar'}" ng-click="menuGo('calendar')">
-						<div ng-class="{'menu-animate': menuAnimate}">
-							<i class="fa fa-circle fa-stack-2x circle-calendar menu-icon-scale"></i>
-							<i class="fa fa-calendar fa-stack-1x menu-icon-scale icon-white"></i>
-						</div>
-						<strong class="fa-stack-1x icon-text">Calendar</strong>
-					</span>
-					<span class="fa-stack fa-2x home-search" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'search'}" ng-click="menuGo('search')">
-						<div ng-class="{'menu-animate': menuAnimate}">
-							<i class="fa fa-circle fa-stack-2x circle-search menu-icon-scale"></i>
-							<i class="fa fa-search fa-stack-1x menu-icon-scale icon-white"></i>
-						</div>
-						<strong class="fa-stack-1x icon-text">Search</strong>
-					</span>
-			</div>
-		</div>
-		<div class="list list-inset home-card-wrapper"></div>
-		<div class="list list-inset home-card">
-			<ion-slide-box pager-click="changeSlide(index)">
-				<ion-slide>
-                    <ion-content scroll="false">
-                        <h4 class="front-page-header">Your Events</h4>
-                    </ion-content>
-					<ion-scroll has-bouncing="true" class="front-page-list-container">
-						<ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
-                            <ion-item class="front-page-item item-dark" ng-repeat="event in eventsDateAscending">
-                                <h2>{{event.name}}</h2>
-                                <p>{{event.date.iso | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
-                            </ion-item>
-                        </ion-list>
-					</ion-scroll>
-				</ion-slide>
-				<ion-slide>
-                    <ion-content scroll="false">
-                        <h4 class="front-page-header">Upcoming Events</h4>
-                    </ion-content>
-                    <ion-scroll has-bouncing="true" class="front-page-list-container">
-                        <ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
-                            <ion-item class="front-page-item item-dark" ng-repeat="event in eventsDateAscending">
-                                <h2>{{event.name}}</h2>
-                                <p>{{event.date.iso | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
-                            </ion-item>
-                        </ion-list>
-                    </ion-scroll>
-				</ion-slide>
-			</ion-slide-box>
-		</div>
+        <div class="home-menu" ng-class="{'animated flipInX animate-home-circle': animateMenu && !animateMenuFirst,
+    'animated flip animate-home-circle-first': animateMenuFirst && !animateMenu}">
+            <nav class="menu-button">
+                <span class="fa-stack fa-4x" ng-click="toggleMenu()">
+                    <i class="fa fa-circle fa-stack-2x menu-button-background"
+                       ng-class="{'pressed': menuBackgroundPressed}"></i>
+                    <i class="fa fa-circle-o-notch fa-stack-2x fa-inverse menu-button-outline"
+                       ng-class="{'pressed': menuOutlinePressed}"></i>
+                    <i class="fa fa-street-view fa-stack-1x fa-inverse menu-button-icon"
+                       ng-class="{'pressed': menuIconPressed}"></i>
+                    <strong class="fa-stack-1x icon-text menu-button-text" ng-class="{'pressed': menuText}">Menu</strong>
+                </span>
+            </nav>
+            <div class="circle">
+                <span class="fa-stack fa-2x home-profile" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'profile'}" ng-click="menuGo('profile')">
+                    <div ng-class="{'menu-animate': menuAnimate}">
+                        <i class="fa fa-circle fa-stack-2x circle-profile menu-icon-scale"></i>
+                        <i class="fa fa-user fa-stack-1x menu-icon-scale icon-white"></i>
+                    </div>
+                    <strong class="fa-stack-1x icon-text">Profile</strong>
+                </span>
+                <span class="fa-stack fa-2x home-event" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'event'}" ng-click="menuGo('event')">
+                    <div ng-class="{'menu-animate': menuAnimate}">
+                        <i class="fa fa-circle fa-stack-2x circle-event menu-icon-scale"></i>
+                        <i class="fa fa-plus-square fa-stack-1x menu-icon-scale icon-white"></i>
+                    </div>
+                    <strong class="fa-stack-1x icon-text">Add Event</strong>
+                </span>
+                <span class="fa-stack fa-2x home-newsfeed" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'newsfeed'}" ng-click="menuGo('newsfeed')">
+                    <div ng-class="{'menu-animate': menuAnimate}">
+                        <i class="fa fa-circle fa-stack-2x circle-newsfeed menu-icon-scale"></i>
+                        <i class="fa fa-list-alt fa-stack-1x menu-icon-scale icon-white"></i>
+                    </div>
+                    <strong class="fa-stack-1x icon-text">Newsfeed</strong>
+                </span>
+                <span class="fa-stack fa-2x home-calendar" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'calendar'}" ng-click="menuGo('calendar')">
+                    <div ng-class="{'menu-animate': menuAnimate}">
+                        <i class="fa fa-circle fa-stack-2x circle-calendar menu-icon-scale"></i>
+                        <i class="fa fa-calendar fa-stack-1x menu-icon-scale icon-white"></i>
+                    </div>
+                    <strong class="fa-stack-1x icon-text">Calendar</strong>
+                </span>
+                <span class="fa-stack fa-2x home-search" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'search'}" ng-click="menuGo('search')">
+                    <div ng-class="{'menu-animate': menuAnimate}">
+                        <i class="fa fa-circle fa-stack-2x circle-search menu-icon-scale"></i>
+                        <i class="fa fa-search fa-stack-1x menu-icon-scale icon-white"></i>
+                    </div>
+                    <strong class="fa-stack-1x icon-text">Search</strong>
+                </span>
+            </div>
+        </div>
+
+        <div ng-class="{'animated fadeIn animate-home-menu': animateMenu && !animateMenuFirst,
+	'animated fadeIn animate-home-menu-first': animateMenuFirst && !animateMenu}">
+            <div class="list list-inset home-card-wrapper"></div>
+            <div class="list list-inset home-card">
+                <ion-slide-box pager-click="changeSlide(index)">
+                    <ion-slide>
+                        <ion-content scroll="false">
+                            <h4 class="front-page-header">Your Events</h4>
+                        </ion-content>
+                        <ion-scroll has-bouncing="true" class="front-page-list-container">
+                            <ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
+                                <ion-item class="front-page-item item-dark" ng-repeat="event in eventsDateAscending">
+                                    <h2>{{event.name}}</h2>
+                                    <p>{{event.date.iso | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
+                                </ion-item>
+                            </ion-list>
+                        </ion-scroll>
+                    </ion-slide>
+                    <ion-slide>
+                        <ion-content scroll="false">
+                            <h4 class="front-page-header">Upcoming Events</h4>
+                        </ion-content>
+                        <ion-scroll has-bouncing="true" class="front-page-list-container">
+                            <ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
+                                <ion-item class="front-page-item item-dark" ng-repeat="event in eventsDateAscending">
+                                    <h2>{{event.name}}</h2>
+                                    <p>{{event.date.iso | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
+                                </ion-item>
+                            </ion-list>
+                        </ion-scroll>
+                    </ion-slide>
+                </ion-slide-box>
+            </div>
+        </div>
+
 
 	</ion-content>
 </ion-view>
