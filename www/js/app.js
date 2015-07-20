@@ -190,6 +190,16 @@ angular.module('myApp', ['ionic',
 				}
 			})
 
+			.state('app.fund', {
+				url: '/fund',
+				params: {param:null},
+				views: {
+					'menuContent': {
+						templateUrl: "templates/fundraiser.html"
+					}
+				}
+			})
+
 			.state('app.help_support', {
 				url: "/settings/help_support",
 				views: {
