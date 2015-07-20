@@ -38,5 +38,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "nl.x-services.plugins.calendar": {
+        "source": {
+            "type": "local",
+            "path": "E:\\Ben\\Documents\\coding_challenge\\plugin\\Calendar-PhoneGap-Plugin"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

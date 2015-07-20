@@ -13,7 +13,7 @@
 		<div style="z-index:6; position: relative;" ng-class="{'animated fadeIn animate-home-menu': animateMenu && !animateMenuFirst,
 	'animated fadeIn animate-home-menu-first': animateMenuFirst && !animateMenu}">
 			<h3 style="text-align: center; color: white;">
-				Hello, <span ng-bind="user.firstName">!</span>
+				{{welcomeMessage}}, {{user.firstName}}!
 			</h3>
 		</div>
 		<div class="circle-menu" ng-class="{'show-backdrop': showBackdrop}" ng-click="menuClose()"></div>
@@ -80,7 +80,9 @@
                         </ion-content>
                         <ion-scroll has-bouncing="true" class="front-page-list-container">
                             <ion-refresher
-                                pulling-text="Pull to refresh..."
+                                pulling-text="<p style='color: white;'>Pull to refresh...</p>"
+                                pulling-icon="ion-ios-arrow-down"
+                                spinner="spiral"
                                 on-refresh="refresh()">
                             </ion-refresher>
                             <ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
@@ -96,6 +98,12 @@
                             <h4 class="front-page-header">Upcoming Events</h4>
                         </ion-content>
                         <ion-scroll has-bouncing="true" class="front-page-list-container">
+                            <ion-refresher
+                                    pulling-text="<p style='color: white;'>Pull to refresh...</p>"
+                                    pulling-icon="ion-ios-arrow-down"
+                                    spinner="spiral"
+                                    on-refresh="refresh()">
+                            </ion-refresher>
                             <ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
                                 <ion-item class="front-page-item item-dark" ng-repeat="event in eventsDateAscending">
                                     <h2>{{event.name}}</h2>

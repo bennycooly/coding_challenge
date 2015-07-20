@@ -265,13 +265,30 @@ angular.module('myApp.controllers', ['myApp.services'])
 	.controller('HomeCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicBackdrop, $timeout, $localStorage, $user, $events, $ionicSlideBoxDelegate) {
 
 		$scope.$on('$ionicView.beforeEnter', function () {
-
 			$ionicHistory.clearHistory();
             $scope.showHomeMenu = true;
             var fromSearch = $localStorage.get('leftSearchModal');
             if(fromSearch != 'true') {
                 $user.updateLocalStorage();
                 $scope.user = $user.get();
+                //show customized message
+                var date = new Date();
+                var hour = date.toLocaleTimeString();
+                var indexColon = hour.indexOf(':');
+                var hourInt = parseInt(hour.substring(0,indexColon));
+                if (hour.indexOf('AM') != -1) {
+                    $scope.welcomeMessage = "Good Morning";
+                }
+                else if (hour.indexOf('PM') != -1 && (hourInt == 12 || hourInt < 5)) {
+                    $scope.welcomeMessage = "Good Afternoon";
+                }
+                else if (hour.indexOf('PM') != -1 && (hourInt < 8)){
+                    $scope.welcomeMessage = "Good Evening";
+                }
+                else{
+                    $scope.welcomeMessage = "Hello";
+                }
+
                 console.log('user from localstorage: ' + $scope.user.firstName);
                 $events.updateLocalStorage('eventsDateAscending');
                 $scope.eventsDateAscending = $events.get('eventsDateAscending');
@@ -363,6 +380,7 @@ angular.module('myApp.controllers', ['myApp.services'])
         $scope.refresh = function() {
             $events.updateLocalStorage('eventsDateAscending');
             $scope.eventsDateAscending = $events.get('eventsDateAscending');
+            $scope.$broadcast('scroll.refreshComplete');
         };
 
 		$scope.$on('$ionicView.beforeLeave', function() {

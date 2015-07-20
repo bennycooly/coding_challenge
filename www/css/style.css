@@ -16,6 +16,7 @@
 
 .scroll-content > .scroll {
     height: 100%;
+    width: 100%;
 }
 
 .scroll-content {
@@ -430,7 +431,7 @@
 
 .slider-pager {
     top: initial;
-    bottom: 0;
+    bottom: 10px;
     color: #fff;
 }
 
