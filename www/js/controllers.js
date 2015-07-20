@@ -109,7 +109,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$state.go('login', {}, {reload: true});
 	})
 
-	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, $ionicLoading, $timeout, $user, $ionicHistory, $localStorage) {
+	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, $ionicLoading, $timeout, $user, $ionicHistory, $localStorage, $events) {
 
 		// With the new view caching in Ionic, Controllers are only called
 		// when they are recreated or on app start, instead of every page change.
@@ -277,7 +277,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 	})
 
 	.controller('HomeCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicBackdrop, $timeout, $localStorage, $user, $events, $ionicSlideBoxDelegate) {
-
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$ionicHistory.clearHistory();
             $scope.showHomeMenu = true;
@@ -302,11 +301,11 @@ angular.module('myApp.controllers', ['myApp.services'])
                 else{
                     $scope.welcomeMessage = "Hello";
                 }
-
                 console.log('user from localstorage: ' + $scope.user.firstName);
-                $events.updateLocalStorage('eventsDateAscending');
+                $events.updateLocalStorage();
                 $scope.eventsDateAscending = $events.get('eventsDateAscending');
                 console.log($scope.eventsDateAscending);
+                //animations
                 $scope.isActive = false;
                 $scope.menuOutlinePressed = false;
                 $scope.menuBackgroundPressed = false;
@@ -335,6 +334,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 		});
 
 		$scope.$on('$ionicView.afterEnter', function() {
+            //need this for first time (need timeout for localstorage update)
+            $timeout( function() {
+                $scope.eventsDateAscending = $events.get('eventsDateAscending');
+            }, 50);
 			$timeout( function() {
 				$ionicLoading.hide();
 			}, 1000);
@@ -367,7 +370,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 						$state.go('app.create_event', {clear: true}, {refresh: true});
 						break;
 					case 'newsfeed':
-						$state.go('app.newsfeed', {clear: true}, {refresh: true});
+						$state.go('app.progress', {clear: true}, {refresh: true});
 						break;
 					case 'calendar':
 						$state.go('app.calendar', {clear: true}, {refresh: true});
@@ -747,34 +750,31 @@ angular.module('myApp.controllers', ['myApp.services'])
 	})
 
 	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup) {
+        $scope.$on('$ionicView.beforeEnter', function () {
+            $scope.info = { signedUp: false };
 
-		$ionicHistory.nextViewOptions({
-			disableBack: true
-		});
+            $scope.eventsString = Parse.User.current().get('events');
+            if($scope.eventsString !== undefined) $scope.events = $scope.eventsString.split(", ");
+            else $scope.events = [];
 
-		$scope.info = { signedUp: false };
+            if($scope.events.indexOf($stateParams.param.id) >= 0) $scope.info.signedUp = true;
 
-		$scope.eventsString = Parse.User.current().get('events');
-		if($scope.eventsString !== undefined) $scope.events = $scope.eventsString.split(", ");
-		else $scope.events = [];
-
-		if($scope.events.indexOf($stateParams.param.id) >= 0) $scope.info.signedUp = true;
-
-		var query = new Parse.Query("Event");
-		query.get($stateParams.param.id, {
-			success: function(object) {
-				$scope.name = object.attributes.name;
-				$scope.date = object.attributes.date;
-				$scope.startTime = object.attributes.startTime;
-				$scope.endTime = object.attributes.endTime;
-				$scope.location = object.attributes.location;
-				$scope.contact = object.attributes.contact;
-				$scope.contactInfo = object.attributes.contactInfo;
-				$scope.description = object.attributes.description;
-				$scope.url = object.attributes.url;
-				$scope.$apply();
-			}
-		});
+            var query = new Parse.Query("Event");
+            query.get($stateParams.param.id, {
+                success: function(object) {
+                    $scope.name = object.attributes.name;
+                    $scope.date = object.attributes.date;
+                    $scope.startTime = object.attributes.startTime;
+                    $scope.endTime = object.attributes.endTime;
+                    $scope.location = object.attributes.location;
+                    $scope.contact = object.attributes.contact;
+                    $scope.contactInfo = object.attributes.contactInfo;
+                    $scope.description = object.attributes.description;
+                    $scope.url = object.attributes.url;
+                    $scope.$apply();
+                }
+            });
+        });
 
 		$scope.signUp = function() {
 			var currentUser = Parse.User.current();
@@ -784,6 +784,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 			currentUser.set("events", newEvents);
 			currentUser.save(null, {
 			success: function(result) {
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
 				$state.go("app.profile", {}, {refresh: true} );
 			}, error: function(result) {
 				var alert = $ionicPopup.alert({
@@ -802,6 +805,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 			Parse.User.current().set("events", newEvents);
 			Parse.User.current().save(null, {
 			success: function(result) {
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
 				$state.go("app.profile", {}, {refresh: true} );
 			}, error: function(result) {
 				var alert = $ionicPopup.alert({

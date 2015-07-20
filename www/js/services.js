@@ -66,7 +66,6 @@ angular.module('myApp.services', [])
 				switch (key) {
 					case 'eventsDateAscending':
 						events = $localStorage.getObject('eventsDateAscending');
-						console.log(events);
 						break;
 					default:
 						events = $localStorage.getObject('events');
@@ -74,30 +73,29 @@ angular.module('myApp.services', [])
 				}
 				return events;
 			},
-			updateLocalStorage: function(key) {
+			updateLocalStorage: function() {
 				var query = new Parse.Query('Event');
-                switch (key) {
-                    case 'eventsDateAscending':
-                        query.ascending('date');
-                        query.find( {
-                            success: function (events) {
-                                $localStorage.setObject('eventsDateAscending', events);
-                            },
-                            error: function (error) {
-                                alert('Error: ' + error.code + ' ' + error.message);
-                            }
-                        });
-                        break;
-                    default:
-                        query.find( {
-                            success: function (events) {
-                                $localStorage.setObject('events', events);
-                            },
-                            error: function (error) {
-                                alert('Error: ' + error.code + ' ' + error.message);
-                            }
-                        });
-                }
+                query.find( {
+                    success: function (events) {
+                        $localStorage.setObject('events', events);
+                    },
+                    error: function (error) {
+                        alert('Error: ' + error.code + ' ' + error.message);
+                    }
+                });
+                // get dates ascending
+                query = new Parse.Query('Event');
+                query.ascending('date');
+                query.find( {
+                    success: function (eventsDateAscending) {
+                        $localStorage.setObject('eventsDateAscending', eventsDateAscending);
+                        console.log($localStorage.getObject('eventsDateAscending'));
+                        console.log(eventsDateAscending);
+                    },
+                    error: function (error) {
+                        alert('Error: ' + error.code + ' ' + error.message);
+                    }
+                });
 
 			}
 		}
