@@ -737,6 +737,107 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	})
 
+	.controller('CalCtrl', function($scope, $state) {
+		//date info
+		var date = new Date();
+		var currMonth = date.getMonth();
+		var currYear = date.getFullYear();
+		var day = date.getDay();
+
+		var months = ["January","February","March","April","May","June","July","August", "September","October","November","December"];
+
+		$scope.month = months[currMonth];
+		$scope.year = currYear;
+		$scope.day = day;
+
+		//decrements month
+		$scope.prevM = function() {
+
+			currMonth--;
+			if(currMonth<0) {
+				currMonth = 11;
+				currYear--;
+			}
+
+			$scope.month = months[currMonth];
+			$scope.year = currYear;
+		};
+
+		//increments month
+		$scope.nextM = function() {
+
+			currMonth++;
+			if(currMonth>11) {
+				currMonth = 0;
+				currYear++;
+			}
+
+			$scope.month = months[currMonth];
+			$scope.year = currYear;
+		};
+
+		$scope.goToDay = function(month, year, cellClicked){
+			//calculate day in month based on cellClicked
+			var day1 = new Date(year, months.indexOf(month), 1);
+			var startDay = day1.getDay();
+			var dayClicked = cellClicked - startDay;
+
+			//set day variable
+			$scope.day = dayClicked;
+
+			$state.go("app.calendarSingle", {'theMonth':$scope.month, 'theYear':$scope.year, 'theDay':$scope.day, 'monthInd':months.indexOf($scope.month)});
+		}
+	})
+
+	.controller('EventListCtrl', function($scope, $stateParams, $state) {
+
+		//date info
+		$scope.months = $stateParams.theMonth;
+		$scope.year = $stateParams.theYear;
+		$scope.day = $stateParams.theDay;
+		$scope.mnthInd = $stateParams.monthInd;
+		$scope.date = new Date($scope.year, $scope.mnthInd, $scope.day);
+
+		//query info
+		$scope.events = [];
+		$scope.eventCopy = {id: "", name: "", description: "", startTime: "", endTime: "", location: "", date: "", type: ""};
+		$scope.error = {show: false};
+
+		var eventClass = Parse.Object.extend("Event");
+		var query = new Parse.Query(eventClass);
+		query.find({
+			success: function (results) {
+				$scope.events = [];
+				for (var i = 0; i < results.length; i++) {
+					var eventInfo = angular.copy($scope.eventCopy);
+					eventInfo.id = results[i].get("eventId");
+					eventInfo.name = results[i].get("name");
+					eventInfo.description = results[i].get("description");
+					eventInfo.startTime = results[i].get("startTime");
+					eventInfo.endTime = results[i].get("endTime");
+					eventInfo.location = results[i].get("location");
+					eventInfo.date = results[i].get("date");
+					eventInfo.type = results[i].get("type");
+					$scope.events.push(eventInfo);
+				}
+				$scope.error.show = false;
+				$scope.$apply();
+			}, error: function (results) {
+				$scope.error.show = true;
+				return;
+			}
+		});
+
+		//filter events by selected day
+		$scope.filterEvents = function($event) {
+			return ($event.date.toString().substring(0,15) == $scope.date.toString().substring(0,15))};
+
+		//selects the event item to take to event page
+		$scope.select = function(eventItem) {
+			$state.go("app.event", {param:{id:eventItem.id}});
+		};
+	})
+
     .controller('SettingsCtrl', function($ionicModal, $ionicSlideBoxDelegate, $ionicLoading, $scope, $state, $ionicHistory, $localStorage) {
         $scope.$on('$ionicView.loaded', function() {
             $ionicModal.fromTemplateUrl('/templates/tutorial.html', {
