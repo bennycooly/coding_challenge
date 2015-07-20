@@ -1,0 +1,27 @@
+<ion-view view-title="Fundraiser" ng-controller="FundCtrl">
+    <ion-content>
+        <h2 style="margin-top:8px;text-align:center;">{{name}}</h2>
+        <ul class="list">
+            <li class="item">
+                <div class="row">
+                    <div class="col"><b>Date Added</b></div>
+                    <div class="col item-text-wrap">{{date}}</div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="row">
+                    <div class="col"><b>Description</b></div>
+                </div>
+                <div class="row">
+                    <div class="col item-text-wrap">&emsp;&emsp;{{description}}</div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="row">
+                    <div class="col"><b>URL</b></div>
+                    <div class="col item-text-wrap">{{url}}</div>
+                </div>
+            </li>
+        </ul>
+    </ion-content>
+</ion-view>
