@@ -170,6 +170,15 @@ angular.module('myApp', ['ionic',
 				}
 			})
 
+			.state('app.create_fund', {
+				url: '/create_fund',
+				views: {
+					'menuContent': {
+						templateUrl: "templates/create_fund.html"
+					}
+				}
+			})
+
 			.state('app.event', {
 				url: '//newsfeed/event',
 				params: {param:null},
