@@ -1,0 +1,17 @@
+<ion-view view-title="{{months}} {{day}}, {{year}}" ng-controller="EventListCtrl">
+    <ion-content>
+        <ion-list>
+            <label class="item item-text-wrap" ng-show="error.show">
+            </label>
+            <ion-item ng-repeat="eventItem in events|filter:filterEvents" ng-click="select(eventItem)">
+                {{eventItem.name}}</br>
+                <p>
+                    Time: {{eventItem.startTime}} - {{eventItem.endTime}} <br>
+                    Location: {{eventItem.location}} <br>
+                    Description: {{eventItem.description}}
+
+                </p>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

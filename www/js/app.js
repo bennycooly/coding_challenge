@@ -103,6 +103,17 @@ angular.module('myApp', ['ionic',
 				}
 			})
 
+			.state('app.calendarSingle', {
+				controller: "EventListCtrl",
+				params: {'theMonth': null, 'theYear': null, 'theDay': null, 'monthInd': null},
+				views: {
+					'menuContent': {
+						templateUrl: "templates/eventList.html"
+
+					}
+				}
+			})
+
 			.state('app.newsfeed', {
 				url: "/newsfeed",
 				views: {
