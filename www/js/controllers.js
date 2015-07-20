@@ -61,6 +61,20 @@ angular.module('myApp.controllers', ['myApp.services'])
 			}
 		};
 
+		$scope.goFund = function() {
+			console.log($state.current.name);
+			if ($state.current.name != 'app.create_fund') {
+				$timeout( function() {
+					$ionicHistory.nextViewOptions({
+						disableBack: true,
+						disableAnimate: true
+					});
+					$state.go('app.create_fund');
+				}, 0);
+
+			}
+		};
+
 		$scope.goNewsfeed = function() {
 			console.log($state.current.name);
 			if ($state.current.name != 'app.newsfeed') {
@@ -432,6 +446,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 	})
 
 	.controller('ProfileCtrl', function($scope, $state, $ionicPopup) {
+
+		$scope.$on('$ionicView.beforeEnter', function () {
+		});
+
 		var currentUser = Parse.User.current();
 
 		$scope.id = currentUser.get('username');
@@ -668,6 +686,64 @@ angular.module('myApp.controllers', ['myApp.services'])
 				}
 			});
 		};
+	})
+
+	.controller('CreateFundCtrl', function($scope, $state, $ionicPopup, $ionicHistory) {
+
+		$scope.info = {
+			name: "", description: "", url: ""
+		};
+
+		$scope.inject = function() {
+		};
+
+		$scope.createFund = function(injected) {
+
+			for (var key in $scope.info) {
+				if (key != "url2" && $scope.info[key] == "") {
+					var alert = $ionicPopup.alert({
+						title: "Please fill in all the required fields!"
+					});
+					return;
+				}
+			}
+
+			var date = new Date();
+
+			var FundClass = Parse.Object.extend("Event");
+			var fund = new FundClass();
+
+			fund.set("name", $scope.info.name);
+			fund.set("description", $scope.info.description);
+			fund.set("url", $scope.info.url);
+			fund.set("date", date);
+			fund.set("type", "Fund");
+
+			fund.save(null, {
+				success: function(result) {
+					fund.set("eventId", result.id);
+					fund.save(null, {
+						success: function(result) {
+							$ionicHistory.nextViewOptions({
+								disableBack: true,
+							});
+							if(!injected) $state.go("app.profile", {}, {refresh: true});
+						}, error: function(result) {
+							var alert = $ionicPopup.alert({
+								title: "Error providing Calendar entry ID!"
+							});
+							return;
+						}
+					});
+				}, error: function(result) {
+					var alert = $ionicPopup.alert({
+						title: "Error creating fundraiser!"
+					});
+				}
+			});
+
+		};
+
 	})
 
 	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup) {
