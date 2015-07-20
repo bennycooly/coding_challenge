@@ -75,20 +75,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 			}
 		};
 
-		$scope.goNewsfeed = function() {
-			console.log($state.current.name);
-			if ($state.current.name != 'app.newsfeed') {
-				$timeout( function() {
-					$ionicHistory.nextViewOptions({
-						disableBack: true,
-						disableAnimate: true
-					});
-					$state.go('app.newsfeed');
-				}, 0);
-
-			}
-		};
-
 		$scope.goSettings = function() {
 			console.log($state.current.name);
 			if ($state.current.name != 'app.settings') {
@@ -283,6 +269,7 @@ angular.module('myApp.controllers', ['myApp.services'])
             var fromSearch = $localStorage.get('leftSearchModal');
             if(fromSearch != 'true') {
                 $user.updateLocalStorage();
+                $events.updateLocalStorage();
                 $scope.user = $user.get();
                 //show customized message
                 var date = new Date();
@@ -302,7 +289,16 @@ angular.module('myApp.controllers', ['myApp.services'])
                     $scope.welcomeMessage = "Hello";
                 }
                 console.log('user from localstorage: ' + $scope.user.firstName);
-                $events.updateLocalStorage();
+                //get all events that user has signed up for
+                $scope.userEvents = [];
+                $scope.userEventIDs = $scope.user.events.split(', ');
+                for (var i=0; i<$scope.userEventIDs.length; i++) {
+                    $events.getEvent($scope.userEventIDs[i])
+                        .then(function(result) {
+                            console.log(result);
+                            $scope.userEvents.push(result);
+                    });
+                }
                 $scope.eventsDateAscending = $events.get('eventsDateAscending');
                 console.log($scope.eventsDateAscending);
                 //animations
@@ -337,7 +333,7 @@ angular.module('myApp.controllers', ['myApp.services'])
             //need this for first time (need timeout for localstorage update)
             $timeout( function() {
                 $scope.eventsDateAscending = $events.get('eventsDateAscending');
-            }, 50);
+            }, 500);
 			$timeout( function() {
 				$ionicLoading.hide();
 			}, 1000);
@@ -369,8 +365,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 					case 'event':
 						$state.go('app.create_event', {clear: true}, {refresh: true});
 						break;
-					case 'newsfeed':
-						$state.go('app.progress', {clear: true}, {refresh: true});
+					case 'links':
+						$state.go('app.links', {clear: true}, {refresh: true});
 						break;
 					case 'calendar':
 						$state.go('app.calendar', {clear: true}, {refresh: true});
@@ -397,6 +393,15 @@ angular.module('myApp.controllers', ['myApp.services'])
         $scope.refresh = function() {
             $events.updateLocalStorage('eventsDateAscending');
             $scope.eventsDateAscending = $events.get('eventsDateAscending');
+            //update user events
+            for (var i=0; i<$scope.userEventIDs.length; i++) {
+                $events.getEvent($scope.userEventIDs[i])
+                    .then(function(result) {
+                        if ($scope.userEvents.indexOf(result) != -1){
+                            $scope.userEvents.push(result);
+                        }
+                    });
+            }
             $scope.$broadcast('scroll.refreshComplete');
         };
 
