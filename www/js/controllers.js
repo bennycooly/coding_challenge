@@ -800,7 +800,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		//query info
 		$scope.events = [];
-		$scope.eventCopy = {id: "", name: "", description: "", startTime: "", endTime: "", location: "", date: "", type: ""};
+		$scope.eventCopy = {id: "", name: "", description: "", startTime: "", endTime: "", location: "", date: "", type: "", url: ""};
 		$scope.error = {show: false};
 
 		var eventClass = Parse.Object.extend("Event");
@@ -818,6 +818,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 					eventInfo.location = results[i].get("location");
 					eventInfo.date = results[i].get("date");
 					eventInfo.type = results[i].get("type");
+                    eventInfo.url = results[i].get("url");
 					$scope.events.push(eventInfo);
 				}
 				$scope.error.show = false;
@@ -830,9 +831,19 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		//filter events by selected day
 		$scope.filterEvents = function($event) {
-			return ($event.date.toString().substring(0,15) == $scope.date.toString().substring(0,15))};
+            if(!($event.type == "Fund"))
+			    return ($event.date.toString().substring(0,15) == $scope.date.toString().substring(0,15))
+        };
 
-		//selects the event item to take to event page
+        //filter fundraising events; shows for 30 days
+        $scope.filterFund = function($event) {
+            if($event.type == "Fund") {
+                return ((($event.date.getDate() <= $scope.date.getDate()) && ($event.date.getMonth() == $scope.date.getMonth())) ||
+                        (($event.date.getDate() >= $scope.date.getDate()) && (($event.date.getMonth() + 1) == $scope.date.getMonth())))
+            }
+        };
+
+        //selects the event item to take to event page
 		$scope.select = function(eventItem) {
 			$state.go("app.event", {param:{id:eventItem.id}});
 		};

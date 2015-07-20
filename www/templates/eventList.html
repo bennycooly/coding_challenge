@@ -12,6 +12,12 @@
 
                 </p>
             </ion-item>
+            <ion-item ng-repeat="eventItem in events|filter:filterFund" ng-click="select(eventItem)">
+                {{eventItem.name}}</br>
+                <p>
+                    Description: {{eventItem.description}}
+                </p>
+            </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>
