@@ -60,9 +60,9 @@ angular.module('myApp.services', [])
 	})
 
 	.factory('$events', function($localStorage) {
-		var events = $localStorage.getObject('events');
 		return {
 			get: function(key) {
+                var events;
 				switch (key) {
 					case 'eventsDateAscending':
 						events = $localStorage.getObject('eventsDateAscending');
@@ -72,28 +72,33 @@ angular.module('myApp.services', [])
 						events = $localStorage.getObject('events');
 						break;
 				}
-
 				return events;
 			},
-			updateLocalStorage: function() {
+			updateLocalStorage: function(key) {
 				var query = new Parse.Query('Event');
-				query.find( {
-					success: function (events) {
-						$localStorage.setObject('events', events);
-					},
-					error: function (error) {
-						alert('Error: ' + error.code + ' ' + error.message);
-					}
-				});
-				query.ascending('date');
-				query.find( {
-					success: function (events) {
-						$localStorage.setObject('eventsDateAscending', events);
-					},
-					error: function (error) {
-						alert('Error: ' + error.code + ' ' + error.message);
-					}
-				});
+                switch (key) {
+                    case 'eventsDateAscending':
+                        query.ascending('date');
+                        query.find( {
+                            success: function (events) {
+                                $localStorage.setObject('eventsDateAscending', events);
+                            },
+                            error: function (error) {
+                                alert('Error: ' + error.code + ' ' + error.message);
+                            }
+                        });
+                        break;
+                    default:
+                        query.find( {
+                            success: function (events) {
+                                $localStorage.setObject('events', events);
+                            },
+                            error: function (error) {
+                                alert('Error: ' + error.code + ' ' + error.message);
+                            }
+                        });
+                }
+
 			}
 		}
 	})

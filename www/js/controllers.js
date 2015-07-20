@@ -273,8 +273,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                 $user.updateLocalStorage();
                 $scope.user = $user.get();
                 console.log('user from localstorage: ' + $scope.user.firstName);
-                $events.updateLocalStorage();
-                $scope.events = $events.get();
+                $events.updateLocalStorage('eventsDateAscending');
                 $scope.eventsDateAscending = $events.get('eventsDateAscending');
                 console.log($scope.eventsDateAscending);
                 $scope.isActive = false;
@@ -360,6 +359,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 			//change slide to clicked index
 			$ionicSlideBoxDelegate.slide(index);
 		};
+
+        $scope.refresh = function() {
+            $events.updateLocalStorage('eventsDateAscending');
+            $scope.eventsDateAscending = $events.get('eventsDateAscending');
+        };
 
 		$scope.$on('$ionicView.beforeLeave', function() {
 			console.log('closing menu');

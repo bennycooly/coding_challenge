@@ -79,6 +79,10 @@
                             <h4 class="front-page-header">Your Events</h4>
                         </ion-content>
                         <ion-scroll has-bouncing="true" class="front-page-list-container">
+                            <ion-refresher
+                                pulling-text="Pull to refresh..."
+                                on-refresh="refresh()">
+                            </ion-refresher>
                             <ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
                                 <ion-item class="front-page-item item-dark" ng-repeat="event in eventsDateAscending">
                                     <h2>{{event.name}}</h2>
