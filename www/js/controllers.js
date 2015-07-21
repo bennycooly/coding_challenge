@@ -469,20 +469,20 @@ angular.module('myApp.controllers', ['myApp.services'])
 		}
 	})
 
-	.controller('ProfileCtrl', function($scope, $state, $ionicPopup, $ionicSlideBoxDelegate) {
-
+	.controller('ProfileCtrl', function($scope, $state, $ionicPopup) {
+/*
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$scope.setup();
 			$scope.update();
 			$scope.graph();
-            $ionicSlideBoxDelegate.update();
 		});
+*/
 
-
-		var currentUser = Parse.User.current();
-
-		$scope.setup = function() {
+		$scope.doRefresh = function() {
 			var currentUser = Parse.User.current();
+
+			$scope.info = {firstName: currentUser.get('firstName'), lastName: currentUser.get('lastName'), phone: currentUser.get('phone'),
+				email: currentUser.get('email'), interests: currentUser.get('interests')};
 
 			$scope.id = currentUser.get('username');
 			$scope.fullName = currentUser.get('firstName')+" "+Parse.User.current().get('lastName');
@@ -506,18 +506,18 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.progress = [0, 0, 0];
 			$scope.progressMonth = ["", "", ""];
 			for (var i=2; i>=0; i--) { $scope.progressMonth[Math.abs(i-2)] = $scope.months[$scope.currentDate.getMonth()-(i+1)]; }
-		};
 
-		$scope.update = function() {
 			for (var i = 0; i < $scope.events.length; i++) {
 				var query = new Parse.Query("Event");
 				query.get($scope.events[i], {
 					success: function (object) {
 						var date = object.attributes.date;
+						alert(date+"\n"+$scope.currentDate);
 						if (date >= $scope.currentDate) {
 							var upcomingDate = date.getMonthFormatted() + "/" + date.getDate() + "/" + date.getFullYear();
 							var upcomingEvent = {id: object.id, name: object.attributes.name, date: upcomingDate};
 							$scope.upcoming.push(upcomingEvent);
+							alert("pushjed");
 						} else {
 							var progressDate = $scope.currentDate;
 							for (var j = 0; j < 3; j++) {
@@ -537,7 +537,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 						$scope.$apply();
 						if ($scope.events.indexOf(object.id) == $scope.events.length - 1) {
 							$scope.moneySaved = Math.round($scope.hours * 22.9 * 100) / 100;
-							$scope.graph();
+							//$scope.graph();
 						}
 					}, error: function(object) {
 						var alertMessage = "Error loading Event! Please contact support with this ID #: "+object.id;
@@ -547,6 +547,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 					}
 				});
 			}
+			$scope.$broadcast('scroll.refreshComplete');
 		};
 
 		$scope.graph = function() {
@@ -567,12 +568,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 			document.chart = new Chart(chart).Bar(data, {responsive: true});
 		};
 
-		$scope.info = {firstName: currentUser.get('firstName'), lastName: currentUser.get('lastName'), phone: currentUser.get('phone'),
-			email: currentUser.get('email'), interests: currentUser.get('interests')};
-
 		$scope.selectUpcoming = function(event) {
 			$state.go("app.event", {param:{id:event.id}});
-			//$state.go("app.event", {param:{id:event.id}});
 		};
 
 		$scope.saveProfileChanges = function() {
@@ -712,7 +709,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 					$ionicHistory.nextViewOptions({
 						disableBack: true,
 					});
-					if(!injected) $state.go("app.profile", {}, {refresh: true});
+					if(!injected) $state.go("app.home", {}, {refresh: true});
 				}, error: function(result) {
 					var alert = $ionicPopup.alert({
 						title: "Error creating event!"
@@ -860,8 +857,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.remove = function() {
 			$scope.events.splice($scope.events.indexOf($stateParams.param.id), 1);
 			var newEvents = "";
+			alert($scope.events.length);
 			for (var i=0; i<$scope.events.length; i++) {
-				newEvents += $scope.events[i]+", ";
+				alert($scope.events[i]);
+				if (i != 0) newEvents += ", "+$scope.events[i];
+				else newEvents += $scope.events[i];
 			}
 			Parse.User.current().set("events", newEvents);
 			Parse.User.current().save(null, {
