@@ -45,19 +45,21 @@
                     </div>
                     <strong class="fa-stack-1x icon-text">Add Event</strong>
                 </span>
-                <span class="fa-stack fa-2x home-newsfeed" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'newsfeed'}" ng-click="menuGo('newsfeed')">
-                    <div ng-class="{'menu-animate': menuAnimate}">
-                        <i class="fa fa-circle fa-stack-2x circle-newsfeed menu-icon-scale"></i>
-                        <i class="fa fa-list-alt fa-stack-1x menu-icon-scale icon-white"></i>
-                    </div>
-                    <strong class="fa-stack-1x icon-text">Newsfeed</strong>
-                </span>
                 <span class="fa-stack fa-2x home-calendar" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'calendar'}" ng-click="menuGo('calendar')">
                     <div ng-class="{'menu-animate': menuAnimate}">
                         <i class="fa fa-circle fa-stack-2x circle-calendar menu-icon-scale"></i>
                         <i class="fa fa-calendar fa-stack-1x menu-icon-scale icon-white"></i>
                     </div>
                     <strong class="fa-stack-1x icon-text">Calendar</strong>
+                </span>
+                <span class="fa-stack fa-2x home-links"
+                      ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'links'}"
+                      ng-click="menuGo('links')">
+                    <div ng-class="{'menu-animate': menuAnimate}">
+                        <i class="fa fa-circle fa-stack-2x circle-links menu-icon-scale"></i>
+                        <i class="fa fa-link fa-stack-1x menu-icon-scale icon-white"></i>
+                    </div>
+                    <strong class="fa-stack-1x icon-text">Links</strong>
                 </span>
                 <span class="fa-stack fa-2x home-search" ng-class="{'pressed': menuOpen, 'menu-clicked': menuClicked == 'search'}" ng-click="menuGo('search')">
                     <div ng-class="{'menu-animate': menuAnimate}">
@@ -86,9 +88,9 @@
                                 on-refresh="refresh()">
                             </ion-refresher>
                             <ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
-                                <ion-item class="front-page-item item-dark" ng-repeat="event in eventsDateAscending">
+                                <ion-item class="front-page-item item-dark" ng-repeat="event in userEvents">
                                     <h2>{{event.name}}</h2>
-                                    <p>{{event.date.iso | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
+                                    <p>{{event.date | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
                                 </ion-item>
                             </ion-list>
                         </ion-scroll>

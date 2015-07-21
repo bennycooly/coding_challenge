@@ -150,19 +150,19 @@
 }
 
 .circle-profile {
-    color: deepskyblue;
+    color: #0574ac;
 }
 .circle-event {
-    color: coral;
-}
-.circle-newsfeed {
-    color: hotpink;
+    color: #da0081;
 }
 .circle-calendar {
-    color: #66CD00;
+    color: #ef6f00;
+}
+.circle-links {
+    color: #4ca90c;
 }
 .circle-search {
-    color: #cccc00;
+    color: #fcb314;
 }
 
 .menu-icon-scale {
@@ -191,7 +191,7 @@
 }
 
 .menu-button-background {
-    color: #95c5c2;
+    color: #3bb8c5;
     z-index: 0;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -316,7 +316,7 @@
     transition-delay: 0.3s;
 }
 
-.home-newsfeed {
+.home-calendar {
     position: absolute;
     opacity: 0;
     visibility: hidden;
@@ -326,7 +326,7 @@
     -moz-transition: all 0.1s ease-in-out;
     transition: all 0.1s ease-in-out;
 }
-.home-newsfeed.pressed {
+.home-calendar.pressed {
     opacity: 1;
     visibility: visible;
     -webkit-transform: translate3D(0,-4.3em,0);
@@ -338,7 +338,7 @@
     transition-delay: 0.3s;
 }
 
-.home-calendar {
+.home-links {
     position: absolute;
     opacity: 1;
     visibility: hidden;
@@ -348,7 +348,7 @@
     -moz-transition: all 0.1s ease-in-out;
     transition: all 0.1s ease-in-out;
 }
-.home-calendar.pressed {
+.home-links.pressed {
     opacity: 1;
     visibility: visible;
     -webkit-transform: translate3D(3em,-3em,0);

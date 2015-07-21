@@ -40,7 +40,8 @@ angular.module('myApp.services', [])
 					email: Parse.User.current().get('email'),
 					phone: Parse.User.current().get('phone'),
 					interests: Parse.User.current().get('interests'),
-					hours: Parse.User.current().get('hours')
+					hours: Parse.User.current().get('hours'),
+                    events: Parse.User.current().get('events')
 				});
 				currentUser = $localStorage.getObject('currentUser');
 				console.log(currentUser.firstName);
@@ -59,7 +60,7 @@ angular.module('myApp.services', [])
 		}
 	})
 
-	.factory('$events', function($localStorage) {
+	.factory('$events', function($localStorage, $q) {
 		return {
 			get: function(key) {
                 var events;
@@ -73,6 +74,20 @@ angular.module('myApp.services', [])
 				}
 				return events;
 			},
+            getEvent: function(eventID) {
+                var deferred = $q.defer();
+                var Event = Parse.Object.extend('Event');
+                var query = new Parse.Query(Event);
+                query.get(eventID, {
+                    success: function(result) {
+                        deferred.resolve(result.attributes);
+                    },
+                    error: function(object, error) {
+                        deferred.reject(error);
+                    }
+                });
+                return deferred.promise;
+            },
 			updateLocalStorage: function() {
 				var query = new Parse.Query('Event');
                 query.find( {
@@ -89,8 +104,6 @@ angular.module('myApp.services', [])
                 query.find( {
                     success: function (eventsDateAscending) {
                         $localStorage.setObject('eventsDateAscending', eventsDateAscending);
-                        console.log($localStorage.getObject('eventsDateAscending'));
-                        console.log(eventsDateAscending);
                     },
                     error: function (error) {
                         alert('Error: ' + error.code + ' ' + error.message);
