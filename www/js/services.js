@@ -20,7 +20,7 @@ angular.module('myApp.services', [])
 		}
 	}])
 
-	.factory('$user', function($localStorage) {
+	.factory('$user', function($localStorage, $q) {
 		var currentUser = $localStorage.getObject('currentUser');
 		return {
 			get: function(key) {
@@ -62,7 +62,13 @@ angular.module('myApp.services', [])
 
 	.factory('$events', function($localStorage, $q) {
 		return {
-			get: function(key) {
+            sortDateAscending: function(events) {
+                events.sort( function(a, b){
+                    return new Date(a.date) - new Date(b.date);
+                });
+                return events;
+            },
+			getLS: function(key) {
                 var events;
 				switch (key) {
 					case 'eventsDateAscending':
@@ -75,40 +81,52 @@ angular.module('myApp.services', [])
 				return events;
 			},
             getEvent: function(eventID) {
-                var deferred = $q.defer();
+                var defer = $q.defer();
                 var Event = Parse.Object.extend('Event');
                 var query = new Parse.Query(Event);
-                query.get(eventID, {
+                query.ascending('date');
+                query.equalTo('objectId', eventID);
+                query.get( eventID, {
                     success: function(result) {
-                        deferred.resolve(result.attributes);
+                        defer.resolve(result.attributes);
                     },
                     error: function(object, error) {
-                        deferred.reject(error);
+                        defer.reject(error);
                     }
                 });
-                return deferred.promise;
+                return defer.promise;
             },
-			updateLocalStorage: function() {
+			updateLocalStorage: function(key) {
+                var defer = $q.defer();
+                var Event = Parse.Object.extend('Event');
 				var query = new Parse.Query('Event');
-                query.find( {
-                    success: function (events) {
-                        $localStorage.setObject('events', events);
-                    },
-                    error: function (error) {
-                        alert('Error: ' + error.code + ' ' + error.message);
-                    }
-                });
-                // get dates ascending
-                query = new Parse.Query('Event');
-                query.ascending('date');
-                query.find( {
-                    success: function (eventsDateAscending) {
-                        $localStorage.setObject('eventsDateAscending', eventsDateAscending);
-                    },
-                    error: function (error) {
-                        alert('Error: ' + error.code + ' ' + error.message);
-                    }
-                });
+                switch (key) {
+                    case 'eventsDateAscending':
+                        query.ascending('date');
+                        query.find( {
+                            success: function (result) {
+                                $localStorage.setObject('eventsDateAscending', result);
+                                defer.resolve(result);
+                            },
+                            error: function (error) {
+                                defer.reject(error);
+                            }
+                        });
+                        break;
+                    default:
+                        query.find( {
+                            success: function (result) {
+                                $localStorage.setObject('events', result);
+                                defer.resolve(result);
+                            },
+                            error: function (error) {
+                                alert('Error: ' + error.code + ' ' + error.message);
+                                defer.reject(error);
+                            }
+                        });
+                        break;
+                }
+                return defer.promise;
 
 			}
 		}

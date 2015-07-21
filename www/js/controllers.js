@@ -95,7 +95,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$state.go('login', {}, {reload: true});
 	})
 
-	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, $ionicLoading, $timeout, $user, $ionicHistory, $localStorage, $events) {
+	.controller('LoginCtrl', function ($scope, $state, $rootScope, $ionicPopup, $ionicLoading, $timeout, $user, $ionicHistory, $localStorage) {
 
 		// With the new view caching in Ionic, Controllers are only called
 		// when they are recreated or on app start, instead of every page change.
@@ -268,9 +268,31 @@ angular.module('myApp.controllers', ['myApp.services'])
             $scope.showHomeMenu = true;
             var fromSearch = $localStorage.get('leftSearchModal');
             if(fromSearch != 'true') {
-                $user.updateLocalStorage();
-                $events.updateLocalStorage();
+                //data initializations, get from localstorage first if possible
                 $scope.user = $user.get();
+                $scope.eventsDateAscending = $events.getLS('eventsDateAscending');
+                $scope.userEvents = [];
+                $scope.userEventIDs = $scope.user.events.split(', ');
+
+                //update localstorage user with Parse database
+                $user.updateLocalStorage();
+                //get all events in ascending order
+                $events.updateLocalStorage('eventsDateAscending')
+                    .then( function(result) {
+                        $scope.eventsDateAscending = $events.getLS('eventsDateAscending');
+
+                    }, function(error) {
+                        $scope.eventsDateAscending = "Please check your internet connection and try again."
+                    });
+                //get all events user is signed up for
+                for (var i=0; i<$scope.userEventIDs.length; i++) {
+                    $events.getEvent($scope.userEventIDs[i])
+                        .then(function(result) {
+                            $scope.userEvents.push(result);
+                            //sort date in ascending order
+                            $scope.userEvents = $events.sortDateAscending($scope.userEvents);
+                        });
+                }
                 //show customized message
                 var date = new Date();
                 var hour = date.toLocaleTimeString();
@@ -288,20 +310,8 @@ angular.module('myApp.controllers', ['myApp.services'])
                 else{
                     $scope.welcomeMessage = "Hello";
                 }
-                console.log('user from localstorage: ' + $scope.user.firstName);
-                //get all events that user has signed up for
-                $scope.userEvents = [];
-                $scope.userEventIDs = $scope.user.events.split(', ');
-                for (var i=0; i<$scope.userEventIDs.length; i++) {
-                    $events.getEvent($scope.userEventIDs[i])
-                        .then(function(result) {
-                            console.log(result);
-                            $scope.userEvents.push(result);
-                    });
-                }
-                $scope.eventsDateAscending = $events.get('eventsDateAscending');
-                console.log($scope.eventsDateAscending);
-                //animations
+
+                //animation initialization
                 $scope.isActive = false;
                 $scope.menuOutlinePressed = false;
                 $scope.menuBackgroundPressed = false;
@@ -330,10 +340,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 		});
 
 		$scope.$on('$ionicView.afterEnter', function() {
-            //need this for first time (need timeout for localstorage update)
-            $timeout( function() {
-                $scope.eventsDateAscending = $events.get('eventsDateAscending');
-            }, 500);
 			$timeout( function() {
 				$ionicLoading.hide();
 			}, 1000);
@@ -391,8 +397,12 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 
         $scope.refresh = function() {
-            $events.updateLocalStorage('eventsDateAscending');
-            $scope.eventsDateAscending = $events.get('eventsDateAscending');
+            $events.updateLocalStorage('eventsDateAscending')
+                .then( function() {
+                    $scope.eventsDateAscending = $events.getLS('eventsDateAscending');
+                }, function(error) {
+                    $scope.eventsDateAscending = "Please check your internet connection and try again."
+                });
             //update user events
             for (var i=0; i<$scope.userEventIDs.length; i++) {
                 $events.getEvent($scope.userEventIDs[i])
@@ -403,6 +413,11 @@ angular.module('myApp.controllers', ['myApp.services'])
                     });
             }
             $scope.$broadcast('scroll.refreshComplete');
+        };
+
+        $scope.select = function(event) {
+            if(event.type != "Fund") $state.go("app.event", {param:{id:event.eventId}}, {reload: true});
+            else $state.go("app.fund", {param:{id:event.eventId}});
         };
 
 		$scope.$on('$ionicView.beforeLeave', function() {
@@ -454,12 +469,13 @@ angular.module('myApp.controllers', ['myApp.services'])
 		}
 	})
 
-	.controller('ProfileCtrl', function($scope, $state, $ionicPopup) {
+	.controller('ProfileCtrl', function($scope, $state, $ionicPopup, $ionicSlideBoxDelegate) {
 
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$scope.setup();
 			$scope.update();
 			$scope.graph();
+            $ionicSlideBoxDelegate.update();
 		});
 
 
@@ -573,6 +589,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 			}});
 			$state.go("app.settings", {}, {refresh: true});
 		};
+
+        $scope.slideHasChanged = function($index) {
+            $ionicSlideBoxDelegate.update();
+        }
 	})
 
 	.controller('NewsCtrl', function($scope, $state, $ionicPopup) {
