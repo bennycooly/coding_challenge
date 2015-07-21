@@ -16,6 +16,18 @@
                     <input type="text" ng-model="info.location">
                 </label>
                 <label class="item item-input">
+                    <span class="input-label">Start Date</span>
+                    <button type="button" class="button button-full button-calm"
+                           ng-click="showDatePicker('start')">{{startDate | date : 'MMMM d, yyyy h:mm a'}}
+                    </button>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">End Date</span>
+                    <button type="button" class="button button-full button-calm"
+                            ng-click="showDatePicker('end')">{{endDate | date : 'MMMM d, yyyy h:mm a'}}
+                    </button>
+                </label>
+                <label class="item item-input">
                     <span class="input-label">Start</span>
                     <input type="datetime-local" placeholder="Today" ng-model="info.startDate">
                 </label>

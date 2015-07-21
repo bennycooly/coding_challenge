@@ -48,6 +48,7 @@
   <gap:plugin name="org.apache.cordova.splashscreen"/>
   <gap:plugin name="org.apache.cordova.vibration"/>
   <gap:plugin name="com.ionic.keyboard"/>
+  <gap:plugin name="cordova-plugin-datepicker" source="npm"/>
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
   <gap:splash gap:platform="android" gap:qualifier="port-ldpi" src="www/res/screen/android/screen-ldpi-portrait.png"/>
   <gap:splash gap:platform="android" gap:qualifier="port-mdpi" src="www/res/screen/android/screen-mdpi-portrait.png"/>

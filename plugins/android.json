@@ -31,6 +31,10 @@
                         {
                             "xml": "<feature name=\"Calendar\"><param name=\"android-package\" value=\"nl.xservices.plugins.Calendar\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"DatePickerPlugin\"><param name=\"android-package\" value=\"com.plugin.datepicker.DatePickerPlugin\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -74,6 +78,9 @@
             "PACKAGE_NAME": "com.phonegap.helloworld"
         },
         "nl.x-services.plugins.calendar": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "cordova-plugin-datepicker": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
         }
     },

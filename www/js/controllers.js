@@ -635,9 +635,81 @@ angular.module('myApp.controllers', ['myApp.services'])
 		//alert($stateParams.param.id);
 	})
 
-	.controller('CreateEventCtrl', function($scope, $state, $ionicPopup, $ionicHistory) {
-		$scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: "", contact: "", contactInfo: "", url: ""};
-		$scope.creator = Parse.User.current().get('username');
+	.controller('CreateEventCtrl', function($scope, $state, $ionicPopup, $ionicHistory, $timeout) {
+        $scope.$on('$ionicView.beforeEnter', function() {
+            $scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: "", contact: "", contactInfo: "", url: ""};
+            $scope.creator = Parse.User.current().get('username');
+            $scope.startDate = 'Pick a start date';
+            $scope.endDate = 'Pick an end date';
+
+            /*var Event = Parse.Object.extend('Event');
+            var query = new Parse.Query(Event);
+            query.find({
+                success: function(result) {
+                    for (var i=0; i<result.length; i++) {
+                        var date = result[i].get('date');
+                        var newDate = date;
+                        var hours = date.getHours();
+                        newDate.setHours(hours + 1);
+                        console.log(newDate);
+                        result[i].set('endDate', newDate);
+                        result[i].set('date', date);
+                        result[i].save(null, {
+                            success: function(res) {
+                                console.log('success');
+                            },
+                            error: function(res) {
+
+                            }
+                        })
+                    }
+                },
+                error: function(error) {
+
+                }
+            })*/
+        });
+
+        $scope.showDatePicker = function(type) {
+            console.log(new Date().toString());
+            $scope.minDateStart = ionic.Platform.isIOS() ? new Date() : (new Date()).valueOf();
+            if (type == 'end') {
+                if ($scope.startDate != 'Pick a start date') {
+                    $scope.minDateEnd = $scope.startDate.valueOf();
+                }
+                else {
+                    alert('Please pick a valid start date first!');
+                    return;
+                }
+            }
+
+            var options = {
+                date: new Date(),
+                mode: 'datetime',
+                minDate: (type=='start') ? $scope.minDateStart : $scope.minDateEnd,
+                todayText: 'Today',
+                nowText: 'Now',
+                androidTheme: 5
+            };
+
+            function onSuccess(date){
+                if (type == 'start') {
+                    $scope.startDate = date;
+                }
+                else if (type == 'end') {
+                    $scope.endDate = date;
+                }
+                $scope.$apply();
+                console.log($scope.startDate, $scope.endDate);
+            }
+
+            function onError(error) { // Android only
+                console.log(error);
+            }
+
+            datePicker.show(options, onSuccess, onError);
+        };
+
 
 		$scope.inject = function() {
 			$scope.info = { name: 'Youth First Family Dinner Night', description: 'Friday Night Family Dinner at Youth First, a Resource Center Dallas program. LEAGUE at AT&T will be hosting the evening by preparing a simple meal for 20-30 youth, including serving and cleaning-up. Volunteers are needed to help LEAGUE prepare meals.', location: '3918 Harry Hines Blvd. Dallas, TX 75219', date: '07/31/2015', startTime: '6:00 PM', endTime: '8:00 PM', contact: 'Richard Wilson', contactInfo: 'rw2675@att.com', url: '' };
@@ -687,12 +759,14 @@ angular.module('myApp.controllers', ['myApp.services'])
 			event.set("owner", $scope.creator);
 			event.set("description", $scope.info.description);
 			event.set("location", $scope.info.location);
-			event.set("date", date);
+			// event.set("date", date);
 			event.set("startTime", $scope.info.startTime);
 			event.set("endTime", $scope.info.endTime);
 			event.set("contact", $scope.info.contact);
 			event.set("contactInfo", $scope.info.contactInfo);
 			event.set("url", $scope.info.url);
+            event.set('date', new Date($scope.startDate));
+            event.set('endDate', new Date($scope.endDate));
 
 			event.save(null,{
 				success: function(result) {
@@ -827,13 +901,21 @@ angular.module('myApp.controllers', ['myApp.services'])
 				success: function (object) {
 					$scope.name = object.attributes.name;
 					$scope.date = object.attributes.date;
-					$scope.startTime = object.attributes.startTime;
-					$scope.endTime = object.attributes.endTime;
+                    $scope.endDate = object.attributes.endDate;
+					$scope.startTime = object.attributes.date;
+					$scope.endTime = object.attributes.endDate;
 					$scope.location = object.attributes.location;
 					$scope.contact = object.attributes.contact;
 					$scope.contactInfo = object.attributes.contactInfo;
 					$scope.description = object.attributes.description;
 					$scope.url = object.attributes.url;
+
+                    if(($scope.date.getDate() != $scope.endDate.getDate()) || ($scope.date.getMonth() != $scope.endDate.getMonth())) {
+                        $scope.singleDay = false;
+                    }
+                    else {
+                        $scope.singleDay = true;
+                    }
 					$scope.$apply();
 				}
 			});

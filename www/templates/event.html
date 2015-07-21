@@ -5,13 +5,18 @@
             <li class="item">
                 <div class="row">
                     <div class="col"><b>Date</b></div>
-                    <div class="col item-text-wrap">{{date | date : 'MMMM d, yyyy'}}</div>
+                    <div class="col item-text-wrap" ng-if="singleDay">{{date | date : 'EEEE, MMMM d, yyyy'}} </div>
+                    <div class="col item-text-wrap" ng-if="!singleDay">{{date | date : 'EEEE, MMMM d'}} to <br/>
+                        {{endDate | date: 'EEEE, MMMM d, yyyy'}}</div>
                 </div>
             </li>
             <li class="item">
                 <div class="row">
                     <div class="col"><b>Time</b></div>
-                    <div class="col item-text-wrap">{{startTime}} - {{endTime}}</div>
+                    <div class="col item-text-wrap" ng-if="singleDay">{{startTime | date : 'h:mm a'}} - {{endTime | date :
+                        'h:mm a'}}</div>
+                    <div class="col item-text-wrap" ng-if="!singleDay">{{startTime | date : "MMM d 'at' h:mm a"}}
+                        to <br/> {{endTime | date : "MMM d 'at' h:mm a"}}</div>
                 </div>
             </li>
             <li class="item">
