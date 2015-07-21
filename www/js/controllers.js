@@ -262,7 +262,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	})
 
-	.controller('HomeCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicBackdrop, $timeout, $localStorage, $user, $events, $ionicSlideBoxDelegate) {
+	.controller('HomeCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup, $ionicLoading, $ionicBackdrop, $timeout, $localStorage, $user, $events, $ionicSlideBoxDelegate) {
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$ionicHistory.clearHistory();
             $scope.showHomeMenu = true;
@@ -369,7 +369,24 @@ angular.module('myApp.controllers', ['myApp.services'])
 						$state.go('app.profile', {clear: true}, {refresh: true});
 						break;
 					case 'event':
-						$state.go('app.create_event', {clear: true}, {refresh: true});
+						var eventTypePopup = $ionicPopup.show({
+							title: 'Pick Event Type',
+							subTitle: 'Is it a regular event or fundraiser?',
+							scope: $scope,
+							buttons: [{
+								text: 'Event',
+								type: 'button-positive',
+								onTap: function(e) {
+									$state.go('app.create_event', {clear: true}, {refresh: true});
+								}
+							},{
+								text: 'Fundraiser',
+								type: 'button-positive',
+								onTap: function(e) {
+									$state.go('app.create_fund', {clear: true}, {refresh: true});
+								}
+							}]
+						});
 						break;
 					case 'links':
 						$state.go('app.links', {clear: true}, {refresh: true});
