@@ -416,6 +416,7 @@ angular.module('myApp.controllers', ['myApp.services'])
         };
 
         $scope.select = function(event) {
+            $localStorage.set('leftSearchModal', 'true');
             if(event.type != "Fund") $state.go("app.event", {param:{id:event.eventId}}, {reload: true});
             else $state.go("app.fund", {param:{id:event.eventId}});
         };
