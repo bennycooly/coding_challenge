@@ -987,7 +987,7 @@ angular.module('myApp.controllers', ['myApp.services'])
         //filter for when there are no events occurring on a day
         $scope.filterEmpty = function($event) {
             if(noEvents)
-             return(true)
+                return(true)
         };
 
         //selects the event item to take to event page
