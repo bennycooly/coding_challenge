@@ -1,5 +1,9 @@
 <ion-view view-title="Profile">
 	<ion-content>
+		<ion-refresher
+			pulling-text="Pull to refresh..."
+			on-refresh="doRefresh()">
+		</ion-refresher>
 		<tab-slide-box tab="0">
 			<div class="tsb-icons">
 				<div class="tsb-ic-wrp">
@@ -9,60 +13,63 @@
 			</div>
 			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
 				<ion-slide>
-					<h2 style="margin-top:8px;text-align:center;">{{fullName}}</h2>
-					<ul class="list">
-						<li class="item">
-							<div class="row">
-								<div class="col"><b>ATTUID</b></div>
-								<div class="col">{{id}}</div>
-							</div>
-						</li>
-						<li class="item">
-							<div class="row">
-								<div class="col"><b>Total Hours</b></div>
-								<div class="col">{{hours}}</div>
-							</div>
-						</li>
-						<li class="item">
-							<div class="row">
-								<div class="col"><b>Phone Number</b></div>
-								<div class="col">{{phone}}</div>
-							</div>
-						</li>
-						<li class="item">
-							<div class="row">
-								<div class="col"><b>Email</b></div>
-								<div class="col">{{email}}</div>
-							</div>
-						</li>
-						<li class="item">
-							<div class="row">
-								<div class="col col-50"><b>Interests</b></div>
-								<ul class="col col-offset-10" style="list-style-type:circle">
-									<li ng-repeat="interest in interestsList">
-										<div style="text-align:left;">{{interest}}</div>
-									</li>
-								</ul>
-							</div>
-						</li>
-						<li class="item">
-							<div class="row">
-								<div class="col"><h2><strong>Upcoming Events</strong></h2></div>
-							</div>
-						</li>
-						<li class="item" ng-repeat="event in upcoming" ng-click="selectUpcoming(event)">
-							<div class="row">
-								<div class="col item-text-wrap">
-										<strong>Name:</strong> {{event.name}}
+					<ion-content>
+						<h2 style="margin-top:8px;text-align:center;">{{fullName}}</h2>
+						<ul class="list">
+							<li class="item">
+								<div class="row">
+									<div class="col"><b>ATTUID</b></div>
+									<div class="col">{{id}}</div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col item-text-wrap">
-									<p><strong>Date:</strong> {{event.date}}</p>
+							</li>
+							<li class="item">
+								<div class="row">
+									<div class="col"><b>Total Hours</b></div>
+									<div class="col">{{hours}}</div>
 								</div>
-							</div>
-						</li>
-					</ul>
+							</li>
+							<li class="item">
+								<div class="row">
+									<div class="col"><b>Phone Number</b></div>
+									<div class="col">{{phone}}</div>
+								</div>
+							</li>
+							<li class="item">
+								<div class="row">
+									<div class="col"><b>Email</b></div>
+									<div class="col">{{email}}</div>
+								</div>
+							</li>
+							<li class="item">
+								<div class="row">
+									<div class="col col-50"><b>Interests</b></div>
+									<ul class="col col-offset-10" style="list-style-type:circle">
+										<li ng-repeat="interest in interestsList">
+											<div style="text-align:left;">{{interest}}</div>
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li class="item">
+								<div class="row">
+									<div class="col"><h2><strong>Upcoming Events</strong></h2></div>
+								</div>
+							</li>
+							<li class="item" ng-repeat="event in upcoming" ng-click="selectUpcoming(event)">
+								<div class="row">
+									<div class="col item-text-wrap">
+											<strong>Name:</strong> {{event.name}}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col item-text-wrap">
+										<p><strong>Date:</strong> {{event.date}}</p>
+									</div>
+								</div>
+							</li>
+							<li class="item"></li><li class="item"></li><li class="item"></li>
+						</ul>
+					</ion-content>
 				</ion-slide>
 				<ion-slide>
 					<h2 style="margin-top:8px;text-align:center;">Progress</h2>
