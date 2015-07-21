@@ -437,8 +437,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	.controller('SearchCtrl', function($scope, $state, $events, $localStorage, $ionicHistory, $ionicViewSwitcher) {
 		$scope.$on('$ionicView.beforeEnter', function () {
-			$scope.events = $events.get();
-			$scope.eventsDateAscending = $events.get('eventsDateAscending');
+			$scope.events = $events.getLS();
+			$scope.eventsDateAscending = $events.getLS('eventsDateAscending');
 		});
 
 		$scope.$on('$ionicView.afterEnter', function() {
@@ -638,6 +638,20 @@ angular.module('myApp.controllers', ['myApp.services'])
 	.controller('CreateEventCtrl', function($scope, $state, $ionicPopup, $ionicHistory) {
 		$scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: "", contact: "", contactInfo: "", url: ""};
 		$scope.creator = Parse.User.current().get('username');
+        var options = {
+            date: new Date(),
+            mode: 'date'
+        };
+
+        function onSuccess(date) {
+            alert('Selected date: ' + date);
+        }
+
+        function onError(error) { // Android only
+            alert('Error: ' + error);
+        }
+
+        datePicker.show(options, onSuccess, onError);
 
 		$scope.inject = function() {
 			$scope.info = { name: 'Youth First Family Dinner Night', description: 'Friday Night Family Dinner at Youth First, a Resource Center Dallas program. LEAGUE at AT&T will be hosting the evening by preparing a simple meal for 20-30 youth, including serving and cleaning-up. Volunteers are needed to help LEAGUE prepare meals.', location: '3918 Harry Hines Blvd. Dallas, TX 75219', date: '07/31/2015', startTime: '6:00 PM', endTime: '8:00 PM', contact: 'Richard Wilson', contactInfo: 'rw2675@att.com', url: '' };
@@ -719,6 +733,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 				}
 			});
 		};
+
+        $scope.pickDate = function() {
+            alert('clicked');
+        }
 	})
 
 	.controller('CreateFundCtrl', function($scope, $state, $ionicPopup, $ionicHistory) {
