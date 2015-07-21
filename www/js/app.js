@@ -86,6 +86,7 @@ angular.module('myApp', ['ionic',
 
 			.state('app.profile', {
 				url: "/profile",
+				cache: false,
 				views: {
 					'menuContent': {
 						templateUrl: "templates/profile.html",

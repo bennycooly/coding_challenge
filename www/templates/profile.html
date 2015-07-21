@@ -1,5 +1,5 @@
 <ion-view view-title="Profile">
-	<ion-content>
+	<ion-content ng-init="doRefresh()">
 		<ion-refresher
 			pulling-text="Pull to refresh..."
 			on-refresh="doRefresh()">

@@ -513,12 +513,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 				query.get($scope.events[i], {
 					success: function (object) {
 						var date = object.attributes.date;
-						alert(date+"\n"+$scope.currentDate);
 						if (date >= $scope.currentDate) {
 							var upcomingDate = date.getMonthFormatted() + "/" + date.getDate() + "/" + date.getFullYear();
 							var upcomingEvent = {id: object.id, name: object.attributes.name, date: upcomingDate};
 							$scope.upcoming.push(upcomingEvent);
-							alert("pushjed");
 						} else {
 							var progressDate = $scope.currentDate;
 							for (var j = 0; j < 3; j++) {
@@ -538,7 +536,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 						$scope.$apply();
 						if ($scope.events.indexOf(object.id) == $scope.events.length - 1) {
 							$scope.moneySaved = Math.round($scope.hours * 22.9 * 100) / 100;
-							//$scope.graph();
+							$scope.graph();
 						}
 					}, error: function(object) {
 						var alertMessage = "Error loading Event! Please contact support with this ID #: "+object.id;
@@ -562,8 +560,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 					data: $scope.progress
 				}]
 			};
-			document.getElementById("canvasWrapper").innerHTML = "";
-			document.getElementById("canvasWrapper").innerHTML = "<canvas id=\"canvas\"></canvas>";
+			alert("graph");
+			//document.getElementById("canvasWrapper").innerHTML = "";
+			//document.getElementById("canvasWrapper").innerHTML = "<canvas id=\"canvas\"></canvas>";
 			//if(document.chart !== undefined) document.chart.destroy();
 			var chart = document.getElementById("canvas").getContext("2d");
 			document.chart = new Chart(chart).Bar(data, {responsive: true});
@@ -862,9 +861,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.remove = function() {
 			$scope.events.splice($scope.events.indexOf($stateParams.param.id), 1);
 			var newEvents = "";
-			alert($scope.events.length);
 			for (var i=0; i<$scope.events.length; i++) {
-				alert($scope.events[i]);
 				if (i != 0) newEvents += ", "+$scope.events[i];
 				else newEvents += $scope.events[i];
 			}
