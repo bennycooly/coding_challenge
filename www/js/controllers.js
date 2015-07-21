@@ -271,6 +271,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                 //data initializations, get from localstorage first if possible
                 $scope.user = $user.get();
                 $scope.eventsDateAscending = $events.getLS('eventsDateAscending');
+				$scope.fundsDateAscending = $events.getFund('eventsDateAscending');
                 $scope.userEvents = [];
                 $scope.userEventIDs = $scope.user.events.split(', ');
 
@@ -417,6 +418,7 @@ angular.module('myApp.controllers', ['myApp.services'])
             $events.updateLocalStorage('eventsDateAscending')
                 .then( function() {
                     $scope.eventsDateAscending = $events.getLS('eventsDateAscending');
+					$scope.fundsDateAscending = $events.getFund('eventsDateAscending');
                 }, function(error) {
                     $scope.eventsDateAscending = "Please check your internet connection and try again."
                 });

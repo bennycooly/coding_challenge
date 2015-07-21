@@ -69,13 +69,37 @@ angular.module('myApp.services', [])
                 return events;
             },
 			getLS: function(key) {
-                var events;
+                var events = [];
 				switch (key) {
 					case 'eventsDateAscending':
-						events = $localStorage.getObject('eventsDateAscending');
+						var originalEvents = $localStorage.getObject('eventsDateAscending');
+						for (var i=0; i<originalEvents.length; i++) {
+							if (originalEvents[i].type != "Fund") events.push(originalEvents[i]);
+						}
 						break;
 					default:
-						events = $localStorage.getObject('events');
+						var originalEvents = $localStorage.getObject('events');
+						for (var i=0; i<originalEvents.length; i++) {
+							if (originalEvents[i].type != "Fund") events.push(originalEvents[i]);
+						}
+						break;
+				}
+				return events;
+			},
+			getFund: function(key) {
+				var events = [];
+				switch (key) {
+					case 'eventsDateAscending':
+						var originalEvents = $localStorage.getObject('eventsDateAscending');
+						for (var i=0; i<originalEvents.length; i++) {
+							if (originalEvents[i].type == "Fund") events.push(originalEvents[i]);
+						}
+						break;
+					default:
+						var originalEvents = $localStorage.getObject('events');
+						for (var i=0; i<originalEvents.length; i++) {
+							if (originalEvents[i].type == "Fund") events.push(originalEvents[i]);
+						}
 						break;
 				}
 				return events;

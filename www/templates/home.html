@@ -116,6 +116,26 @@
                             </ion-list>
                         </ion-scroll>
                     </ion-slide>
+                    <ion-slide>
+                        <ion-content scroll="false">
+                            <h4 class="front-page-header">Fundraising Events</h4>
+                        </ion-content>
+                        <ion-scroll has-bouncing="true" class="front-page-list-container">
+                            <ion-refresher
+                                    pulling-text="<p style='color: white;'>Pull to refresh...</p>"
+                                    pulling-icon="ion-ios-arrow-down"
+                                    spinner="spiral"
+                                    on-refresh="refresh()">
+                            </ion-refresher>
+                            <ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
+                                <ion-item class="front-page-item item-dark" ng-repeat="event in fundsDateAscending"
+                                          on-tap="select(event)">
+                                    <h2>{{event.name}}</h2>
+                                    <p>{{event.date.iso | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
+                                </ion-item>
+                            </ion-list>
+                        </ion-scroll>
+                    </ion-slide>
                 </ion-slide-box>
             </div>
         </div>
