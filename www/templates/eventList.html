@@ -9,7 +9,6 @@
                     Time: {{eventItem.startTime}} - {{eventItem.endTime}} <br>
                     Location: {{eventItem.location}} <br>
                     Description: {{eventItem.description}}
-
                 </p>
             </ion-item>
             <ion-item ng-repeat="eventItem in events|filter:filterFund" ng-click="select(eventItem)">
@@ -17,6 +16,9 @@
                 <p>
                     Description: {{eventItem.description}}
                 </p>
+            </ion-item>
+            <ion-item ng-repeat="eventItem in events|filter:filterEmpty">
+                {{eventItem.description}}
             </ion-item>
         </ion-list>
     </ion-content>

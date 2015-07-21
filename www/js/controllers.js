@@ -874,11 +874,15 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.mnthInd = $stateParams.monthInd;
 		$scope.date = new Date($scope.year, $scope.mnthInd, $scope.day);
 
+        //flag to indicate if there are any events on the given day
+        var noEvents = false;
+
 		//query info
 		$scope.events = [];
-		$scope.eventCopy = {id: "", name: "", description: "", startTime: "", endTime: "", location: "", date: "", type: "", url: ""};
+		$scope.eventCopy = {id: "", name: "", description: "", startTime: "", endTime: "", location: "", date: "", type: ""};
 		$scope.error = {show: false};
 
+        //query- all events on the given day and all fundraising events within a month of the fundraising start date
 		var eventClass = Parse.Object.extend("Event");
 		var query = new Parse.Query(eventClass);
 		query.find({
@@ -894,11 +898,26 @@ angular.module('myApp.controllers', ['myApp.services'])
 					eventInfo.location = results[i].get("location");
 					eventInfo.date = results[i].get("date");
 					eventInfo.type = results[i].get("type");
-                    eventInfo.url = results[i].get("url");
-					$scope.events.push(eventInfo);
+
+                    //only pushes events for given day
+                    if((eventInfo.date.toString().substring(0,15) == $scope.date.toString().substring(0,15)) ||
+                        ((((eventInfo.date.getDate() <= $scope.date.getDate()) && (eventInfo.date.getMonth() == $scope.date.getMonth())) ||
+                        ((eventInfo.date.getDate() >= $scope.date.getDate()) && ((eventInfo.date.getMonth() + 1) == $scope.date.getMonth())))
+                        && eventInfo.type == "Fund"))
+					    $scope.events.push(eventInfo);
 				}
-				$scope.error.show = false;
-				$scope.$apply();
+
+                //if no events on the day
+                if($scope.events.length == 0) {
+                    noEvents = true;
+                    var eventInfo = angular.copy($scope.eventCopy);
+                    eventInfo.description = "No events occurring on this date.";
+                    eventInfo.date = $scope.date;
+                    $scope.events.push(eventInfo);
+                }
+
+                $scope.error.show = false;
+                $scope.$apply();
 			}, error: function (results) {
 				$scope.error.show = true;
 				return;
@@ -907,21 +926,27 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		//filter events by selected day
 		$scope.filterEvents = function($event) {
-            if(!($event.type == "Fund"))
-			    return ($event.date.toString().substring(0,15) == $scope.date.toString().substring(0,15))
+            if((!($event.type == "Fund")) && !noEvents)
+            return (true)
         };
 
         //filter fundraising events; shows for 30 days
         $scope.filterFund = function($event) {
             if($event.type == "Fund") {
-                return ((($event.date.getDate() <= $scope.date.getDate()) && ($event.date.getMonth() == $scope.date.getMonth())) ||
-                        (($event.date.getDate() >= $scope.date.getDate()) && (($event.date.getMonth() + 1) == $scope.date.getMonth())))
+                return (true)
             }
+        };
+
+        //filter for when there are no events occurring on a day
+        $scope.filterEmpty = function($event) {
+            if(noEvents)
+             return(true)
         };
 
         //selects the event item to take to event page
 		$scope.select = function(eventItem) {
-			$state.go("app.event", {param:{id:eventItem.id}});
+			if(eventItem.type != "Fund") $state.go("app.event", {param:{id:eventItem.id}});
+            else $state.go("app.fund", {param:{id:eventItem.id}});
 		};
 	})
 
