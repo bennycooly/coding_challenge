@@ -262,7 +262,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	})
 
-	.controller('HomeCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicLoading, $ionicBackdrop, $timeout, $localStorage, $user, $events, $ionicSlideBoxDelegate) {
+	.controller('HomeCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup, $ionicLoading, $ionicBackdrop, $timeout, $localStorage, $user, $events, $ionicSlideBoxDelegate) {
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$ionicHistory.clearHistory();
             $scope.showHomeMenu = true;
@@ -271,6 +271,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                 //data initializations, get from localstorage first if possible
                 $scope.user = $user.get();
                 $scope.eventsDateAscending = $events.getLS('eventsDateAscending');
+				$scope.fundsDateAscending = $events.getFund('eventsDateAscending');
                 $scope.userEvents = [];
                 $scope.userEventIDs = $scope.user.events.split(', ');
 
@@ -369,7 +370,24 @@ angular.module('myApp.controllers', ['myApp.services'])
 						$state.go('app.profile', {clear: true}, {refresh: true});
 						break;
 					case 'event':
-						$state.go('app.create_event', {clear: true}, {refresh: true});
+						var eventTypePopup = $ionicPopup.show({
+							title: 'Pick Event Type',
+							subTitle: 'Is it a regular event or fundraiser?',
+							scope: $scope,
+							buttons: [{
+								text: 'Event',
+								type: 'button-positive',
+								onTap: function(e) {
+									$state.go('app.create_event', {clear: true}, {refresh: true});
+								}
+							},{
+								text: 'Fundraiser',
+								type: 'button-positive',
+								onTap: function(e) {
+									$state.go('app.create_fund', {clear: true}, {refresh: true});
+								}
+							}]
+						});
 						break;
 					case 'links':
 						$state.go('app.links', {clear: true}, {refresh: true});
@@ -400,6 +418,7 @@ angular.module('myApp.controllers', ['myApp.services'])
             $events.updateLocalStorage('eventsDateAscending')
                 .then( function() {
                     $scope.eventsDateAscending = $events.getLS('eventsDateAscending');
+					$scope.fundsDateAscending = $events.getFund('eventsDateAscending');
                 }, function(error) {
                     $scope.eventsDateAscending = "Please check your internet connection and try again."
                 });
@@ -513,12 +532,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 				query.get($scope.events[i], {
 					success: function (object) {
 						var date = object.attributes.date;
-						alert(date+"\n"+$scope.currentDate);
 						if (date >= $scope.currentDate) {
 							var upcomingDate = date.getMonthFormatted() + "/" + date.getDate() + "/" + date.getFullYear();
 							var upcomingEvent = {id: object.id, name: object.attributes.name, date: upcomingDate};
 							$scope.upcoming.push(upcomingEvent);
-							alert("pushjed");
 						} else {
 							var progressDate = $scope.currentDate;
 							for (var j = 0; j < 3; j++) {
@@ -538,7 +555,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 						$scope.$apply();
 						if ($scope.events.indexOf(object.id) == $scope.events.length - 1) {
 							$scope.moneySaved = Math.round($scope.hours * 22.9 * 100) / 100;
-							//$scope.graph();
+							$scope.graph();
 						}
 					}, error: function(object) {
 						var alertMessage = "Error loading Event! Please contact support with this ID #: "+object.id;
@@ -562,8 +579,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 					data: $scope.progress
 				}]
 			};
-			document.getElementById("canvasWrapper").innerHTML = "";
-			document.getElementById("canvasWrapper").innerHTML = "<canvas id=\"canvas\"></canvas>";
+			alert("graph");
+			//document.getElementById("canvasWrapper").innerHTML = "";
+			//document.getElementById("canvasWrapper").innerHTML = "<canvas id=\"canvas\"></canvas>";
 			//if(document.chart !== undefined) document.chart.destroy();
 			var chart = document.getElementById("canvas").getContext("2d");
 			document.chart = new Chart(chart).Bar(data, {responsive: true});
@@ -944,9 +962,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.remove = function() {
 			$scope.events.splice($scope.events.indexOf($stateParams.param.id), 1);
 			var newEvents = "";
-			alert($scope.events.length);
 			for (var i=0; i<$scope.events.length; i++) {
-				alert($scope.events[i]);
 				if (i != 0) newEvents += ", "+$scope.events[i];
 				else newEvents += $scope.events[i];
 			}
@@ -1094,7 +1110,7 @@ angular.module('myApp.controllers', ['myApp.services'])
         //filter for when there are no events occurring on a day
         $scope.filterEmpty = function($event) {
             if(noEvents)
-             return(true)
+                return(true)
         };
 
         //selects the event item to take to event page
