@@ -112,6 +112,7 @@ angular.module('myApp.services', [])
                 var defer = $q.defer();
                 var Event = Parse.Object.extend('Event');
                 var query = new Parse.Query(Event);
+                query.greaterThanOrEqualTo('date', new Date());
                 query.ascending('date');
                 query.equalTo('objectId', eventID);
                 query.get( eventID, {
@@ -158,6 +159,7 @@ angular.module('myApp.services', [])
                     case 'eventsDateAscending':
                         $localStorage.remove('eventsDateAscending');
                         query.ascending('date');
+                        query.greaterThanOrEqualTo('date', new Date());
                         query.find( {
                             success: function (result) {
                                 $localStorage.setObject('eventsDateAscending', result);
@@ -170,6 +172,7 @@ angular.module('myApp.services', [])
                         break;
                     default:
                         $localStorage.remove('events');
+                        query.greaterThanOrEqualTo('date', new Date());
                         query.find( {
                             success: function (result) {
                                 $localStorage.setObject('events', result);

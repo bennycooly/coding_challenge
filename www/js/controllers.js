@@ -1133,7 +1133,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
     .controller('SettingsCtrl', function($ionicModal, $ionicSlideBoxDelegate, $ionicLoading, $scope, $state, $ionicHistory, $localStorage) {
         $scope.$on('$ionicView.loaded', function() {
-            $ionicModal.fromTemplateUrl('/templates/tutorial.html', {
+            $ionicModal.fromTemplateUrl('templates/tutorial.html', {
                 scope: $scope,
                 animation: 'slide-in-up'
             }).then(function(modal) {
@@ -1220,7 +1220,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
     .controller('TutorialCtrl', function($ionicModal, $ionicSlideBoxDelegate, $ionicLoading, $scope, $state, $ionicHistory, $localStorage, $timeout) {
         $scope.$on('$ionicView.loaded', function() {
-            $ionicModal.fromTemplateUrl('/templates/tutorial.html', {
+            $ionicModal.fromTemplateUrl('templates/tutorial.html', {
                 scope: $scope,
                 animation: 'slide-in-up'
             }).then(function(modal) {
