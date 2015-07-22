@@ -3,39 +3,29 @@
         <button ng-show="creator=='am790d'" class="button button-block button-positive" ng-click="inject()">Inject Default Events</button>
         <form ng-submit="createEvent(false)">
             <div class="list">
-                <label class="item item-input">
+                <label class="item item-input item-floating-label">
                     <span class="input-label">Event Title</span>
-                    <input type="text" ng-model="info.name">
+                    <input type="text" placeholder="Event Title" ng-model="info.name">
                 </label>
-                <label class="item item-input">
-                    <span class="input-label">Description</span>
-                    <input type="text" ng-model="info.description">
-                </label>
-                <label class="item item-input">
+                <label class="item item-input item-floating-label">
                     <span class="input-label">Location</span>
-                    <input type="text" ng-model="info.location">
+                    <input type="text" placeholder="Location" ng-model="info.location">
                 </label>
-                <label class="item item-input">
-                    <span class="input-label">Start Date</span>
-                    <button type="button" class="button button-full button-calm"
-                           ng-click="showDatePicker('start')">{{startDate | date : 'MMMM d, yyyy h:mm a'}}
-                    </button>
+                <label class="button button-full button-calm"
+                       ng-click="showDatePicker('start')">{{startDate | date : 'MMMM d, yyyy h:mm a'}}
                 </label>
-                <label class="item item-input">
-                    <span class="input-label">End Date</span>
-                    <button type="button" class="button button-full button-calm"
-                            ng-click="showDatePicker('end')">{{endDate | date : 'MMMM d, yyyy h:mm a'}}
-                    </button>
+                <label class="button button-full button-balanced"
+                       ng-click="showDatePicker('end')">{{endDate | date : 'MMMM d, yyyy h:mm a'}}
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Start</span>
-                    <input type="datetime-local" placeholder="Today" ng-model="info.startDate">
+                    <input type="datetime-local" placeholder="Today" ng-model="info.date">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">End</span>
                     <input type="datetime-local" placeholder="Today" ng-model="info.endDate">
                 </label>
-                <label class="item item-input">
+                <!--<label class="item item-input">
                     <span class="input-label">Date</span>
                     <input type="text" ng-model="info.date">
                 </label>
@@ -46,18 +36,21 @@
                 <label class="item item-input">
                     <span class="input-label">End Time</span>
                     <input type="text" ng-model="info.endTime">
+                </label>-->
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Contact Name</span>
+                    <input type="text" placeholder="Contact Name" ng-model="info.contact">
                 </label>
-                <label class="item item-input">
-                    <span class="input-label">Contact</span>
-                    <input type="text" ng-model="info.contact">
-                </label>
-                <label class="item item-input">
+                <label class="item item-input item-floating-label">
                     <span class="input-label">Contact Info</span>
-                    <input type="text" ng-model="info.contactInfo">
+                    <input type="text" placeholder="Contact Information" ng-model="info.contactInfo">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Description</span>
+                    <textarea placeholder="Description" ng-model="info.description"></textarea>
                 </label>
                 <label class="item item-input">
-                    <span class="input-label">URL</span>
-                    <input type="text" ng-model="info.url">
+                    <input type="text" placeholder="URL" ng-model="info.url">
                 </label>
                 <!--
                 <input id="datepicker" type="text" placeholder="Choose A Date">
