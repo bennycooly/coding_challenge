@@ -197,23 +197,20 @@ angular.module('myApp.controllers', ['myApp.services'])
                     // need these 2 lines of code for animation to work
                     $scope.hideLogin();
                     $scope.showLogin();
-                    // aniamte out
+                    // animate out
                     $scope.fadeOut = true;
 
-					$user.updateLocalStorage();
-					console.log(user);
-					/*$rootScope.user = user;
-					$rootScope.isLoggedIn = true;*/
-					$scope.clear();
                     $localStorage.set('fromLogin', 'true');
                     $ionicHistory.nextViewOptions({
                         disableBack: true,
                         disableAnimate: true
                     });
+                    $scope.clear();
                     $timeout( function() {
-                        if (user.attributes.firstTime) {
-                            //$state.go('showtutorial');
-                            $state.go('app.home');
+                        if(Parse.User.current().get('firstTime')) {
+                            Parse.User.current().set('firstTime', false);
+                            $state.go('showtutorial');
+                            //$state.go('app.home');
                         }
                         else {
                             $state.go('app.home');

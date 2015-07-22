@@ -38,6 +38,14 @@ angular.module('myApp', ['ionic',
 			// $state.go('login');
 		});
 
+        $ionicPlatform.registerBackButtonAction(function () {
+            if ($state=='app.home') {
+                navigator.app.exitApp();
+            } else {
+
+            }
+        }, 100);
+
 		Parse.initialize("1HS2UnUaotlFPUBxgUCkaTzdIQOIhwxAvGMmBa4c", "mkOcJeWZU7Wo8LCTypT40pJRZuVrEKIYMIwW8NCl");
 
 	})
