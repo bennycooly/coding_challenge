@@ -9,6 +9,7 @@ angular.module('myApp', ['ionic',
 	'myApp.directives',
 	'ngCordova',
 	'tabSlideBox',
+    'uiGmapgoogle-maps',
 	'chart.js'])
 
 	.run(function ($ionicPlatform, $state, $rootScope, $cordovaNetwork, $ionicLoading, $timeout) {
@@ -50,7 +51,7 @@ angular.module('myApp', ['ionic',
 
 	})
 
-	.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+	.config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, uiGmapGoogleMapApiProvider) {
 		$stateProvider
 
 			.state('app', {
@@ -333,5 +334,10 @@ angular.module('myApp', ['ionic',
 
 		// if none of the above states are matched, use this as the fallback
 		$urlRouterProvider.otherwise('/login');
-	});
 
+        uiGmapGoogleMapApiProvider.configure({
+            key: 'AIzaSyCfGPsnvI5R4S6dQpWvKbK-8j-ErV-D65M',
+            v: '3.19',
+            libraries: 'weather,geometry,visualization'
+        });
+	})

@@ -525,13 +525,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 	})
 
 	.controller('ProfileCtrl', function($scope, $state, $ionicPopup) {
-/*
 		$scope.$on('$ionicView.beforeEnter', function () {
-			$scope.setup();
-			$scope.update();
-			$scope.graph();
+			$scope.currentUser = Parse.User.current();
+            $scope.info = {};
 		});
-*/
 
 		$scope.doRefresh = function() {
 			var currentUser = Parse.User.current();
@@ -627,6 +624,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 
 		$scope.saveProfileChanges = function() {
+            var currentUser = $scope.currentUser;
 			currentUser.set('firstName', $scope.info.firstName);
 			currentUser.set('lastName', $scope.info.lastName);
 			currentUser.set('phone', $scope.info.phone);
@@ -648,7 +646,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	.controller('CreateEventCtrl', function($scope, $state, $ionicPopup, $ionicHistory, $timeout) {
         $scope.$on('$ionicView.beforeEnter', function() {
-            $scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: "", contact: "", contactInfo: "", url: ""};
+            $scope.info = {name: "", description: "", location: "", date: "", endDate: "", contact: "", contactInfo: "", url: ""};
             $scope.creator = Parse.User.current().get('username');
             $scope.startDate = 'Pick a start date';
             $scope.endDate = 'Pick an end date';
@@ -706,9 +704,11 @@ angular.module('myApp.controllers', ['myApp.services'])
             function onSuccess(date){
                 if (type == 'start') {
                     $scope.startDate = date;
+                    $scope.info.date = date;
                 }
                 else if (type == 'end') {
                     $scope.endDate = date;
+                    $scope.info.endDate = date;
                 }
                 $scope.$apply();
                 console.log($scope.startDate, $scope.endDate);
@@ -760,9 +760,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 				}
 			}
 
-			var dateList = $scope.info.date.split("/");
-			var date = new Date(parseInt(dateList[2]), parseInt(dateList[0]), parseInt(dateList[1]), 0, 0, 0, 0);
-
 			var EventClass = Parse.Object.extend("Event");
 			var event = new EventClass();
 
@@ -770,9 +767,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 			event.set("owner", $scope.creator);
 			event.set("description", $scope.info.description);
 			event.set("location", $scope.info.location);
-			// event.set("date", date);
-			event.set("startTime", $scope.info.startTime);
-			event.set("endTime", $scope.info.endTime);
 			event.set("contact", $scope.info.contact);
 			event.set("contactInfo", $scope.info.contactInfo);
 			event.set("url", $scope.info.url);
@@ -791,9 +785,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 							return;
 						}
 					});
-					$scope.info = {name: "", description: "", location: "", date: "", startTime: "", endTime: "", contact: "", contactInfo: "", url: ""};
+					$scope.info = {name: "", description: "", location: "", date: "", endDate: "", contact: "", contactInfo: "", url: ""};
 					$ionicHistory.nextViewOptions({
-						disableBack: true,
+						disableBack: true
 					});
 					if(!injected) $state.go("app.home", {}, {refresh: true});
 				}, error: function(result) {
@@ -892,13 +886,58 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 	})
 
-	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup, $localStorage, $ionicActionSheet, $timeout) {
+	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup, $localStorage, $ionicActionSheet, uiGmapGoogleMapApi, $q) {
 
 		$scope.$on('$ionicView.beforeEnter', function () {
-			$scope.update();
-		});
+            $scope.location = location;
+            $scope.mapOptions = {
+                center: {latitude: -40, longitude: -40},
+                zoom: 15
+            };
+            $scope.marker = {
+                idKey: 1,
+                coords: {latitude: -40, longitude: -40},
+                options: {
+                    animation: 1
+                }
+            };
+            $scope.update().then(function (location) {
+                uiGmapGoogleMapApi.then(function (maps) {
+                    $scope.codeAddress(location).then(console.log('displaying map'));
+                });
+            });
+        });
+
+        $scope.codeAddress = function(location) {
+            var defer = $q.defer();
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({'address': location}, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK){
+                    var coord = results[0].geometry.location;
+                    $scope.mapOptions = {
+                        center: {latitude: coord.k, longitude: coord.D},
+                        zoom: 15
+                    };
+                    $scope.marker = {
+                        idKey: 1,
+                        coords: {latitude: coord.k, longitude: coord.D},
+                        options: {
+                            animation: 1
+                        }
+                    };
+                    console.log('getting location');
+                    defer.resolve();
+                }
+                else{
+                    console.log(status);
+                    defer.reject();
+                }
+            });
+            return defer.promise;
+        };
 
 		$scope.update = function() {
+            var defer = $q.defer();
 			$scope.info = {signedUp: false};
 
 			$scope.eventsString = Parse.User.current().get('events');
@@ -927,9 +966,11 @@ angular.module('myApp.controllers', ['myApp.services'])
                     else {
                         $scope.singleDay = true;
                     }
-					$scope.$apply();
+					//$scope.$apply();
+                    defer.resolve($scope.location);
 				}
 			});
+            return defer.promise;
 		};
 
 		$scope.signUp = function() {
@@ -1350,5 +1391,6 @@ angular.module('myApp.controllers', ['myApp.services'])
     })
 
     .controller('LinksCtrl', function() {
-
+        console.log('hi');
     });
+
