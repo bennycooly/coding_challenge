@@ -47,6 +47,8 @@
             </li>
             <li class="item">
                 <button class="button button-block button-positive" ng-hide="info.signedUp" ng-click="signUp()">Sign Up!</button>
+                <button class="button button-block button-calm" ng-show="info.signedUp" ng-click="addCalendar()">Add to
+                    Calendar</button>
                 <button class="button button-block button-assertive" ng-show="info.signedUp" ng-click="remove()">Remove From Event!</button>
             </li>
         </ul>

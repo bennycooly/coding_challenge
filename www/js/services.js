@@ -33,18 +33,19 @@ angular.module('myApp.services', [])
 				}
 			},
 			updateLocalStorage: function() {
-				console.log('updating localstorage from parse');
-				$localStorage.setObject('currentUser', {
-					firstName: Parse.User.current().get('firstName'),
-					lastName: Parse.User.current().get('lastName'),
-					email: Parse.User.current().get('email'),
-					phone: Parse.User.current().get('phone'),
-					interests: Parse.User.current().get('interests'),
-					hours: Parse.User.current().get('hours'),
-                    events: Parse.User.current().get('events')
-				});
-				currentUser = $localStorage.getObject('currentUser');
-				console.log(currentUser.firstName);
+                var defer = $q.defer();
+                Parse.User.current().fetch({
+                    success: function(result) {
+                        var user = result.attributes;
+                        $localStorage.setObject('currentUser', user);
+                        defer.resolve();
+                    },
+                    error: function(obj, error) {
+                        alert('error fetching current user');
+                        defer.reject(error);
+                    }
+                });
+                return defer.promise;
 			},
 			updateParse: function() {
 				/*Parse.User.current().set('firstName', this.firstName);
@@ -60,7 +61,7 @@ angular.module('myApp.services', [])
 		}
 	})
 
-	.factory('$events', function($localStorage, $q) {
+	.factory('$events', function($localStorage, $q, $user) {
 		return {
             sortDateAscending: function(events) {
                 events.sort( function(a, b){
@@ -71,6 +72,9 @@ angular.module('myApp.services', [])
 			getLS: function(key) {
                 var events = [];
 				switch (key) {
+                    case 'userEvents':
+                        events = $localStorage.getObject('userEvents');
+                        break;
 					case 'eventsDateAscending':
 						var originalEvents = $localStorage.getObject('eventsDateAscending');
 						for (var i=0; i<originalEvents.length; i++) {
@@ -122,10 +126,37 @@ angular.module('myApp.services', [])
             },
 			updateLocalStorage: function(key) {
                 var defer = $q.defer();
+                var promises = [];
                 var Event = Parse.Object.extend('Event');
-				var query = new Parse.Query('Event');
+				var query = new Parse.Query(Event);
                 switch (key) {
+                    case 'userEvents':
+                        $localStorage.remove('userEvents');
+                        var userEvents = [];
+                        var user = $user.get();
+                        if(user.events == '') {
+                            defer.resolve();
+                            break;
+                        }
+                        var userEventIDs = user.events.split(', ');
+                        for (var i=0; i<userEventIDs.length; i++) {
+                            console.log(userEventIDs[i]);
+                            promises.push(
+                                this.getEvent(userEventIDs[i])
+                                    .then(function(result) {
+                                        userEvents.push(result);
+                                        console.log('inside');
+                                    })
+                            );
+                        }
+                        $q.all(promises).then(function(){
+                            console.log(userEvents);
+                            $localStorage.setObject('userEvents', userEvents);
+                            defer.resolve();
+                        });
+                        break;
                     case 'eventsDateAscending':
+                        $localStorage.remove('eventsDateAscending');
                         query.ascending('date');
                         query.find( {
                             success: function (result) {
@@ -138,6 +169,7 @@ angular.module('myApp.services', [])
                         });
                         break;
                     default:
+                        $localStorage.remove('events');
                         query.find( {
                             success: function (result) {
                                 $localStorage.setObject('events', result);
