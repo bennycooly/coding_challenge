@@ -1035,6 +1035,13 @@ angular.module('myApp.controllers', ['myApp.services'])
 
         });
 
+        var date = new Date();
+        var currMonth = date.getMonth();
+        var currYear = date.getFullYear();
+        var day = date.getDay();
+
+        var months = ["January","February","March","April","May","June","July","August", "September","October","November","December"];
+
 		//decrements month
 		$scope.prevM = function() {
 
