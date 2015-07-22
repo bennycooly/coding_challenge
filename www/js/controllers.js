@@ -209,7 +209,12 @@ angular.module('myApp.controllers', ['myApp.services'])
                     $timeout( function() {
                         if(Parse.User.current().get('firstTime')) {
                             Parse.User.current().set('firstTime', false);
-                            $state.go('showtutorial');
+                            Parse.User.current().save(null, {
+                                success: function() {
+                                    $state.go('showtutorial');
+                                }
+                            });
+
                             //$state.go('app.home');
                         }
                         else {
@@ -887,7 +892,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 	})
 
-	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup, $localStorage) {
+	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup, $localStorage, $ionicActionSheet, $timeout) {
 
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$scope.update();
@@ -928,11 +933,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 
 		$scope.signUp = function() {
-            cordova.plugins.notification.local.schedule({
+            /*cordova.plugins.notification.local.schedule({
                 text: "Delayed Notification",
                 every: "minute",
                 icon: "file://img/logo.png"
-            });
+            });*/
 
 			var currentUser = Parse.User.current();
 			var events = currentUser.get("events");
@@ -989,20 +994,46 @@ angular.module('myApp.controllers', ['myApp.services'])
 			}});
 		};
 
+        // Triggered on a button click, or some other target
+        $scope.removeWarn = function() {
+
+            // Show the action sheet
+            var hideSheet = $ionicActionSheet.show({
+                destructiveText: '<i class="icon ion-close assertive"></i>Remove',
+                titleText: 'Are you sure?',
+                cancelText: 'Cancel',
+                cancel: function() {
+                    hideSheet();
+                    // add cancel code..
+                },
+                destructiveButtonClicked: function(index) {
+                    hideSheet();
+                    $scope.remove();
+                }
+            });
+
+            // For example's sake, hide the sheet after two seconds
+
+
+        };
+
 	})
 
 	.controller('CalCtrl', function($scope, $state) {
-		//date info
-		var date = new Date();
-		var currMonth = date.getMonth();
-		var currYear = date.getFullYear();
-		var day = date.getDay();
+        $scope.$on('$ionicView.beforeEnter', function() {
+            //date info
+            var date = new Date();
+            var currMonth = date.getMonth();
+            var currYear = date.getFullYear();
+            var day = date.getDay();
 
-		var months = ["January","February","March","April","May","June","July","August", "September","October","November","December"];
+            var months = ["January","February","March","April","May","June","July","August", "September","October","November","December"];
 
-		$scope.month = months[currMonth];
-		$scope.year = currYear;
-		$scope.day = day;
+            $scope.month = months[currMonth];
+            $scope.year = currYear;
+            $scope.day = day;
+
+        });
 
 		//decrements month
 		$scope.prevM = function() {
@@ -1309,4 +1340,8 @@ angular.module('myApp.controllers', ['myApp.services'])
             });
             $state.go('app.home');
         }
+    })
+
+    .controller('LinksCtrl', function() {
+
     });

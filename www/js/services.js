@@ -64,9 +64,11 @@ angular.module('myApp.services', [])
 	.factory('$events', function($localStorage, $q, $user) {
 		return {
             sortDateAscending: function(events) {
-                events.sort( function(a, b){
-                    return new Date(a.date) - new Date(b.date);
-                });
+                if(events.length){
+                    events.sort( function(a, b){
+                        return new Date(a.date) - new Date(b.date);
+                    });
+                }
                 return events;
             },
 			getLS: function(key) {

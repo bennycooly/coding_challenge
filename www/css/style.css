@@ -31,8 +31,13 @@
     /*background: none;*/
 }
 
+.bar.bar-dark {
+    background: #0574ac;
+    border-bottom: none;
+}
+
 .side-menu-background {
-    background: #444;
+    background: #0574ac;
     border: 0;
     border-color: transparent;
     border-top: transparent;
@@ -191,7 +196,7 @@
 }
 
 .menu-button-background {
-    color: #3bb8c5;
+    color: #ced6d8;
     z-index: 0;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -200,6 +205,7 @@
 }
 
 .menu-button-background.pressed {
+    color: #333333;
     -webkit-transform: translate3D(0,1em,0) scale(2);
     -moz-transform: translate3D(0,1em,0) scale(2);
     transform: translate3D(0,1em,0) scale(2);
@@ -207,7 +213,7 @@
 }
 
 .menu-button-outline {
-    color: darkslategray;
+    color: #333333;
     z-index: -1;
     -webkit-transform: rotate(40deg);
     -moz-transform: rotate(40deg);
@@ -219,7 +225,6 @@
 }
 
 .menu-button-outline.pressed {
-    color: darkslategray;
     -webkit-transform: translate3D(0,1em,0) rotate(130deg) scale(2);
     -moz-transform: translate3D(0,1em,0) rotate(130deg) scale(2);
     transform: translate3D(0,1em,0) rotate(130deg) scale(2);
@@ -227,7 +232,7 @@
 }
 
 .menu-button-icon {
-    color: darkslategray;
+    color: #333333;
     z-index: 1;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -236,7 +241,7 @@
 }
 
 .menu-button-icon.pressed {
-    color: white;
+    color: #f2f2f2;
     -webkit-transform: translate3D(0,3em,0);
     -moz-transform: translate3D(0,3em,0);
     transform: translate3D(0,3em,0);
@@ -244,10 +249,10 @@
 }
 
 .menu-button-text {
-    color: darkslategray;
+    color: #f2f2f2;
     opacity: 0;
     visibility: hidden;
-    font-size: 30px;
+    font-size: 25px;
     z-index: 2;
     width: 100px;
     top: calc(50% + 100px);

@@ -92,6 +92,16 @@ angular.module('myApp', ['ionic',
 				}
 			})
 
+            .state('app.links', {
+                url: "/links",
+                views: {
+                    'menuContent': {
+                        templateUrl: "templates/links.html",
+                        controller: 'LinksCtrl'
+                    }
+                }
+            })
+
 			.state('app.profile', {
 				url: "/profile",
 				cache: false,
