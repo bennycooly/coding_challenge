@@ -1132,7 +1132,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	})
 
-	.controller('CalCtrl', function($scope, $state) {
+	.controller('CalCtrl', function($scope, $state, $ionicPopup) {
         $scope.$on('$ionicView.beforeEnter', function() {
             //date info
             var date = new Date();
@@ -1191,7 +1191,28 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.day = dayClicked;
 
 			$state.go("app.calendarSingle", {'theMonth':$scope.month, 'theYear':$scope.year, 'theDay':$scope.day, 'monthInd':months.indexOf($scope.month)});
-		}
+		};
+
+        $scope.createEvent = function() {
+            var eventTypePopup = $ionicPopup.show({
+                title: 'Pick Event Type',
+                subTitle: 'Is it a regular event or fundraiser?',
+                scope: $scope,
+                buttons: [{
+                    text: 'Event',
+                    type: 'button-positive',
+                    onTap: function(e) {
+                        $state.go('app.create_event', {clear: true}, {refresh: true});
+                    }
+                },{
+                    text: 'Fundraiser',
+                    type: 'button-positive',
+                    onTap: function(e) {
+                        $state.go('app.create_fund', {clear: true}, {refresh: true});
+                    }
+                }]
+            });
+        };
 	})
 
 	.controller('EventListCtrl', function($scope, $stateParams, $state) {
