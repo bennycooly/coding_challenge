@@ -11,6 +11,7 @@ angular.module('myApp', ['ionic',
 	'tabSlideBox',
     'uiGmapgoogle-maps',
     'ionMdInput',
+    'monospaced.elastic',
 	'chart.js'])
 
 	.run(function ($ionicPlatform, $state, $rootScope, $cordovaNetwork, $ionicLoading, $timeout) {
@@ -191,16 +192,6 @@ angular.module('myApp', ['ionic',
 				}
 			})
 
-            .state('app.edit_event', {
-                url: '/edit_event',
-                views: {
-                    'menuContent': {
-                        templateUrl: "templates/edit_event.html",
-                        controller: "EditEventCtrl"
-                    }
-                }
-            })
-
 			.state('app.create_fund', {
 				url: '/create_fund',
 				views: {
@@ -209,16 +200,6 @@ angular.module('myApp', ['ionic',
 					}
 				}
 			})
-
-            .state('app.edit_fund', {
-                url: '/edit_fund',
-                views: {
-                    'menuContent': {
-                        templateUrl: "templates/edit_fund.html",
-                        controller: "EditFundCtrl"
-                    }
-                }
-            })
 
 			.state('app.event', {
 				url: '//newsfeed/event',

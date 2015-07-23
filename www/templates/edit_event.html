@@ -1,79 +1,66 @@
-<ion-view view-title="Edit Event" class="create-event">
+<ion-modal-view view-title="Edit Event" class="create-event">
+    <ion-header-bar class="bar bar-header bar-assertive">
+        <button class="button button-clear icon ion-android-close" ng-click="closeModal()"></button>
+        <h1 class="title">Edit Event</h1>
+    </ion-header-bar>
     <ion-content>
-        <button ng-show="creator=='am790d'" class="button button-block button-positive" ng-click="inject()">Inject Default Events</button>
-        <form ng-submit="createEvent(false)">
+        <form ng-submit="saveEvent()">
             <div class="list">
                 <label class="item item-input item-floating-label" style="background: white;">
                     <span class="input-label">Event Title</span>
-                    <input type="text" placeholder="Event Title" ng-model="info.name">
+                    <input type="text" placeholder="Event Title" ng-model="modalVars.title">
                 </label>
                 <label class="item item-input item-floating-label" style="background: white;">
                     <span class="input-label">Location</span>
-                    <input type="text" placeholder="Location" ng-model="info.location">
+                    <input type="text" placeholder="Location" ng-model="modalVars.location">
                 </label>
                 <div class="item item-divider" style="border-bottom: none;"></div>
                 <label class="button button-full button-calm" ng-click="showDatePicker('start')" ng-hide="isBrowser">
-                    {{startDate | date : 'MMMM d, yyyy h:mm a'}}
+                    {{modalVars.startDate | date : 'MMMM d, yyyy h:mm a'}}
                 </label>
                 <label class="button button-full button-balanced" ng-click="showDatePicker('end')" ng-hide="isBrowser">
-                    {{endDate | date : 'MMMM d, yyyy h:mm a'}}
+                    {{modalVars.endDate | date : 'MMMM d, yyyy h:mm a'}}
                 </label>
                 <label class="item item-input" ng-show="isBrowser">
                     <span class="input-label">Start</span>
-                    <input type="datetime-local" placeholder="Today" ng-model="info.date">
+                    <input type="datetime-local" placeholder="Today" ng-model="modalVars.startDate">
                 </label>
                 <label class="item item-input" ng-show="isBrowser">
                     <span class="input-label">End</span>
-                    <input type="datetime-local" placeholder="Today" ng-model="info.endDate">
+                    <input type="datetime-local" placeholder="Today" ng-model="modalVars.endDate">
                 </label>
-                <!--<label class="item item-input">
-                    <span class="input-label">Date</span>
-                    <input type="text" ng-model="info.date">
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">Start Time</span>
-                    <input type="text" ng-model="info.startTime">
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">End Time</span>
-                    <input type="text" ng-model="info.endTime">
-                </label>-->
                 <div class="item item-divider" style="border: none;"></div>
                 <label class="item item-input item-floating-label" style="background: white;">
                     <span class="input-label">Contact Name</span>
-                    <input type="text" placeholder="Contact Name" ng-model="info.contact">
+                    <input type="text" placeholder="Contact Name" ng-model="modalVars.contact">
                 </label>
                 <label class="item item-input item-floating-label" style="background: white;">
                     <span class="input-label">Contact Info</span>
-                    <input type="text" placeholder="Contact Information" ng-model="info.contactInfo">
+                    <input type="text" placeholder="Contact Information" ng-model="modalVars.contactInfo">
                 </label>
                 <div class="item item-divider" style="height: 40px;"></div>
                 <label class="item item-input item-floating-label" style="background: white;">
                     <span class="input-label">Description</span>
-                    <textarea placeholder="Description" ng-model="info.description"></textarea>
+                    <textarea msd-elastic placeholder="Description" ng-model="modalVars.description"></textarea>
                 </label>
                 <label class="item item-input">
                     <input type="text" placeholder="URL" ng-model="info.url">
                 </label>
-                <!--
-                <input id="datepicker" type="text" placeholder="Choose A Date">
-                <input id="timepicker" type="text" placeholder="Choose A Time">
-                -->
+                <ion-toggle ng-model="modalVars.external" toggle-class="toggle-calm">External Event?</ion-toggle>
+                <!--<label class="toggle" style="background: white;">
+                    <ion-toggle ng-model="info.external" toggle-class="toggle-calm">External</ion-toggle>
+                </label>-->
                 <label class="item item-text-wrap">
                     <p><strong>NOTE:</strong></p>
-                    <p>URL not required. Please include if there is a website for external registration.</p>
-                    <button class="button button-block button-positive" type="submit">Create</button>
+                    <p>URL is optional, unless the event is external.<br />
+                        <strong>External event</strong> refers to an event that requires registration outside of this
+                        application. If you select this, the URL
+                        <strong>must</strong> refer to the external registration link..</p>
                 </label>
+                <button class="button button-block button-positive" type="submit">Save Changes</button>
+                <label class="item button button-block button-assertive" ng-click="removeWarnEvent()">Remove
+                    Event</label>
             </div>
         </form>
-        <script>
-            /**
-             $(document).ready(function () {
-                $('#datepicker').pickadate();
-                $('#timepicker').pickatime();
-            });
-             **/
-        </script>
-
     </ion-content>
-</ion-view>
+</ion-modal-view>

@@ -269,6 +269,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$ionicHistory.clearHistory();
             $ionicHistory.clearCache();
             $scope.showHomeMenu = true;
+            $scope.welcomeMessage = $scope.createWelcome();
             var fromSearch = $localStorage.get('leftSearchModal');
             if(fromSearch != 'true') {
                 $ionicLoading.show({
@@ -316,24 +317,6 @@ angular.module('myApp.controllers', ['myApp.services'])
                         });
                 }*/
 
-                //show customized message
-                var date = new Date();
-                var hour = date.toLocaleTimeString();
-                var indexColon = hour.indexOf(':');
-                var hourInt = parseInt(hour.substring(0,indexColon));
-                if (hour.indexOf('AM') != -1) {
-                    $scope.welcomeMessage = "Good Morning";
-                }
-                else if (hour.indexOf('PM') != -1 && (hourInt == 12 || hourInt < 5)) {
-                    $scope.welcomeMessage = "Good Afternoon";
-                }
-                else if (hour.indexOf('PM') != -1 && (hourInt < 8)){
-                    $scope.welcomeMessage = "Good Evening";
-                }
-                else{
-                    $scope.welcomeMessage = "Hello";
-                }
-
                 //animation initialization
                 $scope.isActive = false;
                 $scope.menuOutlinePressed = false;
@@ -370,6 +353,26 @@ angular.module('myApp.controllers', ['myApp.services'])
 				$ionicLoading.hide();
 			}, 1000);
 		});
+
+        $scope.createWelcome = function() {
+            //show customized message
+            var date = new Date();
+            var hour = date.toLocaleTimeString();
+            var indexColon = hour.indexOf(':');
+            var hourInt = parseInt(hour.substring(0,indexColon));
+            if (hour.indexOf('AM') != -1) {
+                return "Good Morning";
+            }
+            else if (hour.indexOf('PM') != -1 && (hourInt == 12 || hourInt < 5)) {
+                return "Good Afternoon";
+            }
+            else if (hour.indexOf('PM') != -1 && (hourInt < 8)){
+                return "Good Evening";
+            }
+            else{
+                return "Hello";
+            }
+        };
 
 		$scope.toggleMenu = function() {
 			//$ionicBackdrop.retain();
@@ -440,6 +443,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 
         $scope.refresh = function() {
+            $scope.welcomeMessage = $scope.createWelcome();
             $scope.eventsDateAscending = $events.getLS('eventsDateAscending');
             $scope.fundsDateAscending = $events.getFund('eventsDateAscending');
             $scope.userEvents = $events.getLS('userEvents');
@@ -471,7 +475,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
         $scope.select = function(event) {
             $localStorage.set('leftSearchModal', 'true');
-            if(event.type != "Fund") $state.go("app.event", {param:{id:event.eventId}}, {reload: true});
+            if(event.type != "Fund") $state.go("app.event", {param:{id:event.eventId}});
             else $state.go("app.fund", {param:{id:event.eventId}});
         };
 
@@ -514,7 +518,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 				disableAnimate: true
 			});
 			$state.go('app.home');*/
-			//cordova.plugins.Keyboard.close();
+			if(ionic.Platform.isWebView()){cordova.plugins.Keyboard.close()};
 			$localStorage.set('leftSearchModal', 'true');
             $ionicHistory.nextViewOptions({
                 disableBack: true
@@ -593,10 +597,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 							$scope.graph();
 						}
 					}, error: function(object) {
-						var alertMessage = "Error loading Event! Please contact support with this ID #: "+object.id;
-						var alert = $ionicPopup.alert({
-							title: alertMessage
-						});
+						console.log("Error loading Event! Please contact support with this ID #: ");
 					}
 				});
 			}
@@ -668,40 +669,13 @@ angular.module('myApp.controllers', ['myApp.services'])
         }
 	})
 
-	.controller('CreateEventCtrl', function($scope, $state, $ionicPopup, $ionicHistory, $timeout) {
+	.controller('CreateEventCtrl', function($scope, $state, $ionicPopup, $ionicHistory, $timeout, $ionicLoading) {
         $scope.$on('$ionicView.beforeEnter', function() {
             $scope.isBrowser = ionic.Platform.isWebView() ? false : true;
             $scope.info = {name: "", description: "", location: "", date: "", endDate: "", contact: "", contactInfo: "", url: "", external: false};
             $scope.creator = Parse.User.current().get('username');
             $scope.startDate = 'Pick a start date';
             $scope.endDate = 'Pick an end date';
-
-            /*var Event = Parse.Object.extend('Event');
-            var query = new Parse.Query(Event);
-            query.find({
-                success: function(result) {
-                    for (var i=0; i<result.length; i++) {
-                        var date = result[i].get('date');
-                        var newDate = date;
-                        var hours = date.getHours();
-                        newDate.setHours(hours + 1);
-                        console.log(newDate);
-                        result[i].set('endDate', newDate);
-                        result[i].set('date', date);
-                        result[i].save(null, {
-                            success: function(res) {
-                                console.log('success');
-                            },
-                            error: function(res) {
-
-                            }
-                        })
-                    }
-                },
-                error: function(error) {
-
-                }
-            })*/
         });
 
         $scope.showDatePicker = function(type) {
@@ -813,6 +787,26 @@ angular.module('myApp.controllers', ['myApp.services'])
 					event.set("eventId", result.id);
 					event.save(null, {
 						success: function(result) {
+                            $ionicPopup.alert(
+                                {
+                                    title: 'Event created!!',
+                                    okText: 'Ok',
+                                    okType: 'button-positive'
+                                }
+                            ).then( function(res) {
+                                $scope.info = {name: "", description: "", location: "", date: "", endDate: "", contact: "", contactInfo: "", url: ""};
+
+                                if(!injected) {
+                                    $ionicHistory.nextViewOptions({
+                                        disableBack: true
+                                    });
+                                    $ionicLoading.show({
+                                        template: '<p>Loading...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
+                                        animation: 'fade-in'
+                                    });
+                                    $state.go("app.home", {}, {refresh: true});
+                                }
+                            });
 						}, error: function(result) {
 							var alert = $ionicPopup.alert({
 								title: "Error providing Calendar entry ID!"
@@ -820,11 +814,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 							return;
 						}
 					});
-					$scope.info = {name: "", description: "", location: "", date: "", endDate: "", contact: "", contactInfo: "", url: ""};
-					$ionicHistory.nextViewOptions({
-						disableBack: true
-					});
-					if(!injected) $state.go("app.home", {}, {refresh: true});
 				}, error: function(result) {
 					var alert = $ionicPopup.alert({
 						title: "Error creating event!"
@@ -921,9 +910,20 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 	})
 
-	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup, $localStorage, $ionicActionSheet, uiGmapGoogleMapApi, $q) {
+	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup, $localStorage, $ionicActionSheet, uiGmapGoogleMapApi, $q, $ionicModal, $ionicLoading) {
+        $scope.$on('$ionicView.loaded', function() {
+            $ionicModal.fromTemplateUrl('templates/edit_event.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                $scope.modal = modal;
+            });
+        });
 
 		$scope.$on('$ionicView.beforeEnter', function () {
+            $scope.isBrowser = ionic.Platform.isWebView() ? false : true;
+            $scope.userCreated = false;
+            $scope.modalVars = {};
             $scope.inCalendar = false;
             $scope.locationFound = false;
             $scope.location = '';
@@ -1011,6 +1011,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			var query = new Parse.Query("Event");
 			query.get($stateParams.param.id, {
 				success: function (object) {
+                    console.log(object.attributes);
 					$scope.name = object.attributes.name;
 					$scope.date = object.attributes.date;
                     $scope.endDate = object.attributes.endDate;
@@ -1021,6 +1022,23 @@ angular.module('myApp.controllers', ['myApp.services'])
 					$scope.contactInfo = object.attributes.contactInfo;
 					$scope.description = object.attributes.description;
 					$scope.url = object.attributes.url;
+                    $scope.external = object.attributes.isExternal;
+                    $scope.eventId = object.attributes.eventId;
+                    //create modal edit parameters
+                    $scope.modalVars = {
+                        title: $scope.name,
+                        location: $scope.location,
+                        startDate: $scope.date,
+                        endDate: $scope.endDate,
+                        contact: $scope.contact,
+                        contactInfo: $scope.contactInfo,
+                        description: $scope.description,
+                        url: $scope.url,
+                        external: $scope.external,
+                        eventId: $scope.eventId
+                    };
+
+                    if (object.attributes.owner == Parse.User.current().get('username')) {$scope.userCreated = true;}
 
                     if(($scope.date.getDate() != $scope.endDate.getDate()) || ($scope.date.getMonth() != $scope.endDate.getMonth())) {
                         $scope.singleDay = false;
@@ -1052,7 +1070,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 				$ionicHistory.nextViewOptions({
 					disableBack: true
 				});
-                $localStorage.set('leftSearchModal', 'false');
 				$state.go("app.profile", {}, {refresh: true} );
 			}, error: function(result) {
 				var alert = $ionicPopup.alert({
@@ -1080,6 +1097,13 @@ angular.module('myApp.controllers', ['myApp.services'])
             var deleteSuccess = function(message) {
                 console.log('Deleted Maybe?' + message);
                 $scope.inCalendar = false;
+                $ionicPopup.alert(
+                    {
+                        title: 'Removed from calendar!',
+                        okText: 'Ok',
+                        okType: 'button-positive'
+                    }
+                );
                 $scope.$apply();
             };
             var deleteError = function(message) {
@@ -1125,15 +1149,13 @@ angular.module('myApp.controllers', ['myApp.services'])
 			Parse.User.current().set("events", newEvents);
 			Parse.User.current().save(null, {
 			success: function(result) {
-				$ionicHistory.nextViewOptions({
-					disableBack: true
-				});
-                $localStorage.set('leftSearchModal', 'false');
-				$state.go("app.profile", {}, {refresh: true} );
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+                $state.go("app.profile");
+
 			}, error: function(result) {
-				var alert = $ionicPopup.alert({
-					title: "Error removing event from calendar!"
-				});
+				console.log('error removing event');
 			}});
 		};
 
@@ -1154,14 +1176,250 @@ angular.module('myApp.controllers', ['myApp.services'])
                     $scope.remove();
                 }
             });
-
-            // For example's sake, hide the sheet after two seconds
-
-
         };
+
+        $scope.editEvent = function() {
+            $scope.openModal();
+        };
+
+        $scope.saveEvent = function() {
+            console.log($scope.modalVars.eventId);
+            for (var field in $scope.modalVars) {
+                if ($scope.modalVars[field] == '' || !$scope.modalVars[field]) {
+                    console.log($scope.modalVars[field]);
+                    if(field != 'url' && field != 'external') {
+                        $ionicPopup.alert(
+                            {
+                                title: 'Error',
+                                template: "<p style='text-align: center;'>Please fill out all required fields</p>",
+                                okText: 'Ok',
+                                okType: 'button-positive'
+                            }
+                        );
+                        return;
+                    }
+                }
+            }
+            if ($scope.modalVars['external'] && $scope.modalVars['url'] == '') {
+                $ionicPopup.alert(
+                    {
+                        title: 'Error',
+                        template: "<p style='text-align: center;'>You selected an external event. Please provide the url</p>",
+                        okText: 'Ok',
+                        okType: 'button-positive'
+                    }
+                );
+                return;
+            }
+            var Event = Parse.Object.extend('Event');
+            var query = new Parse.Query(Event);
+            query.get($scope.modalVars.eventId, {
+                success: function(event) {
+                    event.save({
+                        name: $scope.modalVars.title,
+                        description: $scope.modalVars.description,
+                        date: new Date($scope.modalVars.startDate),
+                        endDate: new Date($scope.modalVars.endDate),
+                        location: $scope.modalVars.location,
+                        url: $scope.modalVars.url,
+                        contact: $scope.modalVars.contact,
+                        contactInfo: $scope.modalVars.contactInfo,
+                        isExternal: $scope.modalVars.external
+                    }, {
+                        success: function(event) {
+                            console.log('successfully saved');
+                            $ionicPopup.alert(
+                                {
+                                    title: 'Event Saved!',
+                                    okText: 'Ok',
+                                    okType: 'button-positive'
+                                }
+                            )
+                                .then( function(res) {
+                                    $ionicHistory.nextViewOptions({
+                                        disableBack: true
+                                    });
+                                    $scope.closeModal();
+                                    $state.go($state.current, {}, {reload: true});
+                                })
+                        },
+                        error: function(event, error) {
+                            console.log('failed to save');
+                            $ionicPopup.alert(
+                                {
+                                    title: 'Could not Save Event',
+                                    okText: 'Ok',
+                                    okType: 'button-positive'
+                                }
+                            )
+                        }
+                    })
+                },
+                error: function(object, error) {
+                    console.log('error retrieving event for saving')
+                }
+            });
+        };
+
+        $scope.removeEvent = function() {
+            var Event = Parse.Object.extend('Event');
+            var query = new Parse.Query(Event);
+            query.get($scope.modalVars.eventId, {
+                success: function(event) {
+                    event.destroy({
+                       success: function(event) {
+                           console.log('successfully removed event from database');
+                           var User = Parse.Object.extend('User');
+                           query = new Parse.Query(User);
+                           query.find({
+                               success: function(results) {
+                                   console.log(results);
+                                   for (var i=0; i<results.length; i++) {
+                                       var userEvents = results[i].attributes.events;
+                                       console.log(userEvents);
+                                       console.log($scope.modalVars.eventId);
+                                       if(userEvents != '' || userEvents){
+                                           if(userEvents.indexOf($scope.modalVars.eventId) == 0) {
+                                               userEvents = userEvents.replace($scope.modalVars.eventId,'');
+                                               console.log(userEvents);
+                                               results[i].set('events', userEvents);
+                                               results[i].save(null, {
+                                                   success: function(res) {
+                                                       console.log('replaced');
+                                                   },
+                                                   error: function(obj, error) {
+                                                       console.log('failed to replace');
+                                                   }
+                                               });
+                                           }
+                                           else if (userEvents.indexOf($scope.modalVars.eventId) > 0){
+                                               userEvents = userEvents.replace(', ' + $scope.modalVars.eventId,'');
+                                               console.log(userEvents);
+                                               results[i].set('events', userEvents);
+                                               results[i].save(null, {
+                                                   success: function(res) {
+                                                       console.log('replaced');
+                                                   },
+                                                   error: function(obj, error) {
+                                                       console.log('failed to replace');
+                                                   }
+                                               });
+                                           }
+                                       }
+
+                                   }
+                               },
+                               error: function(obj, error) {
+                                   console.log('user not found');
+                               }
+                           });
+                           $ionicPopup.alert(
+                               {
+                                   title: 'Event Deleted!',
+                                   okText: 'Ok',
+                                   okType: 'button-positive'
+                               }
+                           )
+                               .then( function(res) {
+                                   $ionicHistory.nextViewOptions({
+                                       disableBack: true
+                                   });
+                                   $scope.closeModal();
+                                   $state.go('app.profile', {}, {reload: true});
+                               })
+                       },
+                        error: function(obj, error) {
+                            console.log('failed to remove');
+                        }
+                    });
+                },
+                error: function(object, error) {
+                    console.log('error retrieving event for removing')
+                }
+            });
+        };
+
+        $scope.showDatePicker = function(type) {
+            console.log(new Date().toString());
+            $scope.minDateStart = ionic.Platform.isIOS() ? new Date() : (new Date()).valueOf();
+            if (type == 'end') {
+                if ($scope.modalVars.startDate != 'Pick a start date') {
+                    $scope.minDateEnd = $scope.modalVars.startDate.valueOf();
+                }
+                else {
+                    alert('Please pick a valid start date first!');
+                    return;
+                }
+            }
+
+            var options = {
+                date: new Date($scope.modalVars.startDate),
+                mode: 'datetime',
+                minDate: (type=='start') ? $scope.minDateStart : $scope.minDateEnd,
+                todayText: 'Today',
+                nowText: 'Now',
+                androidTheme: 5
+            };
+
+            function onSuccess(date){
+                if (type == 'start') {
+                    $scope.modalVars.startDate = date;
+                }
+                else if (type == 'end') {
+                    $scope.modalVars.endDate = date;
+                }
+                $scope.$apply();
+            }
+
+            function onError(error) { // Android only
+                console.log(error);
+            }
+
+            datePicker.show(options, onSuccess, onError);
+        };
+
+        $scope.removeWarnEvent = function() {
+
+            // Show the action sheet
+            var hideSheet = $ionicActionSheet.show({
+                destructiveText: '<i class="icon ion-close assertive"></i>Remove',
+                titleText: 'Are you sure?',
+                cancelText: 'Cancel',
+                cancel: function() {
+                    hideSheet();
+                    // add cancel code..
+                },
+                destructiveButtonClicked: function(index) {
+                    hideSheet();
+                    $scope.removeEvent();
+                }
+            });
+        };
+
+        $scope.openModal = function() {
+            $scope.modal.show();
+        };
+        $scope.closeModal = function() {
+            $scope.modal.hide();
+        };
+        //Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
+        // Execute action on hide modal
+        $scope.$on('modal.hidden', function() {
+            // Execute action
+        });
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function() {
+            // Execute action
+        });
 
         $scope.$on('$ionicView.beforeLeave', function () {
             $scope.windowOptions.visible = false;
+            if($ionicHistory.currentStateName() != 'home') {
+                $localStorage.set('leftSearchModal', false);
+            }
         });
 
 	})

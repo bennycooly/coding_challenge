@@ -26,18 +26,6 @@
                     <span class="input-label">End</span>
                     <input type="datetime-local" placeholder="Today" ng-model="info.endDate">
                 </label>
-                <!--<label class="item item-input">
-                    <span class="input-label">Date</span>
-                    <input type="text" ng-model="info.date">
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">Start Time</span>
-                    <input type="text" ng-model="info.startTime">
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">End Time</span>
-                    <input type="text" ng-model="info.endTime">
-                </label>-->
                 <div class="item item-divider" style="border: none;"></div>
                 <label class="item item-input item-floating-label" style="background: white;">
                     <span class="input-label">Contact Name</span>
@@ -50,33 +38,25 @@
                 <div class="item item-divider" style="height: 40px;"></div>
                 <label class="item item-input item-floating-label" style="background: white;">
                     <span class="input-label">Description</span>
-                    <textarea placeholder="Description" ng-model="info.description"></textarea>
+                    <textarea msd-elastic placeholder="Description" ng-model="info.description"></textarea>
                 </label>
                 <label class="item item-input">
                     <input type="text" placeholder="URL" ng-model="info.url">
                 </label>
-                <label class="item" style="background: white;">
+                <ion-toggle ng-model="info.external" toggle-class="toggle-calm">External Event?</ion-toggle>
+                <!--<label class="toggle" style="background: white;">
                     <ion-toggle ng-model="info.external" toggle-class="toggle-calm">External</ion-toggle>
-                </label>
-                <!--
-                <input id="datepicker" type="text" placeholder="Choose A Date">
-                <input id="timepicker" type="text" placeholder="Choose A Time">
-                -->
+                </label>-->
                 <label class="item item-text-wrap">
                     <p><strong>NOTE:</strong></p>
-                    <p>URL not required unless the event is external. Please check the external button if there is a website for external registration.</p>
+                    <p>URL is optional, unless the event is external.<br />
+                        <strong>External event</strong> refers to an event that requires registration outside of this
+                            application. If you select this, the URL
+                        <strong>must</strong> refer to the external registration link..</p>
                     <button class="button button-block button-positive" type="submit">Create</button>
                 </label>
             </div>
         </form>
-        <script>
-            /**
-            $(document).ready(function () {
-                $('#datepicker').pickadate();
-                $('#timepicker').pickatime();
-            });
-            **/
-        </script>
 
     </ion-content>
 </ion-view>

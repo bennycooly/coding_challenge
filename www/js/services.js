@@ -137,7 +137,7 @@ angular.module('myApp.services', [])
                         $localStorage.remove('userEvents');
                         var userEvents = [];
                         var user = $user.get();
-                        if(user.events == '') {
+                        if(user.events == '' || !user.events) {
                             defer.resolve();
                             break;
                         }
