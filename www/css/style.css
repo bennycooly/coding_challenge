@@ -52,17 +52,25 @@
     overflow: visible !important;
 }
 
-.bar.bar-light {
-    /*background: url(../img/background.png) no-repeat left top fixed;
-    -webkit-background-size: 130%;
-    -moz-background-size: 130%;
-    background-size: 130%;*/
-    /*background: none;*/
+.bar.bar-orange {
+    background: #ef6f00;
+    color: white;
+}
+.bar.bar-royal {
+    background: #b30a3c;
 }
 
 .bar.bar-positive {
     background: #0574ac;
     border-bottom: none;
+}
+
+.bar.bar-balanced {
+    background: #4ca90c;
+}
+
+.bar.bar-energized {
+    background: #fcb314;
 }
 
 .side-menu-background {
@@ -422,7 +430,7 @@
 
 .menu-animate {
     animation: pulse 1s infinite ease-out;
-    animation-delay: 0.7s;
+    animation-delay: 1s;
 }
 
 .home-menu {

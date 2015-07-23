@@ -18,7 +18,7 @@
                 <label class="button button-full button-calm" ng-click="showDatePicker('start')" ng-hide="isBrowser">
                     {{modalVars.startDate | date : 'MMMM d, yyyy h:mm a'}}
                 </label>
-                <label class="button button-full button-balanced" ng-click="showDatePicker('end')" ng-hide="isBrowser">
+                <label class="button button-full button-royal" ng-click="showDatePicker('end')" ng-hide="isBrowser">
                     {{modalVars.endDate | date : 'MMMM d, yyyy h:mm a'}}
                 </label>
                 <label class="item item-input" ng-show="isBrowser">
@@ -44,7 +44,7 @@
                     <textarea msd-elastic placeholder="Description" ng-model="modalVars.description"></textarea>
                 </label>
                 <label class="item item-input">
-                    <input type="text" placeholder="URL" ng-model="info.url">
+                    <input type="text" placeholder="URL" ng-model="modalVars.url">
                 </label>
                 <ion-toggle ng-model="modalVars.external" toggle-class="toggle-calm">External Event?</ion-toggle>
                 <!--<label class="toggle" style="background: white;">

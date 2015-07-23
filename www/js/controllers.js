@@ -1,6 +1,6 @@
 angular.module('myApp.controllers', ['myApp.services'])
 
-	.controller('AppCtrl', function ($scope, $state, $ionicLoading, $timeout, $user, $ionicHistory) {
+	.controller('AppCtrl', function ($scope, $state, $ionicLoading, $timeout, $user, $ionicHistory, $localStorage) {
         $scope.$on('$ionicView.beforeEnter', function () {
             $scope.fadeOut = false;
         });
@@ -23,6 +23,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			console.log($state.current.name);
 			if ($state.current.name != 'app.home') {
 				$timeout( function() {
+                    $localStorage.set('leftSearchModal', 'false');
 					$ionicHistory.nextViewOptions({
 						disableBack: true,
 						disableAnimate: true
@@ -674,8 +675,15 @@ angular.module('myApp.controllers', ['myApp.services'])
             $scope.isBrowser = ionic.Platform.isWebView() ? false : true;
             $scope.info = {name: "", description: "", location: "", date: "", endDate: "", contact: "", contactInfo: "", url: "", external: false};
             $scope.creator = Parse.User.current().get('username');
-            $scope.startDate = 'Pick a start date';
-            $scope.endDate = 'Pick an end date';
+            if(ionic.Platform.isWebView()) {
+                $scope.startDate = 'Pick a start date';
+                $scope.endDate = 'Pick an end date';
+            }
+            else {
+                $scope.startDate = $scope.info.date;
+                $scope.endDate = $scope.info.date;
+            }
+
         });
 
         $scope.showDatePicker = function(type) {
@@ -767,6 +775,12 @@ angular.module('myApp.controllers', ['myApp.services'])
 					return;
 				}
 			}
+            if ($scope.startDate == 'Pick a start date' || $scope.endDate == 'Pick an end date') {
+                var alert = $ionicPopup.alert({
+                    title: "Please fill in all the required fields!"
+                });
+                return;
+            }
 
 			var EventClass = Parse.Object.extend("Event");
 			var event = new EventClass();
@@ -1308,25 +1322,24 @@ angular.module('myApp.controllers', ['myApp.services'])
                                        }
 
                                    }
+                                   $ionicPopup.alert(
+                                       {
+                                           title: 'Event Deleted!',
+                                           okText: 'Ok',
+                                           okType: 'button-positive'
+                                       }
+                                   ).then( function(res) {
+                                           $ionicHistory.nextViewOptions({
+                                               disableBack: true
+                                           });
+                                           $scope.closeModal();
+                                           $state.go('app.profile');
+                                       })
                                },
                                error: function(obj, error) {
                                    console.log('user not found');
                                }
                            });
-                           $ionicPopup.alert(
-                               {
-                                   title: 'Event Deleted!',
-                                   okText: 'Ok',
-                                   okType: 'button-positive'
-                               }
-                           )
-                               .then( function(res) {
-                                   $ionicHistory.nextViewOptions({
-                                       disableBack: true
-                                   });
-                                   $scope.closeModal();
-                                   $state.go('app.profile', {}, {reload: true});
-                               })
                        },
                         error: function(obj, error) {
                             console.log('failed to remove');

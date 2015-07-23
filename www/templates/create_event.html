@@ -1,4 +1,12 @@
 <ion-view view-title="Create Event" ng-controller="CreateEventCtrl" class="create-event">
+    <ion-nav-bar class="bar-positive">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
     <ion-content>
         <button ng-show="creator=='am790d'" class="button button-block button-positive" ng-click="inject()">Inject Default Events</button>
         <form ng-submit="createEvent(false)">
@@ -12,7 +20,7 @@
                     <input type="text" placeholder="Location" ng-model="info.location">
                 </label>
                 <div class="item item-divider" style="border-bottom: none;"></div>
-                <label class="button button-full button-calm" ng-click="showDatePicker('start')" ng-hide="isBrowser">
+                <label class="button button-full button-royal" ng-click="showDatePicker('start')" ng-hide="isBrowser">
                     {{startDate | date : 'MMMM d, yyyy h:mm a'}}
                 </label>
                 <label class="button button-full button-balanced" ng-click="showDatePicker('end')" ng-hide="isBrowser">
