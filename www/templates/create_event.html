@@ -55,13 +55,16 @@
                 <label class="item item-input">
                     <input type="text" placeholder="URL" ng-model="info.url">
                 </label>
+                <label class="item" style="background: white;">
+                    <ion-toggle ng-model="info.external" toggle-class="toggle-calm">External</ion-toggle>
+                </label>
                 <!--
                 <input id="datepicker" type="text" placeholder="Choose A Date">
                 <input id="timepicker" type="text" placeholder="Choose A Time">
                 -->
                 <label class="item item-text-wrap">
                     <p><strong>NOTE:</strong></p>
-                    <p>URL not required. Please include if there is a website for external registration.</p>
+                    <p>URL not required unless the event is external. Please check the external button if there is a website for external registration.</p>
                     <button class="button button-block button-positive" type="submit">Create</button>
                 </label>
             </div>

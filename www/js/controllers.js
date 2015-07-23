@@ -648,7 +648,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 	.controller('CreateEventCtrl', function($scope, $state, $ionicPopup, $ionicHistory, $timeout) {
         $scope.$on('$ionicView.beforeEnter', function() {
             $scope.isBrowser = ionic.Platform.isWebView() ? false : true;
-            $scope.info = {name: "", description: "", location: "", date: "", endDate: "", contact: "", contactInfo: "", url: ""};
+            $scope.info = {name: "", description: "", location: "", date: "", endDate: "", contact: "", contactInfo: "", url: "", external: false};
             $scope.creator = Parse.User.current().get('username');
             $scope.startDate = 'Pick a start date';
             $scope.endDate = 'Pick an end date';
@@ -753,7 +753,16 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.createEvent = function(injected) {
 
+			var urlEmpty = true;
 			for (var key in $scope.info) {
+				if (key == "url" && $scope.info[key] != "") urlEmpty = false;
+				if (key == "external" && $scope.info[key] && urlEmpty) {
+					var alert = $ionicPopup.alert({
+						title: "Please provide a URL! You have marked this event as external."
+					});
+					return;
+				}
+				if (key == "external") continue;
 				if (key != "url" && $scope.info[key] == "") {
 					var alert = $ionicPopup.alert({
 						title: "Please fill in all the required fields!"
@@ -772,8 +781,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 			event.set("contact", $scope.info.contact);
 			event.set("contactInfo", $scope.info.contactInfo);
 			event.set("url", $scope.info.url);
-            event.set('date', new Date($scope.startDate));
-            event.set('endDate', new Date($scope.endDate));
+            event.set('date', new Date($scope.info.date));
+            event.set('endDate', new Date($scope.info.endDate));
+			event.set('isExternal', $scope.info.external);
 
 			event.save(null,{
 				success: function(result) {
