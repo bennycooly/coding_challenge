@@ -1,0 +1,79 @@
+<ion-view view-title="Edit Event" class="create-event">
+    <ion-content>
+        <button ng-show="creator=='am790d'" class="button button-block button-positive" ng-click="inject()">Inject Default Events</button>
+        <form ng-submit="createEvent(false)">
+            <div class="list">
+                <label class="item item-input item-floating-label" style="background: white;">
+                    <span class="input-label">Event Title</span>
+                    <input type="text" placeholder="Event Title" ng-model="info.name">
+                </label>
+                <label class="item item-input item-floating-label" style="background: white;">
+                    <span class="input-label">Location</span>
+                    <input type="text" placeholder="Location" ng-model="info.location">
+                </label>
+                <div class="item item-divider" style="border-bottom: none;"></div>
+                <label class="button button-full button-calm" ng-click="showDatePicker('start')" ng-hide="isBrowser">
+                    {{startDate | date : 'MMMM d, yyyy h:mm a'}}
+                </label>
+                <label class="button button-full button-balanced" ng-click="showDatePicker('end')" ng-hide="isBrowser">
+                    {{endDate | date : 'MMMM d, yyyy h:mm a'}}
+                </label>
+                <label class="item item-input" ng-show="isBrowser">
+                    <span class="input-label">Start</span>
+                    <input type="datetime-local" placeholder="Today" ng-model="info.date">
+                </label>
+                <label class="item item-input" ng-show="isBrowser">
+                    <span class="input-label">End</span>
+                    <input type="datetime-local" placeholder="Today" ng-model="info.endDate">
+                </label>
+                <!--<label class="item item-input">
+                    <span class="input-label">Date</span>
+                    <input type="text" ng-model="info.date">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Start Time</span>
+                    <input type="text" ng-model="info.startTime">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">End Time</span>
+                    <input type="text" ng-model="info.endTime">
+                </label>-->
+                <div class="item item-divider" style="border: none;"></div>
+                <label class="item item-input item-floating-label" style="background: white;">
+                    <span class="input-label">Contact Name</span>
+                    <input type="text" placeholder="Contact Name" ng-model="info.contact">
+                </label>
+                <label class="item item-input item-floating-label" style="background: white;">
+                    <span class="input-label">Contact Info</span>
+                    <input type="text" placeholder="Contact Information" ng-model="info.contactInfo">
+                </label>
+                <div class="item item-divider" style="height: 40px;"></div>
+                <label class="item item-input item-floating-label" style="background: white;">
+                    <span class="input-label">Description</span>
+                    <textarea placeholder="Description" ng-model="info.description"></textarea>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="URL" ng-model="info.url">
+                </label>
+                <!--
+                <input id="datepicker" type="text" placeholder="Choose A Date">
+                <input id="timepicker" type="text" placeholder="Choose A Time">
+                -->
+                <label class="item item-text-wrap">
+                    <p><strong>NOTE:</strong></p>
+                    <p>URL not required. Please include if there is a website for external registration.</p>
+                    <button class="button button-block button-positive" type="submit">Create</button>
+                </label>
+            </div>
+        </form>
+        <script>
+            /**
+             $(document).ready(function () {
+                $('#datepicker').pickadate();
+                $('#timepicker').pickatime();
+            });
+             **/
+        </script>
+
+    </ion-content>
+</ion-view>

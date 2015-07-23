@@ -72,7 +72,7 @@
                                     <div class="col"><h2><strong>Events Created by You</strong></h2></div>
                                 </div>
                             </li>
-                            <li class="item" ng-repeat="event in upcoming" ng-click="selectUpcoming(event)">
+                            <li class="item" ng-repeat="event in userCreated" ng-click="selectUserCreated(event)">
                                 <div class="row">
                                     <div class="col item-text-wrap">
                                         <strong>Name:</strong> {{event.name}}
@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col item-text-wrap">
-                                        <p><strong>Date:</strong> {{event.date}}</p>
+                                        <p><strong>Date:</strong> {{event.date | date : 'MM/dd/yyyy'}}</p>
                                     </div>
                                 </div>
                             </li>

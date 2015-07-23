@@ -1,0 +1,33 @@
+<ion-view view-title="Edit Fundraiser">
+    <ion-content>
+        <button ng-show="creator=='am790d'" class="button button-block button-positive" ng-click="inject()">Inject Default Funds</button>
+        <form ng-submit="createFund(false)">
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">Fundraiser Title</span>
+                    <input type="text" ng-model="info.name">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Description</span>
+                    <input type="text" ng-model="info.description">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">URL</span>
+                    <input type="text" ng-model="info.url">
+                </label>
+                <label class="item item-text-wrap">
+                    <button class="button button-block button-positive" type="submit">Create</button>
+                </label>
+            </div>
+        </form>
+        <script>
+            /**
+             $(document).ready(function () {
+                $('#datepicker').pickadate();
+                $('#timepicker').pickatime();
+            });
+             **/
+        </script>
+
+    </ion-content>
+</ion-view>

@@ -19,7 +19,28 @@
 }
 
 .pane, .view {
-    background: #d3d3d3;
+    background: linear-gradient(#d3d3d3, #f2f2f2);
+}
+
+.button.button-positive {
+    background: #0574ac;
+}
+.button.button-positive.activated {
+    background: #333333;
+}
+
+.button.button-calm {
+    background: #44c8f5;
+}
+.button.button-calm.activated {
+    background: #0574ac;
+}
+
+.button.button-balanced {
+    background: #4ca90c;
+}
+.button.button-balanced.activated {
+    background: #1b7e28;
 }
 
 .scroll-content > .scroll {

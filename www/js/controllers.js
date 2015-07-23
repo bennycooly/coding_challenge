@@ -524,7 +524,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		}
 	})
 
-	.controller('ProfileCtrl', function($scope, $state, $ionicPopup) {
+	.controller('ProfileCtrl', function($scope, $state, $ionicPopup, $events) {
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$scope.currentUser = Parse.User.current();
             $scope.info = {};
@@ -553,6 +553,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			else $scope.events = [];
 
 			$scope.upcoming = [];
+            $scope.userCreated = [];
 			$scope.currentDate = new Date();
 
 			$scope.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -569,6 +570,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 							var upcomingDate = date.getMonthFormatted() + "/" + date.getDate() + "/" + date.getFullYear();
 							var upcomingEvent = {id: object.id, name: object.attributes.name, date: upcomingDate};
 							$scope.upcoming.push(upcomingEvent);
+                            $scope.upcoming = $events.sortDateAscending($scope.upcoming);
 						} else {
 							var progressDate = $scope.currentDate;
 							for (var j = 0; j < 3; j++) {
@@ -598,6 +600,24 @@ angular.module('myApp.controllers', ['myApp.services'])
 					}
 				});
 			}
+            query = new Parse.Query('Event');
+            query.equalTo('owner', $scope.id);
+            query.find( {
+                success: function(results) {
+                    console.log(results);
+                    for(var i=0; i<results.length; i++) {
+                        $scope.userCreated.push(results[i].attributes);
+                        $scope.userCreated = $events.sortDateAscending($scope.userCreated);
+                    }
+                    console.log($scope.userCreated);
+                    $scope.$apply();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+            console.log('refresh complete');
+
 			$scope.$broadcast('scroll.refreshComplete');
 		};
 
@@ -623,6 +643,9 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.selectUpcoming = function(event) {
 			$state.go("app.event", {param:{id:event.id}});
 		};
+        $scope.selectUserCreated = function(event) {
+            $state.go("app.event", {param:{id:event.eventId}});
+        };
 
 		$scope.saveProfileChanges = function() {
             var currentUser = $scope.currentUser;
@@ -891,7 +914,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup, $localStorage, $ionicActionSheet, uiGmapGoogleMapApi, $q) {
 
 		$scope.$on('$ionicView.beforeEnter', function () {
-            $scope.inCalendar = true;
+            $scope.inCalendar = false;
             $scope.locationFound = false;
             $scope.location = '';
             $scope.mapOptions = {};
@@ -903,10 +926,11 @@ angular.module('myApp.controllers', ['myApp.services'])
 
             $scope.update()
                 .then(function (location) {
+                    if(ionic.Platform.isWebView()) {
+                        $scope.funcCalendar('find');
+                    }
                     console.log('got event info');
                     $scope.location = location;
-                    $scope.inCalendar = $scope.funcCalendar('find');
-                    console.log($scope.inCalendar);
                     return uiGmapGoogleMapApi;
                 }, function() {
                     alert ('unable to load event');
@@ -917,6 +941,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                 })
                 .then(function() {
                     console.log('got location successfully, now displaying map');
+                    console.log('in calendar: ' + $scope.inCalendar);
                 }, function() {
                     console.log('could not geolocate address');
                 });
@@ -1035,47 +1060,46 @@ angular.module('myApp.controllers', ['myApp.services'])
             var end = $scope.endDate;
             var calendarName = "MyCal";
             var createSuccess = function(message) {
-                if($scope.funcCalendar('find')) {
-                    $scope.inCalendar = true;
-                    console.log('event created successfully');
-                    return true;
-                }
-                else {$scope.inCalendar = false; $scope.$apply(); return false;}
+                cal.findEvent(title, loc, notes, start, end, findSuccess, findError);
+                $scope.$apply();
             };
             var createError   = function(message) {
                 console.log("Create Error: " + message);
                 return false;
             };
             var deleteSuccess = function(message) {
-                if(!$scope.funcCalendar('find')) {
-                    $scope.inCalendar = false;
-                    console.log('event created successfully');
-                    return true;
-                }
-                else {$scope.inCalendar = true; $scope.$apply(); return false;}
+                console.log('Deleted Maybe?' + message);
+                $scope.inCalendar = false;
+                $scope.$apply();
             };
             var deleteError = function(message) {
                 console.log("Delete Error: " + message);
                 return false;
             };
-            var findSuccess = function(message) {console.log("Find Success: " + JSON.stringify(message)); return true;};
-            var findError   = function(message) {console.log("Find Error: " + message); return false;};
+            var findSuccess = function(message) {
+                console.log(JSON.stringify(message));
+                console.log('find result: ' + JSON.stringify(message));
+                if(message == 'OK' || JSON.stringify(message) != '[]') {
+                    console.log('event found');
+                    $scope.inCalendar = true;
+                }
+                else {
+                    $scope.inCalendar = false;
+                }
+                $scope.$apply();
+                console.log($scope.inCalendar);
+            };
+            var findError   = function(message) {console.log("Find Error: " + message); $scope.inCalendar = false;};
             //cal.createEvent(title, loc, notes, start, end, success, error);
             switch(key){
                 case 'add':
-                    if(!cal.findEvent(title, loc, notes, start, end, findSuccess, findError)){
-                        cal.createEventInteractively(title, loc, notes, start, end, createSuccess, createError);
-                    }
-                    $scope.inCalendar = cal.findEvent(title, loc, notes, start, end, findSuccess, findError);
-                    $scope.$apply();
+                    cal.createEventInteractively(title, loc, notes, start, end, createSuccess, createError);
                     break;
                 case 'remove':
                     cal.deleteEvent(title, loc, notes, start, end, deleteSuccess, deleteError);
-                    $scope.inCalendar = cal.findEvent(title, loc, notes, start, end, findSuccess, findError);
-                    $scope.$apply();
                     break;
                 case 'find':
-                    return cal.findEvent(title, loc, notes, start, end, findSuccess, findError);
+                    cal.findEvent(title, loc, notes, start, end, findSuccess, findError);
                     break;
             }
 
