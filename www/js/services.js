@@ -149,6 +149,9 @@ angular.module('myApp.services', [])
                                     .then(function(result) {
                                         userEvents.push(result);
                                         console.log('inside');
+                                    },
+                                    function(error) {
+                                        console.log(error);
                                     })
                             );
                         }

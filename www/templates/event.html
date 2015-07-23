@@ -22,11 +22,15 @@
             <li class="item">
                 <div class="row">
                     <div class="col"><b>Location</b></div>
-                    <div class="col item-text-wrap">{{location}}</div>
+                    <div class="col item-text-wrap" ng-show="!locationFound">{{location}}</div>
                 </div>
                 <div class="row" style="width: 100%; height: 250px; margin-left: 0;">
                     <ui-gmap-google-map center='mapOptions.center' zoom='mapOptions.zoom'>
-                        <ui-gmap-marker coords="marker.coords" idkey="marker.idKey" options="marker.options">
+                        <ui-gmap-marker coords="marker.coords" idkey="marker.idKey" options="marker.options"
+                                        click="onClick()">
+                            <ui-gmap-window show="true" options="windowOptions" closeClick="closeClick()">
+                                <div>{{windowTitle}}</div>
+                            </ui-gmap-window>
                         </ui-gmap-marker>
                     </ui-gmap-google-map>
                 </div>
@@ -52,8 +56,10 @@
             </li>
             <li class="item">
                 <button class="button button-block button-positive" ng-hide="info.signedUp" ng-click="signUp()">Sign Up!</button>
-                <button class="button button-block button-calm" ng-show="info.signedUp" ng-click="addCalendar()">Add to
-                    Calendar</button>
+                <button class="button button-block button-calm" ng-show="info.signedUp && !inCalendar"
+                        ng-click="funcCalendar('add')">Add to Calendar</button>
+                <button class="button button-block button-calm" ng-show="info.signedUp && inCalendar"
+                        ng-click="funcCalendar('remove')">Added!</button>
                 <button class="button button-block button-assertive" ng-show="info.signedUp" ng-click="removeWarn()">Remove From Event!</button>
             </li>
         </ul>

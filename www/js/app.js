@@ -340,4 +340,4 @@ angular.module('myApp', ['ionic',
             v: '3.19',
             libraries: 'weather,geometry,visualization'
         });
-	})
+	});

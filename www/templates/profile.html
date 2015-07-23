@@ -1,5 +1,5 @@
 <ion-view view-title="Profile">
-	<ion-content ng-init="doRefresh()">
+	<ion-content>
 		<ion-refresher
 			pulling-text="Pull to refresh..."
 			on-refresh="doRefresh()">
@@ -67,6 +67,23 @@
 									</div>
 								</div>
 							</li>
+                            <li class="item">
+                                <div class="row">
+                                    <div class="col"><h2><strong>Events Created by You</strong></h2></div>
+                                </div>
+                            </li>
+                            <li class="item" ng-repeat="event in upcoming" ng-click="selectUpcoming(event)">
+                                <div class="row">
+                                    <div class="col item-text-wrap">
+                                        <strong>Name:</strong> {{event.name}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col item-text-wrap">
+                                        <p><strong>Date:</strong> {{event.date}}</p>
+                                    </div>
+                                </div>
+                            </li>
 							<li class="item" style="border:none;"></li>
                             <li class="item" style="border:none;"></li>
                             <li class="item" style="border:none;"></li>

@@ -528,6 +528,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$scope.currentUser = Parse.User.current();
             $scope.info = {};
+            $scope.doRefresh();
 		});
 
 		$scope.doRefresh = function() {
@@ -889,43 +890,68 @@ angular.module('myApp.controllers', ['myApp.services'])
 	.controller('EventCtrl', function($scope, $state, $stateParams, $ionicHistory, $ionicPopup, $localStorage, $ionicActionSheet, uiGmapGoogleMapApi, $q) {
 
 		$scope.$on('$ionicView.beforeEnter', function () {
-            $scope.location = location;
-            $scope.mapOptions = {
-                center: {latitude: -40, longitude: -40},
-                zoom: 15
+            $scope.inCalendar = true;
+            $scope.locationFound = false;
+            $scope.location = '';
+            $scope.mapOptions = {};
+            $scope.marker = {};
+            $scope.windowOptions = {
+                visible: true
             };
-            $scope.marker = {
-                idKey: 1,
-                coords: {latitude: -40, longitude: -40},
-                options: {
-                    animation: 1
-                }
-            };
-            $scope.update().then(function (location) {
-                uiGmapGoogleMapApi.then(function (maps) {
-                    $scope.codeAddress(location).then(console.log('displaying map'));
+            $scope.windowTitle = "No Location Found";
+
+            $scope.update()
+                .then(function (location) {
+                    console.log('got event info');
+                    $scope.location = location;
+                    $scope.inCalendar = $scope.funcCalendar('find');
+                    console.log($scope.inCalendar);
+                    return uiGmapGoogleMapApi;
+                }, function() {
+                    alert ('unable to load event');
+                })
+                .then(function (maps) {
+                    console.log('maps loaded');
+                    return $scope.codeAddress(maps, $scope.location);
+                })
+                .then(function() {
+                    console.log('got location successfully, now displaying map');
+                }, function() {
+                    console.log('could not geolocate address');
                 });
-            });
         });
 
-        $scope.codeAddress = function(location) {
+        $scope.onClick = function() {
+            $scope.windowOptions.visible = !$scope.windowOptions.visible;
+        };
+
+        $scope.closeClick = function() {
+            $scope.windowOptions.visible = false;
+        };
+
+
+
+        $scope.codeAddress = function(maps, location) {
             var defer = $q.defer();
-            var geocoder = new google.maps.Geocoder();
+            var geocoder = new maps.Geocoder();
             geocoder.geocode({'address': location}, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK){
                     var coord = results[0].geometry.location;
+                    console.log(results[0].geometry);
                     $scope.mapOptions = {
-                        center: {latitude: coord.k, longitude: coord.D},
+                        center: {latitude: coord.lat(), longitude: coord.lng()},
                         zoom: 15
                     };
                     $scope.marker = {
                         idKey: 1,
-                        coords: {latitude: coord.k, longitude: coord.D},
-                        options: {
+                        coords: {latitude: coord.lat(), longitude: coord.lng()}
+                        /*options: {
                             animation: 1
-                        }
+                        }*/
                     };
-                    console.log('getting location');
+                    $scope.windowTitle = $scope.location;
+                    $scope.locationFound = true;
+                    console.log('got location successfully: ' + coord);
                     defer.resolve();
                 }
                 else{
@@ -999,7 +1025,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 			}});
 		};
 
-        $scope.addCalendar = function() {
+        $scope.funcCalendar = function(key) {
             var cal = window.plugins.calendar;
             var title = $scope.name;
             var loc = $scope.location;
@@ -1007,10 +1033,31 @@ angular.module('myApp.controllers', ['myApp.services'])
             var start = $scope.date;
             var end = $scope.endDate;
             var calendarName = "MyCal";
-            var success = function(message) {alert("Success: " + JSON.stringify(message))};
-            var error   = function(message) {alert("Error: " + message)};
+            var createSuccess = function(message) {console.log("Create Success: " + JSON.stringify(message)); return true;};
+            var createError   = function(message) {console.log("Create Error: " + message); return false;};
+            var deleteSuccess = function(message) {console.log("Delete Success: " + JSON.stringify(message)); return true;};
+            var deleteError = function(message) {console.log("Delete Error: " + message); return false;};
+            var findSuccess = function(message) {console.log("Find Success: " + JSON.stringify(message)); return true;};
+            var findError   = function(message) {console.log("Find Error: " + message); return false;};
             //cal.createEvent(title, loc, notes, start, end, success, error);
-            cal.createEventInteractively(title, loc, notes, start, end, success, error);
+            switch(key){
+                case 'add':
+                    if(!cal.findEvent(title, loc, notes, start, end, findSuccess, findError)){
+                        cal.createEventInteractively(title, loc, notes, start, end, createSuccess, createError);
+                    }
+                    $scope.inCalendar = cal.findEvent(title, loc, notes, start, end, findSuccess, findError);
+                    $scope.$apply();
+                    break;
+                case 'remove':
+                    cal.deleteEvent(title, loc, notes, start, end, deleteSuccess, deleteError);
+                    $scope.inCalendar = cal.findEvent(title, loc, notes, start, end, findSuccess, findError);
+                    $scope.$apply();
+                    break;
+                case 'find':
+                    return cal.findEvent(title, loc, notes, start, end, findSuccess, findError);
+                    break;
+            }
+
         };
 
 		$scope.remove = function() {
@@ -1057,6 +1104,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 
         };
+
+        $scope.$on('$ionicView.beforeLeave', function () {
+            $scope.windowOptions.visible = false;
+        });
 
 	})
 
