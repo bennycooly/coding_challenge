@@ -14,6 +14,14 @@
     background-size: cover;
 }
 
+.pane .create-event, .view .create-event {
+    background: #f2f2f2;
+}
+
+.pane, .view {
+    background: #d3d3d3;
+}
+
 .scroll-content > .scroll {
     height: 100%;
     width: 100%;

@@ -647,6 +647,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 	.controller('CreateEventCtrl', function($scope, $state, $ionicPopup, $ionicHistory, $timeout) {
         $scope.$on('$ionicView.beforeEnter', function() {
+            $scope.isBrowser = ionic.Platform.isWebView() ? false : true;
             $scope.info = {name: "", description: "", location: "", date: "", endDate: "", contact: "", contactInfo: "", url: ""};
             $scope.creator = Parse.User.current().get('username');
             $scope.startDate = 'Pick a start date';
@@ -1033,10 +1034,30 @@ angular.module('myApp.controllers', ['myApp.services'])
             var start = $scope.date;
             var end = $scope.endDate;
             var calendarName = "MyCal";
-            var createSuccess = function(message) {console.log("Create Success: " + JSON.stringify(message)); return true;};
-            var createError   = function(message) {console.log("Create Error: " + message); return false;};
-            var deleteSuccess = function(message) {console.log("Delete Success: " + JSON.stringify(message)); return true;};
-            var deleteError = function(message) {console.log("Delete Error: " + message); return false;};
+            var createSuccess = function(message) {
+                if($scope.funcCalendar('find')) {
+                    $scope.inCalendar = true;
+                    console.log('event created successfully');
+                    return true;
+                }
+                else {$scope.inCalendar = false; $scope.$apply(); return false;}
+            };
+            var createError   = function(message) {
+                console.log("Create Error: " + message);
+                return false;
+            };
+            var deleteSuccess = function(message) {
+                if(!$scope.funcCalendar('find')) {
+                    $scope.inCalendar = false;
+                    console.log('event created successfully');
+                    return true;
+                }
+                else {$scope.inCalendar = true; $scope.$apply(); return false;}
+            };
+            var deleteError = function(message) {
+                console.log("Delete Error: " + message);
+                return false;
+            };
             var findSuccess = function(message) {console.log("Find Success: " + JSON.stringify(message)); return true;};
             var findError   = function(message) {console.log("Find Error: " + message); return false;};
             //cal.createEvent(title, loc, notes, start, end, success, error);

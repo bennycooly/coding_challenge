@@ -10,6 +10,7 @@ angular.module('myApp', ['ionic',
 	'ngCordova',
 	'tabSlideBox',
     'uiGmapgoogle-maps',
+    'ionMdInput',
 	'chart.js'])
 
 	.run(function ($ionicPlatform, $state, $rootScope, $cordovaNetwork, $ionicLoading, $timeout) {
