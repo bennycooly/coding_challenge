@@ -37,10 +37,6 @@
 			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
 				<ion-slide style="height: calc(100% + 3000px);">
 					<ion-content>
-                        <ion-refresher
-                                pulling-text="Pull to refresh..."
-                                on-refresh="doRefresh()">
-                        </ion-refresher>
 						<div class="list card">
 							<div class="item">
 								<div class="row">
@@ -112,23 +108,40 @@
 				</ion-slide>
 				<ion-slide>
                     <ion-content>
-                        <ion-refresher
-                                pulling-text="Pull to refresh..."
-                                on-refresh="doRefresh()">
-                        </ion-refresher>
                         <h2 style="margin-top:8px;text-align:center;">Progress</h2>
                         <ul class="list">
                             <li class="item">
                                 <div class="row">
-                                    <div id="canvasWrapper">
+                                    <div id="canvasWrapper" style="width:100%;">
                                         <canvas id="canvas"></canvas>
                                     </div>
                                 </div>
+								<h3 style="margin-top:8px;text-align:center;">Did you know?</h3>
+								<p style="text-align:center;">For every hour you volunteer, you are saving AT&T $22.90</p>
+								<p style="text-align:center;">You have save ${{moneySaved}} based on your hours.</p>
                             </li>
+							<li class="item">
+								<table class="col-33 col-offset-33" style="width:100%;">
+									<h1 style="margin-bottom:16px;"><b>High Scores</b></h1>
+									<tr>
+										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><b>Rank</b></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><b>Name</b></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><b>Hours</b></td>
+									</tr>
+									<tr ng-repeat="person in topPeople">
+										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><h2>{{$index+1}}</h2></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><h2>{{person.name}}</h2></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><h2>{{person.hours}}</h2></td>
+									</tr>
+								</table>
+							</li>
+							<li class="item" style="border:none;"></li>
+							<li class="item" style="border:none;"></li>
+							<li class="item" style="border:none;"></li>
+							<li class="item" style="border:none;"></li>
+							<li class="item" style="border:none;"></li>
+							<li class="item" style="border:none;"></li>
                         </ul>
-                        <h3 style="margin-top:8px;text-align:center;">Did you know?</h3>
-                        <p style="text-align:center;">For every hour you volunteer, you are saving AT&T $22.90</p>
-                        <p style="text-align:center;">You have save ${{moneySaved}} based on your hours.</p>
                     </ion-content>
 
 				</ion-slide>
