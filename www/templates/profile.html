@@ -27,6 +27,8 @@
                 </div>
             </div>
         </div>
+    </ion-content>
+    <ion-content style="top: 45%;" scroll="false">
 		<tab-slide-box tab="0">
 			<div class="tsb-icons" style="background: #0574ac;">
 				<div class="tsb-ic-wrp">
@@ -36,7 +38,7 @@
 			</div>
 			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
 				<ion-slide style="background: transparent;">
-					<ion-scroll delegate-handle="profile-slide-list">
+					<ion-scroll delegate-handle="profile-slide-list" style="height: 450px;">
                         <ion-refresher
                                 pulling-text="<p style='color: white;'>Pull to refresh...</p>"
                                 pulling-icon="ion-ios-arrow-down"
@@ -135,5 +137,5 @@
 				</ion-slide>
 			</ion-slide-box>
 		</tab-slide-box>
-	</ion-content>
+    </ion-content>
 </ion-view>
