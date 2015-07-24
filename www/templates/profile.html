@@ -7,107 +7,76 @@
             </button>
         </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content>
+    <ion-content scroll="false">
         <div class="item" style="height: 40%; background: transparent; border: none;">
             <img src="img/person.jpg" class="image-avatar">
-            <h2 style="margin-top:8px;text-align:center;font-size: 30px; color: white;">{{fullName}}</h2>
-            <h3 style="text-align: center; font-size: 15px; color: lightgrey;">{{id}}</h3>
+            <h2 style="margin-top:8px;text-align:center;font-size: 4vh; color: white;">{{fullName}}</h2>
+            <h3 style="text-align: center; font-size: 2vh; color: lightgrey;">{{id}}</h3>
             <div class="row">
-                <div class="col col-33 profile-hours">
+                <div class="col col-33 profile-module profile-hours">
                     <h2>{{hours}}</h2>
                     <h3>Total Hours</h3>
                 </div>
-                <div class="col col-33">
+                <div class="col col-33 profile-module profile-events-attended">
                     <h2>{{hours}}</h2>
-                    <h3>Events Attended</h3>
+                    <h3>Events<br />Attended</h3>
                 </div>
-                <div class="col col-33">
-                    <h2>{{hours}}</h2>
-                    <h3>Events Created</h3>
+                <div class="col col-33 profile-module profile-events-created">
+                    <h2>{{userCreated.length}}</h2>
+                    <h3>Events<br />Created</h3>
                 </div>
             </div>
         </div>
 		<tab-slide-box tab="0">
-			<div class="tsb-icons">
+			<div class="tsb-icons" style="background: #0574ac;">
 				<div class="tsb-ic-wrp">
 					<a href="javascript:;" class="ion-person"></a>
 					<a href="javascript:;" class="ion-arrow-graph-up-right"></a>
 				</div>
 			</div>
 			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
-				<ion-slide style="height: calc(100% + 3000px);">
-					<ion-content>
+				<ion-slide style="background: transparent;">
+					<ion-content class="profile-slide" style="height: calc(100% + 200px);">
                         <ion-refresher
                                 pulling-text="Pull to refresh..."
                                 on-refresh="doRefresh()">
                         </ion-refresher>
-						<div class="list card">
-							<div class="item">
-								<div class="row">
-									<div class="col"><b>Total Hours</b></div>
-									<div class="col">{{hours}}</div>
-								</div>
-							</div>
-							<div class="item">
-								<div class="row">
-									<div class="col"><b>Phone Number</b></div>
-									<div class="col">{{phone}}</div>
-								</div>
-							</div>
-							<div class="item">
-								<div class="row">
-									<div class="col"><b>Email</b></div>
-									<div class="col">{{email}}</div>
-								</div>
-							</div>
-							<div class="item">
-								<div class="row">
-									<div class="col col-50"><b>Interests</b></div>
-									<ul class="col col-offset-10" style="list-style-type:circle">
-										<li ng-repeat="interest in interestsList">
-											<div style="text-align:left;">{{interest}}</div>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="item">
-								<div class="row">
-									<div class="col"><h2><strong>Upcoming Events</strong></h2></div>
-								</div>
-							</div>
-							<div class="item" ng-repeat="event in upcoming" ng-click="selectUpcoming(event)">
-								<div class="row">
-									<div class="col item-text-wrap">
-											<strong>Name:</strong> {{event.name}}
-									</div>
-								</div>
-								<div class="row">
-									<div class="col item-text-wrap">
-										<p><strong>Date:</strong> {{event.date}}</p>
-									</div>
-								</div>
-							</div>
-                            <div class="item">
-                                <div class="row">
-                                    <div class="col"><h2><strong>Events Created by You</strong></h2></div>
-                                </div>
-                            </div>
-                            <div class="item" ng-repeat="event in userCreated" ng-click="selectUserCreated(event)">
-                                <div class="row">
-                                    <div class="col item-text-wrap">
-                                        <strong>Name:</strong> {{event.name}}
+						<ion-list class="list list-inset profile-list">
+							<ion-item style="border: none;">
+                                <h3><b>Phone Number</b></h3>
+                                <p>{{phone}}</p>
+							</ion-item>
+							<ion-item style="border: none;">
+                                <h3><b>Email</b></h3>
+                                <p>{{email}}</p>
+							</ion-item>
+							<ion-item style="border: none;">
+                                <h3><b>Interests</b></h3>
+                                <p ng-repeat="interest in interestsList">
+                                    {{interest}}
+                                </p>
+                            </ion-item>
+							<ion-item style="height: 100px;">
+                                <h3><b>Upcoming Events</b></h3>
+                                <ion-scroll style="height: 50px;">
+                                    <div ng-repeat="event in upcoming" ng-click="selectUpcoming(event)">
+                                        <p><strong>Name:</strong> {{event.name}}</p>
+                                        <p><strong>Date:</strong> {{event.date}}</p>
+                                        <br />
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col item-text-wrap">
-                                        <p><strong>Date:</strong> {{event.date | date : 'MM/dd/yyyy'}}</p>
+                                </ion-scroll>
+							</ion-item>
+                            <ion-item style="height: 100px;">
+                                <h3><b>Events Created by You</b></h3>
+                                <ion-scroll style="height: 100px;">
+                                    <div ng-repeat="userEvent in userCreated" ng-click="selectUserCreated(userEvent)">
+                                        <p><b>Name:</b> {{userEvent.name}}</p>
+                                        <p><b>Date:</b> {{userEvent.date | date : 'MM/dd/yyyy'}}</p>
+                                        <br />
                                     </div>
-                                </div>
-                            </div>
-							<li class="item" style="border:none;"></li>
-                            <li class="item" style="border:none;"></li>
-                            <li class="item" style="border:none;"></li>
-						</div>
+                                </ion-scroll>
+                            </ion-item>
+						</ion-list>
 					</ion-content>
 				</ion-slide>
 				<ion-slide>

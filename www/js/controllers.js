@@ -533,7 +533,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		}
 	})
 
-	.controller('ProfileCtrl', function($scope, $state, $ionicPopup, $events) {
+	.controller('ProfileCtrl', function($scope, $state, $ionicPopup, $events, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
 		$scope.$on('$ionicView.beforeEnter', function () {
 			$scope.currentUser = Parse.User.current();
             $scope.info = {};
@@ -617,14 +617,15 @@ angular.module('myApp.controllers', ['myApp.services'])
                     }
                     console.log($scope.userCreated);
                     $scope.$apply();
+                    console.log('refresh complete');
+                    $ionicScrollDelegate.resize();
+                    $ionicSlideBoxDelegate.update();
+                    $scope.$broadcast('scroll.refreshComplete');
                 },
                 error: function(error) {
                     console.log(error);
                 }
             });
-            console.log('refresh complete');
-
-			$scope.$broadcast('scroll.refreshComplete');
 		};
 
 		$scope.graph = function() {
@@ -1443,7 +1444,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 	})
 
 	.controller('CalCtrl', function($scope, $state, $ionicPopup) {
-        $scope.$on('$ionicView.beforeEnter', function() {
+        $scope.$on('$ionicView.loaded', function() {
             //date info
             var date = new Date();
             var currMonth = date.getMonth();

@@ -59,6 +59,10 @@
     overflow: visible !important;
 }
 
+.scroll{
+    height: 100% !important;
+}
+
 .bar.bar-orange {
     background: #ef6f00;
     color: white;
@@ -114,10 +118,44 @@
     box-shadow: 0 0 8px rgba(0,0,0,.8);
 }
 
-.profile-hours {
+.profile-module .profile-hours{
     background: blue;
 }
+.profile-module .profile-events-attended{
+    background: blue;
+}
+.profile-module .profile-events-created{
+    background: blue;
+}
+.profile-module h2 {
+    text-align: center;
+    font-size: 3.5vh;
+    color: white;
+}
+.profile-module h3 {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1.5vh;
+    color: white;
+}
+.profile-list {
+    text-align: left;
+    background: transparent;
+}
+.profile-list h3 {
+    padding-left: 30px;
+    color: #0574ac;
+}
+.profile-list p {
+    padding-left: 30px;
+}
 
+.tabbed-slidebox .tsb-icons a.active {
+    color: white;
+}
+.tabbed-slidebox .tsb-icons:after {
+    border-color: transparent transparent lightgrey transparent;
+}
 #login {
     animation-delay: 2s;
     -webkit-animation-delay: 2s;
