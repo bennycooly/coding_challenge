@@ -40,7 +40,8 @@
                     <ui-gmap-google-map center='mapOptions.center' zoom='mapOptions.zoom'>
                         <ui-gmap-marker coords="marker.coords" idkey="marker.idKey" options="marker.options"
                                         click="onClick()">
-                            <ui-gmap-window show="true" options="windowOptions" closeClick="closeClick()">
+                            <ui-gmap-window show="windowOptions.visible" options="windowOptions"
+                                            closeClick="closeClick()">
                                 <div>{{windowTitle}}</div>
                             </ui-gmap-window>
                         </ui-gmap-marker>

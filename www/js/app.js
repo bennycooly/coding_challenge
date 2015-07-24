@@ -202,6 +202,7 @@ angular.module('myApp', ['ionic',
 			})
 
 			.state('app.event', {
+                cache: false,
 				url: '//newsfeed/event',
 				params: {param:null},
 				views: {

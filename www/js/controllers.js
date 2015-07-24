@@ -947,9 +947,7 @@ angular.module('myApp.controllers', ['myApp.services'])
             $scope.location = '';
             $scope.mapOptions = {};
             $scope.marker = {};
-            $scope.windowOptions = {
-                visible: true
-            };
+            $scope.windowOptions = {visible: false};
             $scope.windowTitle = "No Location Found";
 
             $scope.update()
@@ -983,8 +981,6 @@ angular.module('myApp.controllers', ['myApp.services'])
             $scope.windowOptions.visible = false;
         };
 
-
-
         $scope.codeAddress = function(maps, location) {
             var defer = $q.defer();
             var geocoder = new maps.Geocoder();
@@ -1004,6 +1000,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                         }*/
                     };
                     $scope.windowTitle = $scope.location;
+                    $scope.windowOptions.visible = true;
                     $scope.locationFound = true;
                     console.log('got location successfully: ' + coord);
                     defer.resolve();
@@ -1256,10 +1253,12 @@ angular.module('myApp.controllers', ['myApp.services'])
                             )
                                 .then( function(res) {
                                     $ionicHistory.nextViewOptions({
-                                        disableBack: true
+                                        disableBack: true,
+                                        disableAnimate: true
                                     });
                                     $scope.closeModal();
-                                    $state.go($state.current, {}, {reload: true});
+                                    $scope.windowOptions.visible = false;
+                                    $state.go($state.current, $stateParams, {reload: true});
                                 })
                         },
                         error: function(event, error) {
@@ -1299,8 +1298,8 @@ angular.module('myApp.controllers', ['myApp.services'])
                                        console.log($scope.modalVars.eventId);
                                        if(userEvents != '' || userEvents){
                                            if(userEvents.indexOf($scope.modalVars.eventId) == 0) {
-                                               userEvents = userEvents.replace($scope.modalVars.eventId,'');
                                                userEvents = userEvents.replace($scope.modalVars.eventId + ', ','');
+                                               userEvents = userEvents.replace($scope.modalVars.eventId,'');
                                                console.log(userEvents);
                                                results[i].set('events', userEvents);
                                                results[i].save(null, {
