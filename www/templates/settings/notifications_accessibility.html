@@ -1,6 +1,19 @@
 <ion-view view-title="Manage Notifications">
 	<ion-content>
-		<ion-toggle ng-model="notifications" toggle-class="toggle-calm">Notifications</ion-toggle>
-		<ion-toggle ng-model="accessibility" toggle-class="toggle-calm">Accessibility</ion-toggle>
+		<div class="card">
+			<div class="item item-text-wrap">
+				<h3>Toggle the below options to change how you receive notifications.</h3>
+				<h4>NOTE: If you use text notifications, data rates my apply.</h4>
+			</div>
+		</div>
+		<ion-toggle toggle-class="toggle-calm">Email Notifications</ion-toggle>
+		<ion-toggle toggle-class="toggle-calm">Text Notifications</ion-toggle>
+		<div class="card">
+			<div class="item item-text-wrap">
+				<h3>Toggle the below options to change which events you are notified about.</h3>
+			</div>
+		</div>
+		<ion-toggle toggle-class="toggle-calm">Service Events</ion-toggle>
+		<ion-toggle toggle-class="toggle-calm">Fundraising Events</ion-toggle>
 	</ion-content>
 </ion-view>

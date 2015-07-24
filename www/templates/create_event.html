@@ -8,7 +8,6 @@
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content>
-        <button ng-show="creator=='am790d'" class="button button-block button-positive" ng-click="inject()">Inject Default Events</button>
         <form ng-submit="createEvent(false)">
             <div class="list">
                 <label class="item item-input item-floating-label" style="background: white;">
@@ -20,7 +19,7 @@
                     <input type="text" placeholder="Location" ng-model="info.location">
                 </label>
                 <div class="item item-divider" style="border-bottom: none;"></div>
-                <label class="button button-full button-royal" ng-click="showDatePicker('start')" ng-hide="isBrowser">
+                <label class="button button-full button-positive" ng-click="showDatePicker('start')" ng-hide="isBrowser">
                     {{startDate | date : 'MMMM d, yyyy h:mm a'}}
                 </label>
                 <label class="button button-full button-balanced" ng-click="showDatePicker('end')" ng-hide="isBrowser">
