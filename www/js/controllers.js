@@ -590,6 +590,8 @@ angular.module('myApp.controllers', ['myApp.services'])
                             $scope.upcoming = $events.sortDateAscending($scope.upcoming);
 						}
 						$scope.$apply();
+                        $ionicScrollDelegate.$getByHandle('profile-slide-list').resize();
+                        $ionicSlideBoxDelegate.update();
 						if ($scope.events.indexOf(object.id) == $scope.events.length - 1) {
 							$scope.moneySaved = Math.round($scope.hours * 22.9 * 100) / 100;
 							$scope.graph();
@@ -611,7 +613,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                     console.log($scope.userCreated);
                     $scope.$apply();
                     console.log('refresh complete');
-                    $ionicScrollDelegate.resize();
+                    $ionicScrollDelegate.$getByHandle('profile-slide-list').resize();
                     $ionicSlideBoxDelegate.update();
                     $scope.$broadcast('scroll.refreshComplete');
                 },

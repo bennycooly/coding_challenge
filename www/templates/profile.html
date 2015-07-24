@@ -36,54 +36,48 @@
 			</div>
 			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
 				<ion-slide style="background: transparent;">
-					<ion-content class="profile-slide" style="height: calc(100% + 200px);">
+                    <ion-content delegate-handle="profile-slide-list">
                         <ion-refresher
                                 pulling-text="Pull to refresh..."
                                 on-refresh="doRefresh()">
                         </ion-refresher>
-						<ion-list class="list list-inset profile-list">
-							<ion-item style="border: none;">
+                        <ion-list class="list list-inset profile-list">
+                            <ion-item style="border: none; margin-bottom: -15px;">
                                 <h3><b>Phone Number</b></h3>
                                 <p>{{phone}}</p>
-							</ion-item>
-							<ion-item style="border: none;">
+                            </ion-item>
+                            <ion-item style="border: none; margin-bottom: -15px;">
                                 <h3><b>Email</b></h3>
                                 <p>{{email}}</p>
-							</ion-item>
-							<ion-item style="border: none;">
+                            </ion-item>
+                            <ion-item style="border: none;">
                                 <h3><b>Interests</b></h3>
                                 <p ng-repeat="interest in interestsList">
                                     {{interest}}
                                 </p>
                             </ion-item>
-							<ion-item style="height: 100px;">
+                            <ion-item>
                                 <h3><b>Upcoming Events</b></h3>
-                                <ion-scroll style="height: 50px;">
-                                    <div ng-repeat="event in upcoming" ng-click="selectUpcoming(event)">
-                                        <p><strong>Name:</strong> {{event.name}}</p>
-                                        <p><strong>Date:</strong> {{event.date}}</p>
-                                        <br />
-                                    </div>
-                                </ion-scroll>
-							</ion-item>
-                            <ion-item style="height: 100px;">
-                                <h3><b>Events Created by You</b></h3>
-                                <ion-scroll style="height: 100px;">
-                                    <div ng-repeat="userEvent in userCreated" ng-click="selectUserCreated(userEvent)">
-                                        <p><b>Name:</b> {{userEvent.name}}</p>
-                                        <p><b>Date:</b> {{userEvent.date | date : 'MM/dd/yyyy'}}</p>
-                                        <br />
-                                    </div>
-                                </ion-scroll>
                             </ion-item>
-						</ion-list>
-					</ion-content>
+                            <ion-item ng-repeat="event in upcoming" ng-click="selectUpcoming(event)">
+                                <p><strong>Name:</strong> {{event.name}}</p>
+                                <p><strong>Date:</strong> {{event.date}}</p>
+                            </ion-item>
+                            <ion-item>
+                                <h3><b>Events Created by You</b></h3>
+                            <!--</ion-item>
+                            <ion-item ng-repeat="userEvent in userCreated" ng-click="selectUserCreated(userEvent)">
+                                <p><b>Name:</b> {{userEvent.name}}</p>
+                                <p><b>Date:</b> {{userEvent.date | date : 'MM/dd/yyyy'}}</p>
+                            </ion-item>-->
+                        </ion-list>
+                    </ion-content>
 				</ion-slide>
-				<ion-slide>
+				<ion-slide style="background: transparent;">
                     <ion-content>
-                        <h2 style="margin-top:8px;text-align:center;">Progress</h2>
-                        <ul class="list">
-                            <li class="item">
+                        <ion-list class="list list-inset profile-list">
+                            <ion-item>
+                                <h2 style="margin-top:8px;text-align:center;">Progress</h2>
                                 <div class="row">
                                     <div id="canvasWrapper" style="width:100%;">
                                         <canvas id="canvas"></canvas>
@@ -92,8 +86,8 @@
 								<h3 style="margin-top:8px;text-align:center;">Did you know?</h3>
 								<p style="text-align:center;">For every hour you volunteer, you are saving AT&T $22.90</p>
 								<p style="text-align:center;">You have save ${{moneySaved}} based on your hours.</p>
-                            </li>
-							<li class="item">
+                            </ion-item>
+							<ion-item>
 								<table class="col-33 col-offset-33" style="width:100%;">
 									<h1 style="margin-bottom:16px;"><b>High Scores</b></h1>
 									<tr>
@@ -107,14 +101,22 @@
 										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><h2>{{person.hours}}</h2></td>
 									</tr>
 								</table>
-							</li>
-							<li class="item" style="border:none;"></li>
-							<li class="item" style="border:none;"></li>
-							<li class="item" style="border:none;"></li>
-							<li class="item" style="border:none;"></li>
-							<li class="item" style="border:none;"></li>
-							<li class="item" style="border:none;"></li>
-                        </ul>
+							</ion-item>
+							<ion-item class="item" style="border:none;"></ion-item>
+							<ion-item class="item" style="border:none;"></ion-item>
+                            <ion-item class="item" style="border:none;"></ion-item>
+                            <ion-item class="item" style="border:none;"></ion-item>
+                            <ion-item class="item" style="border:none;"></ion-item>
+                            <ion-item class="item" style="border:none;"></ion-item>
+                            <ion-item class="item" style="border:none;"></ion-item>
+                            <ion-item class="item" style="border:none;"></ion-item>
+                            <ion-item class="item" style="border:none;"></ion-item>
+                            <ion-item class="item" style="border:none;"></ion-item>
+                            <ion-item class="item" style="border:none;"></ion-item>
+                            <ion-item class="item" style="border:none;"></ion-item>
+                            <ion-item class="item" style="border:none;"></ion-item>
+                            <ion-item class="item" style="border:none;"></ion-item>
+                        </ion-list>
                     </ion-content>
 
 				</ion-slide>
