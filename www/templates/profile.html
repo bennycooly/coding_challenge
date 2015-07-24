@@ -37,10 +37,6 @@
 			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
 				<ion-slide style="background: transparent;">
 					<ion-content class="profile-slide" style="height: calc(100% + 200px);">
-                        <ion-refresher
-                                pulling-text="Pull to refresh..."
-                                on-refresh="doRefresh()">
-                        </ion-refresher>
 						<ion-list class="list list-inset profile-list">
 							<ion-item style="border: none;">
                                 <h3><b>Phone Number</b></h3>
@@ -94,20 +90,25 @@
 								<p style="text-align:center;">You have save ${{moneySaved}} based on your hours.</p>
                             </li>
 							<li class="item">
-								<table class="col-33 col-offset-33" style="width:100%;">
-									<h1 style="margin-bottom:16px;"><b>High Scores</b></h1>
+								<table style="width:100%;">
+									<h2 style="margin-bottom:16px;"><b>High Scores</b></h2>
 									<tr>
-										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><b>Rank</b></td>
-										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><b>Name</b></td>
-										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><b>Hours</b></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;"><b>Rank</b></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;"><b>Name</b></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;"><b>Hours</b></td>
 									</tr>
-									<tr ng-repeat="person in topPeople">
-										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><h2>{{$index+1}}</h2></td>
-										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><h2>{{person.name}}</h2></td>
-										<td style="border: 1px solid grey;border-collapse:collapse;padding:16px;"><h2>{{person.hours}}</h2></td>
+									<tr ng-repeat="person in topPeople" style="width:100%;">
+										<td style="border: 1px solid grey;border-collapse:collapse;"><h2>{{$index+1}}</h2></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;"><h2>{{person.name}}</h2></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;"><h2>{{person.hours}}</h2></td>
 									</tr>
 								</table>
 							</li>
+							<li class="item" style="border:none;"></li>
+							<li class="item" style="border:none;"></li>
+							<li class="item" style="border:none;"></li>
+							<li class="item" style="border:none;"></li>
+							<li class="item" style="border:none;"></li>
 							<li class="item" style="border:none;"></li>
 							<li class="item" style="border:none;"></li>
 							<li class="item" style="border:none;"></li>
