@@ -169,6 +169,10 @@
     -webkit-animation-delay: 2s;
 }
 
+.odd {
+    background-color: grey;
+}
+
 .login-button-delay {
     animation-delay: 3s;
     -webkit-animation-delay: 3s;
