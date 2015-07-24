@@ -84,6 +84,12 @@
     background: #fcb314;
 }
 
+.tutorial-pic {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 50vh;
+}
 .side-menu-background {
     background: #0574ac;
     border: 0;

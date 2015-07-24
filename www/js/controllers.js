@@ -1437,8 +1437,20 @@ angular.module('myApp.controllers', ['myApp.services'])
 	})
 
 	.controller('CalCtrl', function($scope, $state, $ionicPopup) {
-        $scope.$on('$ionicView.loaded', function() {
+        $scope.$on('$ionicView.beforeEnter', function() {
             //date info
+            var date = new Date();
+            $scope.currMonth = date.getMonth();
+            $scope.currYear = date.getFullYear();
+            $scope.day = date.getDay();
+
+            $scope.months = ["January","February","March","April","May","June","July","August", "September","October","November","December"];
+
+            $scope.month = $scope.months[$scope.currMonth];
+            $scope.year = currYear;
+        });
+
+        /*$scope.$on('ionicView.beforeEnter', function() {
             var date = new Date();
             var currMonth = date.getMonth();
             var currYear = date.getFullYear();
@@ -1446,55 +1458,46 @@ angular.module('myApp.controllers', ['myApp.services'])
 
             var months = ["January","February","March","April","May","June","July","August", "September","October","November","December"];
 
-            $scope.month = months[currMonth];
+            $scope.month = date;
             $scope.year = currYear;
             $scope.day = day;
-
-        });
-
-        var date = new Date();
-        var currMonth = date.getMonth();
-        var currYear = date.getFullYear();
-        var day = date.getDay();
-
-        var months = ["January","February","March","April","May","June","July","August", "September","October","November","December"];
+        });*/
 
 		//decrements month
 		$scope.prevM = function() {
-
-			currMonth--;
-			if(currMonth<0) {
-				currMonth = 11;
-				currYear--;
+			$scope.currMonth--;
+			if($scope.currMonth<0) {
+				$scope.currMonth = 11;
+				$scope.currYear--;
 			}
 
-			$scope.month = months[currMonth];
-			$scope.year = currYear;
+			$scope.month = $scope.months[$scope.currMonth];
+			$scope.year = $scope.currYear;
 		};
 
 		//increments month
 		$scope.nextM = function() {
 
-			currMonth++;
-			if(currMonth>11) {
-				currMonth = 0;
-				currYear++;
+			$scope.currMonth++;
+			if($scope.currMonth>11) {
+				$scope.currMonth = 0;
+				$scope.currYear++;
 			}
 
-			$scope.month = months[currMonth];
-			$scope.year = currYear;
+			$scope.month = $scope.months[$scope.currMonth];
+			$scope.year = $scope.currYear;
 		};
 
 		$scope.goToDay = function(month, year, cellClicked){
 			//calculate day in month based on cellClicked
-			var day1 = new Date(year, months.indexOf(month), 1);
+			var day1 = new Date(year, $scope.months.indexOf(month), 1);
 			var startDay = day1.getDay();
 			var dayClicked = cellClicked - startDay;
 
 			//set day variable
 			$scope.day = dayClicked;
 
-			$state.go("app.calendarSingle", {'theMonth':$scope.month, 'theYear':$scope.year, 'theDay':$scope.day, 'monthInd':months.indexOf($scope.month)});
+			$state.go("app.calendarSingle", {'theMonth':$scope.month, 'theYear':$scope.year, 'theDay':$scope.day, 'monthInd':$scope.months.indexOf($scope.month)});
 		};
 
         $scope.createEvent = function() {
