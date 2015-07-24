@@ -614,7 +614,6 @@ angular.module('myApp.controllers', ['myApp.services'])
                     $scope.$apply();
                     console.log('refresh complete');
                     $ionicScrollDelegate.$getByHandle('profile-slide-list').resize();
-                    $ionicSlideBoxDelegate.update();
                     $scope.$broadcast('scroll.refreshComplete');
                 },
                 error: function(error) {

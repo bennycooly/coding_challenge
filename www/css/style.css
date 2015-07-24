@@ -149,7 +149,9 @@
 .profile-list p {
     padding-left: 30px;
 }
-
+.tabbed-slidebox {
+    height: 100%;
+}
 .tabbed-slidebox .tsb-icons a.active {
     color: white;
 }
