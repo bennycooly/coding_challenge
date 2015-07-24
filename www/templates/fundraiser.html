@@ -4,7 +4,7 @@
         <ul class="list">
             <li class="item">
                 <div class="row">
-                    <div class="col"><b>Date Added</b></div>
+                    <div class="col col-40"><b>Date Added</b></div>
                     <div class="col item-text-wrap">{{date | date : 'MMMM d, yyyy'}}</div>
                 </div>
             </li>
@@ -13,7 +13,7 @@
                     <div class="col"><b>Description</b></div>
                 </div>
                 <div class="row">
-                    <div class="col item-text-wrap">&emsp;&emsp;{{description}}</div>
+                    <div class="col item-text-wrap">{{description}}</div>
                 </div>
             </li>
             <li class="item">
@@ -21,7 +21,7 @@
                     <div class="col"><b>URL</b></div>
                 </div>
                 <div class="row">
-                    <div class="col-offset-25 item-text-wrap"><a href="{{url}}">&emsp;&emsp;{{url}}</a></div>
+                    <div class="col item-text-wrap"><a href="{{url}}">{{url}}</a></div>
                 </div>
             </li>
         </ul>

@@ -23,6 +23,10 @@ angular.module('myApp.controllers', ['myApp.services'])
 			console.log($state.current.name);
 			if ($state.current.name != 'app.home') {
 				$timeout( function() {
+                    $ionicLoading.show({
+                        template: '<p>Loading...</p><ion-spinner icon="ripple" class="spinner-calm"></ion-spinner>',
+                        animation: 'fade-in'
+                    });
                     $localStorage.set('leftSearchModal', 'false');
 					$ionicHistory.nextViewOptions({
 						disableBack: true,
@@ -148,7 +152,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 
 		$scope.login = function() {
 			// UNCOMMENT this line when deploying to device. Hides the keyboard on submit
-			//cordova.plugins.Keyboard.close();
+			if (ionic.Platform.isWebView()) cordova.plugins.Keyboard.close();
 			var username = $scope.loginData.username;
 			var password = $scope.loginData.password;
 			//check for valid characters
@@ -757,7 +761,7 @@ angular.module('myApp.controllers', ['myApp.services'])
 		};
 
 		$scope.createEvent = function(injected) {
-
+            if (ionic.Platform.isWebView()) cordova.plugins.Keyboard.close();
 			var urlEmpty = true;
 			for (var key in $scope.info) {
 				if (key == "url" && $scope.info[key] != "") urlEmpty = false;
@@ -1197,6 +1201,7 @@ angular.module('myApp.controllers', ['myApp.services'])
         };
 
         $scope.saveEvent = function() {
+            if (ionic.Platform.isWebView()) cordova.plugins.Keyboard.close();
             console.log($scope.modalVars.eventId);
             for (var field in $scope.modalVars) {
                 if ($scope.modalVars[field] == '' || !$scope.modalVars[field]) {
@@ -1295,6 +1300,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                                        if(userEvents != '' || userEvents){
                                            if(userEvents.indexOf($scope.modalVars.eventId) == 0) {
                                                userEvents = userEvents.replace($scope.modalVars.eventId,'');
+                                               userEvents = userEvents.replace($scope.modalVars.eventId + ', ','');
                                                console.log(userEvents);
                                                results[i].set('events', userEvents);
                                                results[i].save(null, {

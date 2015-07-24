@@ -16,7 +16,7 @@
         <ul class="list">
             <li class="item">
                 <div class="row">
-                    <div class="col"><b>Date</b></div>
+                    <div class="col col-25"><b>Date</b></div>
                     <div class="col item-text-wrap" ng-if="singleDay">{{date | date : 'EEEE, MMMM d, yyyy'}} </div>
                     <div class="col item-text-wrap" ng-if="!singleDay">{{date | date : 'EEEE, MMMM d'}} to <br/>
                         {{endDate | date: 'EEEE, MMMM d, yyyy'}}</div>
@@ -24,7 +24,7 @@
             </li>
             <li class="item">
                 <div class="row">
-                    <div class="col"><b>Time</b></div>
+                    <div class="col col-25"><b>Time</b></div>
                     <div class="col item-text-wrap" ng-if="singleDay">{{startTime | date : 'h:mm a'}} - {{endTime | date :
                         'h:mm a'}}</div>
                     <div class="col item-text-wrap" ng-if="!singleDay">{{startTime | date : "MMM d 'at' h:mm a"}}
@@ -33,7 +33,7 @@
             </li>
             <li class="item">
                 <div class="row">
-                    <div class="col"><b>Location</b></div>
+                    <div class="col col-25"><b>Location</b></div>
                     <div class="col item-text-wrap" ng-show="!locationFound">{{location}}</div>
                 </div>
                 <div class="row" style="width: 100%; height: 250px; margin-left: 0;">
@@ -49,21 +49,22 @@
             </li>
             <li class="item">
                 <div class="row">
-                    <div class="col"><b>Description</b></div>
+                    <div class="col col-25"><b>Description</b></div>
                 </div>
                 <div class="row">
-                    <div class="col item-text-wrap">&emsp;&emsp;{{description}}</div>
-                </div>
-            </li>
-            <li class="item">
-                <div class="row">
-                    <div class="col"><b>Contact</b></div>
+                    <div class="col item-text-wrap">{{description}}</div>
                 </div>
             </li>
             <li class="item">
                 <div class="row">
-                    <div class="col"><b>URL</b></div>
-                    <div class="col item-text-wrap">{{url}}</div>
+                    <div class="col col-25"><b>Contact</b></div>
+                    <div class="col item-text-wrap">{{contact}}<br />{{contactInfo}}</div>
+                </div>
+            </li>
+            <li class="item">
+                <div class="row">
+                    <div class="col col-25"><b>URL</b></div>
+                    <div class="col item-text-wrap"><a href={{url}}>{{url}}</a></div>
                 </div>
             </li>
             <li class="item">
