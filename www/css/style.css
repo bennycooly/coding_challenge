@@ -184,6 +184,10 @@
     background-color: grey;
 }
 
+.odd h2 {
+    color: white;
+}
+
 .login-button-delay {
     animation-delay: 3s;
     -webkit-animation-delay: 3s;
