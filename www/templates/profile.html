@@ -96,16 +96,19 @@
                             </ion-item>
 							<li class="item">
 								<table style="width:100%;">
-									<h2 style="margin-bottom:16px;"><b>High Scores</b></h2>
+									<h2 style="margin-bottom:16px;" align="center">High Scores</h2>
 									<tr>
-										<td style="border: 1px solid grey;border-collapse:collapse;"><b>Rank</b></td>
-										<td style="border: 1px solid grey;border-collapse:collapse;"><b>Name</b></td>
-										<td style="border: 1px solid grey;border-collapse:collapse;"><b>Hours</b></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;background-color:
+										#0574ac;color:white" align="center" ><b>Rank</b></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;background-color:
+										#0574ac;color:white" align="center"><b>Name</b></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;background-color:
+										#0574ac;color:white" align="center"><b>Hours</b></td>
 									</tr>
-									<tr ng-repeat="person in topPeople" style="width:100%;">
-										<td style="border: 1px solid grey;border-collapse:collapse;"><h2>{{$index+1}}</h2></td>
-										<td style="border: 1px solid grey;border-collapse:collapse;"><h2>{{person.name}}</h2></td>
-										<td style="border: 1px solid grey;border-collapse:collapse;"><h2>{{person.hours}}</h2></td>
+									<tr ng-repeat="person in topPeople" style="width:100%;" ng-class-odd="'odd'">
+										<td style="border: 1px solid grey;border-collapse:collapse;" align="center"><h2>{{$index+1}}</h2></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;" align="center"><h2>{{person.name}}</h2></td>
+										<td style="border: 1px solid grey;border-collapse:collapse;" align="center"><h2>{{person.hours}}</h2></td>
 									</tr>
 								</table>
 							</li>
