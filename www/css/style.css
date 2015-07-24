@@ -84,11 +84,22 @@
     background: #fcb314;
 }
 
+.tutorial h2 {
+    padding: 5px;
+    text-align: center;
+    color: #0574ac;
+}
+
+.tutorial p {
+    padding: 5px;
+    text-align: center;
+}
+
 .tutorial-pic {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    height: 50vh;
+    height: 70vh;
 }
 .side-menu-background {
     background: #0574ac;
