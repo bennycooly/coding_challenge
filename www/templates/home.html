@@ -90,7 +90,7 @@
                             <ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
                                 <ion-item ng-if="!noEvents" class="front-page-item item-dark"
                                           ng-repeat="event in userEvents"
-                                          on-tap="select(event)">
+                                          on-tap="select(event)" style="cursor:pointer;">
                                     <h2>{{event.name}}</h2>
                                     <p>{{event.date | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
                                 </ion-item>
@@ -105,7 +105,7 @@
                     </ion-slide>
                     <ion-slide>
                         <ion-content scroll="false">
-                            <h4 class="front-page-header">Upcoming Events</h4>
+                            <h4 class="front-page-header">Service Events</h4>
                         </ion-content>
                         <ion-scroll has-bouncing="true" class="front-page-list-container">
                             <ion-refresher
@@ -116,7 +116,7 @@
                             </ion-refresher>
                             <ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
                                 <ion-item class="front-page-item item-dark" ng-repeat="event in eventsDateAscending"
-                                          on-tap="select(event)">
+                                          on-tap="select(event)" style="cursor:pointer;">
                                     <h2>{{event.name}}</h2>
                                     <p>{{event.date.iso | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
                                 </ion-item>
@@ -136,7 +136,7 @@
                             </ion-refresher>
                             <ion-list class="item list-inset front-page-module front-page-list" style="background: none;">
                                 <ion-item class="front-page-item item-dark" ng-repeat="event in fundsDateAscending"
-                                          on-tap="select(event)">
+                                          on-tap="select(event)" style="cursor:pointer;">
                                     <h2>{{event.name}}</h2>
                                     <p>{{event.date.iso | date : 'MMMM d, yyyy'}} | created by {{event.owner}}</p>
                                 </ion-item>
