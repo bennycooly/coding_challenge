@@ -566,9 +566,17 @@ angular.module('myApp.controllers', ['myApp.services'])
 			$scope.currentDate = new Date();
 
 			$scope.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-			$scope.progress = [0, 0, 0];
+			$scope.progress = currentUser.get('progress');
 			$scope.progressMonth = ["", "", ""];
 			for (var i=2; i>=0; i--) { $scope.progressMonth[Math.abs(i-2)] = $scope.months[$scope.currentDate.getMonth()-(i+1)]; }
+
+			for (var i=0; i<$scope.progress.length; i++) $scope.hours += $scope.progress[i];
+			$scope.moneySaved = Math.round($scope.hours * 22.9 * 100) / 100;
+
+			$scope.graph();
+
+			$scope.topPeople = [{name: "Alec", hours: $scope.hours}, {name: "Catherine", hours: $scope.hours-1}, {name: "Ben", hours: 7},
+				{name: "Natalie", hours: 5}, {name: "Emily", hours: 1}];
 
 			for (var i = 0; i < $scope.events.length; i++) {
 				var query = new Parse.Query("Event");
@@ -580,21 +588,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 							var upcomingEvent = {id: object.id, name: object.attributes.name, date: upcomingDate};
 							$scope.upcoming.push(upcomingEvent);
                             $scope.upcoming = $events.sortDateAscending($scope.upcoming);
-						} else {
-							var progressDate = $scope.currentDate;
-							for (var j = 0; j < 3; j++) {
-								progressDate.setMonth(progressDate.getMonth() - 1);
-								if (date.getYear() == progressDate.getYear() && date.getMonth() == progressDate.getMonth()) {
-									var start = object.attributes.startTime;
-									var startHour = parseInt(start.split(":")[0]);
-									var end = object.attributes.endTime;
-									var endHour = parseInt(end.split(":")[0]);
-									if (start.split(" ")[1] == "PM") startHour += 12;
-									if (end.split(" ")[1] == "PM") endHour += 12;
-									$scope.progress[j] += (endHour - startHour);
-									$scope.hours += (endHour - startHour);
-								}
-							}
 						}
 						$scope.$apply();
 						if ($scope.events.indexOf(object.id) == $scope.events.length - 1) {
@@ -639,7 +632,6 @@ angular.module('myApp.controllers', ['myApp.services'])
 					data: $scope.progress
 				}]
 			};
-			alert("graph");
 			//document.getElementById("canvasWrapper").innerHTML = "";
 			//document.getElementById("canvasWrapper").innerHTML = "<canvas id=\"canvas\"></canvas>";
 			//if(document.chart !== undefined) document.chart.destroy();
