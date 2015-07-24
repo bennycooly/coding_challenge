@@ -14,6 +14,13 @@
     background-size: cover;
 }
 
+.pane .profile, .view .profile {
+    background: url(../img/people-blurred.jpg) no-repeat left top fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+}
+
 .pane .create-event, .view .create-event {
     background: #f2f2f2;
 }
@@ -94,6 +101,21 @@
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
+}
+
+.image-avatar {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    height: 50%;
+    border-radius: 50%;
+    border:5px solid white;
+    box-shadow: 0 0 8px rgba(0,0,0,.8);
+}
+
+.profile-hours {
+    background: blue;
 }
 
 #login {

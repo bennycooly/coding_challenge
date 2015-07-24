@@ -1,9 +1,32 @@
-<ion-view view-title="Profile">
-	<ion-content>
-		<ion-refresher
-			pulling-text="Pull to refresh..."
-			on-refresh="doRefresh()">
-		</ion-refresher>
+<ion-view view-title="Profile" class="profile">
+    <ion-nav-bar class="bar bar-clear" ng-click="menuClose()">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content>
+        <div class="item" style="height: 40%; background: transparent; border: none;">
+            <img src="img/person.jpg" class="image-avatar">
+            <h2 style="margin-top:8px;text-align:center;font-size: 30px; color: white;">{{fullName}}</h2>
+            <h3 style="text-align: center; font-size: 15px; color: lightgrey;">{{id}}</h3>
+            <div class="row">
+                <div class="col col-33 profile-hours">
+                    <h2>{{hours}}</h2>
+                    <h3>Total Hours</h3>
+                </div>
+                <div class="col col-33">
+                    <h2>{{hours}}</h2>
+                    <h3>Events Attended</h3>
+                </div>
+                <div class="col col-33">
+                    <h2>{{hours}}</h2>
+                    <h3>Events Created</h3>
+                </div>
+            </div>
+        </div>
 		<tab-slide-box tab="0">
 			<div class="tsb-icons">
 				<div class="tsb-ic-wrp">
@@ -12,35 +35,32 @@
 				</div>
 			</div>
 			<ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
-				<ion-slide>
+				<ion-slide style="height: calc(100% + 3000px);">
 					<ion-content>
-						<h2 style="margin-top:8px;text-align:center;">{{fullName}}</h2>
-						<ul class="list">
-							<li class="item">
-								<div class="row">
-									<div class="col"><b>ATTUID</b></div>
-									<div class="col">{{id}}</div>
-								</div>
-							</li>
-							<li class="item">
+                        <ion-refresher
+                                pulling-text="Pull to refresh..."
+                                on-refresh="doRefresh()">
+                        </ion-refresher>
+						<div class="list card">
+							<div class="item">
 								<div class="row">
 									<div class="col"><b>Total Hours</b></div>
 									<div class="col">{{hours}}</div>
 								</div>
-							</li>
-							<li class="item">
+							</div>
+							<div class="item">
 								<div class="row">
 									<div class="col"><b>Phone Number</b></div>
 									<div class="col">{{phone}}</div>
 								</div>
-							</li>
-							<li class="item">
+							</div>
+							<div class="item">
 								<div class="row">
 									<div class="col"><b>Email</b></div>
 									<div class="col">{{email}}</div>
 								</div>
-							</li>
-							<li class="item">
+							</div>
+							<div class="item">
 								<div class="row">
 									<div class="col col-50"><b>Interests</b></div>
 									<ul class="col col-offset-10" style="list-style-type:circle">
@@ -49,13 +69,13 @@
 										</li>
 									</ul>
 								</div>
-							</li>
-							<li class="item">
+							</div>
+							<div class="item">
 								<div class="row">
 									<div class="col"><h2><strong>Upcoming Events</strong></h2></div>
 								</div>
-							</li>
-							<li class="item" ng-repeat="event in upcoming" ng-click="selectUpcoming(event)">
+							</div>
+							<div class="item" ng-repeat="event in upcoming" ng-click="selectUpcoming(event)">
 								<div class="row">
 									<div class="col item-text-wrap">
 											<strong>Name:</strong> {{event.name}}
@@ -66,13 +86,13 @@
 										<p><strong>Date:</strong> {{event.date}}</p>
 									</div>
 								</div>
-							</li>
-                            <li class="item">
+							</div>
+                            <div class="item">
                                 <div class="row">
                                     <div class="col"><h2><strong>Events Created by You</strong></h2></div>
                                 </div>
-                            </li>
-                            <li class="item" ng-repeat="event in userCreated" ng-click="selectUserCreated(event)">
+                            </div>
+                            <div class="item" ng-repeat="event in userCreated" ng-click="selectUserCreated(event)">
                                 <div class="row">
                                     <div class="col item-text-wrap">
                                         <strong>Name:</strong> {{event.name}}
@@ -83,27 +103,34 @@
                                         <p><strong>Date:</strong> {{event.date | date : 'MM/dd/yyyy'}}</p>
                                     </div>
                                 </div>
-                            </li>
+                            </div>
 							<li class="item" style="border:none;"></li>
                             <li class="item" style="border:none;"></li>
                             <li class="item" style="border:none;"></li>
-						</ul>
+						</div>
 					</ion-content>
 				</ion-slide>
 				<ion-slide>
-					<h2 style="margin-top:8px;text-align:center;">Progress</h2>
-					<ul class="list">
-						<li class="item">
-							<div class="row">
-								<div id="canvasWrapper">
-									<canvas id="canvas"></canvas>
-								</div>
-							</div>
-						</li>
-					</ul>
-					<h3 style="margin-top:8px;text-align:center;">Did you know?</h3>
-					<p style="text-align:center;">For every hour you volunteer, you are saving AT&T $22.90</p>
-					<p style="text-align:center;">You have save ${{moneySaved}} based on your hours.</p>
+                    <ion-content>
+                        <ion-refresher
+                                pulling-text="Pull to refresh..."
+                                on-refresh="doRefresh()">
+                        </ion-refresher>
+                        <h2 style="margin-top:8px;text-align:center;">Progress</h2>
+                        <ul class="list">
+                            <li class="item">
+                                <div class="row">
+                                    <div id="canvasWrapper">
+                                        <canvas id="canvas"></canvas>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <h3 style="margin-top:8px;text-align:center;">Did you know?</h3>
+                        <p style="text-align:center;">For every hour you volunteer, you are saving AT&T $22.90</p>
+                        <p style="text-align:center;">You have save ${{moneySaved}} based on your hours.</p>
+                    </ion-content>
+
 				</ion-slide>
 			</ion-slide-box>
 		</tab-slide-box>
